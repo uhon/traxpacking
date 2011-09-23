@@ -1,0 +1,42 @@
+<?php
+
+$server = new Zend_Json_Server();
+//$server->setClass('');
+$smd = $server->getServiceMap();
+
+?><?=$this->doctype()?>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="" content="<?=$this->escape($this->title)?>">
+	<meta name="keywords" content="<?=$this->escape(implode(',', array_merge(array(
+		'',
+	), (array)$this->keywords)))?>">
+	<meta name="description" content="<?=$this->escape($this->description)?>">
+	<?=$this->headLink()->appendStylesheet($this->baseUrl() . '/css/main.css')?>
+	<?=$this->headStyle()?>
+	<?=$this->layout()->css?>
+	<?php
+	echo $this->jQuery()
+		->setVersion('1.6')->enable()
+		->setUiVersion('1.8')->uiEnable()
+		->addStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css');
+	?>
+	<script>const BASE_URL = <?=json_encode($this->baseUrl())?>;</script>
+	<?=$this->headScript()->appendFile('/js/jquery.zend.jsonrpc.js')->appendFile('/js/json2.js')->appendFile('/js/site.js')?>
+	<script>
+		var rpc;
+		$(document).ready(function() {
+			rpc = jQuery.Zend.jsonrpc({
+				url : <?=json_encode($this->baseUrl('/ajax'))?>
+				, smd : <?=$smd?>
+				, async : true
+			});
+		});</script>
+	<?=$this->layout()->headJavascript?>
+	<title></title>
+</head>
+<body>
+	<?php echo $this->layout()->content ?>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.project
+.buildpath
+library/Zend/
+library/ZendX/
+.sass-cache/
+application/configs/local.ini
+.settings/
+tests/log/
+public/css/.sass-cache/
