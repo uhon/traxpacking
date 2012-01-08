@@ -19,7 +19,6 @@ require_once 'Zend/Application.php';
 require_once 'Zend/Config/Ini.php';
 
 $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV, array('allowModifications' => true));
-$config->merge(new Zend_Config_Ini(APPLICATION_PATH . '/configs/local.ini', APPLICATION_ENV));
 
 // Create application, bootstrap, and run
 $application = new Zend_Application(

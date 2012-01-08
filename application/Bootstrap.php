@@ -44,8 +44,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$autoloader->pushAutoloader(array($foo, 'loadClass'), 'doctrine2-dbal\lib\Doctrine\DBAL');
 		$foo->register();
 		
-		$foo = new \Doctrine\Common\ClassLoader('MTable');
-		$autoloader->pushAutoloader(array($foo, 'loadClass'), 'MTable');
+		$foo = new \Doctrine\Common\ClassLoader('Tp');
+		$autoloader->pushAutoloader(array($foo, 'loadClass'), 'Tp');
 		$foo->register();
 		
 		$bisnaAutoloader = new \Doctrine\Common\ClassLoader('Bisna');

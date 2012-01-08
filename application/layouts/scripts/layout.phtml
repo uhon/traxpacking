@@ -37,6 +37,12 @@ $smd = $server->getServiceMap();
 	<title></title>
 </head>
 <body>
-	<?php echo $this->layout()->content ?>
+    <h1>Welcome to TraxPacking</h1>
+
+	<?php
+        $view = Zend_Controller_Front::getInstance()->getParam("bootstrap")->getResource("view");
+        echo $view->messages;
+        echo $this->layout()->content
+    ?>
 </body>
 </html>

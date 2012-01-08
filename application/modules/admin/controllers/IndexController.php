@@ -1,10 +1,12 @@
 <?php
 
-class IndexController extends Zend_Controller_Action
+class Admin_IndexController extends Zend_Controller_Action
 {
 
     public function init()
     {
+        Zend_Auth::getInstance()->hasIdentity();
+
 		$uri = $this->getRequest()->getPathInfo();
 		$activenav = $this->view->navigation()->findByUri($uri);
 		$activenav->active = true;

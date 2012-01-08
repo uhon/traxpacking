@@ -1,6 +1,6 @@
 <?php
 
-namespace MTable\Entity;
+namespace Tp\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

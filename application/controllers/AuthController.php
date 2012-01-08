@@ -7,6 +7,7 @@ class AuthController extends Zend_Controller_Action
      * @var Zend_Auth
      */
     protected $_auth = null;
+    private $_loginForm = null;
 
     public function init()
     {
@@ -31,20 +32,22 @@ class AuthController extends Zend_Controller_Action
 				$flashMessenger = $this->getHelper('FlashMessenger');
 				$data = $form->getValues();
 				$auth = Zend_Auth::getInstance();
-				$authAdapter = new M\Auth\Adapter\Doctrine2(M\Reg::doctrine()->getEntityManager(), 'users', 'username', 'password');
-				$authAdapter->setIdentityColumn('username');
-				$authAdapter->setCredentialColumn('password');
-				$authAdapter->setCredentialTreatment('SHA1(CONCAT(?, salt))');
-				$authAdapter->setCredentialTreatment($data['password']);
-				$authAdapter->setIdentity($data['username']);
+				$authAdapter = new Tp_Auth_Adapter_Doctrine2(Zend_Registry::get('doctrine')->getEntityManager(), 'users', 'email', 'password');
+
+                $authAdapter->setIdentity($_POST['email'])
+                                    ->setCredential(hash('ripemd160', $_POST['password']))
+                                    ->setIdentityField('name')
+                                    ->setCredentialField('password');
+
 				$result = $auth->authenticate($authAdapter);
 				if($result->isValid()){
 					$storage = new Zend_Auth_Storage_Session();
 					$storage->write($authAdapter->getResultRowObject());
+                    $flashMessenger->addMessage('Invalid email or password.');
 					$this->_redirect('/');
 				} else {
-					$flashMessenger->addMessage('Invalid username or password.');
-					$this->view->errorMessage = "Invalid username or password. Please try again.";
+					$flashMessenger->addMessage('Invalid email or password.');
+					$this->view->errorMessage = "Invalid email or password. Please try again.";
 					$this->_redirect('/auth/login');
 				}
 			}

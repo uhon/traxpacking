@@ -22,8 +22,8 @@ class ModelTestCase
 	}
 	
 	public static function dropSchema($params) {
-		if (file_exists($params['path'])) {
-			unlink($params['path']);
+		if (file_exists($params['dbname'])) {
+			unlink($params['dbname']);
 		}
 	}
 
@@ -49,7 +49,7 @@ class ModelTestCase
 		$this->doctrineContainer = Zend_Registry::get('doctrine');
 
 		$tool = new \Doctrine\ORM\Tools\SchemaTool($this->doctrineContainer->getEntityManager());
-		$metas = $this->getClassMetas(APPLICATION_PATH . '/../library/MTable/Entity','MTable\Entity\\');
+		$metas = $this->getClassMetas(APPLICATION_PATH . '/../library/Tp/Entity','Tp\Entity\\');
 		
 		$tool->createSchema($metas);
 		

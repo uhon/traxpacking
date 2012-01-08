@@ -5,7 +5,7 @@ defined('APPLICATION_PATH')
 
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'testing'));
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
@@ -20,7 +20,6 @@ require_once 'Zend/Config/Ini.php';
 require_once APPLICATION_PATH . '/../tests/ModelTestCase.php';
 
 $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
-$config->merge(new Zend_Config_Ini(APPLICATION_PATH . '/configs/local.ini', APPLICATION_ENV));
 
 // Create application, bootstrap, and run
 $application = new Zend_Application(
