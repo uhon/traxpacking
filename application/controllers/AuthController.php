@@ -1,6 +1,6 @@
 <?php
 
-class AuthController extends Zend_Controller_Action
+class AuthController extends Tp_Controller_Action
 {
 
     /**
@@ -24,30 +24,29 @@ class AuthController extends Zend_Controller_Action
     }
 
 	public function loginAction() {
-		
+        if(Zend_Auth::getInstance()->hasIdentity()) {
+            $this->_redirect('/');
+        }
 		$form = new Form_Login();
 		$this->view->form = $form;
 		if($this->getRequest()->isPost()){
 			if($form->isValid($this->getRequest()->getPost())){
-				$flashMessenger = $this->getHelper('FlashMessenger');
+
 				$data = $form->getValues();
 				$auth = Zend_Auth::getInstance();
-				$authAdapter = new Tp_Auth_Adapter_Doctrine2(Zend_Registry::get('doctrine')->getEntityManager(), 'users', 'email', 'password');
+				$authAdapter = new Tp_Auth_Adapter_Doctrine2(Zend_Registry::get('doctrine')->getEntityManager(), 'Tp\Entity\Users', 'email', 'password');
 
                 $authAdapter->setIdentity($_POST['email'])
-                                    ->setCredential(hash('ripemd160', $_POST['password']))
-                                    ->setIdentityField('name')
-                                    ->setCredentialField('password');
+                    ->setCredential(hash('ripemd160', $_POST['password']));
 
 				$result = $auth->authenticate($authAdapter);
 				if($result->isValid()){
 					$storage = new Zend_Auth_Storage_Session();
-					$storage->write($authAdapter->getResultRowObject());
-                    $flashMessenger->addMessage('Invalid email or password.');
-					$this->_redirect('/');
+					$storage->write($result->getIdentity());
+                    $this->infoMessage('Welcome ' . $result->getIdentity() . ' You are now logged in');
+					$this->_redirect('/admin');
 				} else {
-					$flashMessenger->addMessage('Invalid email or password.');
-					$this->view->errorMessage = "Invalid email or password. Please try again.";
+					$this->errorMessage('Invalid email or password.');
 					$this->_redirect('/auth/login');
 				}
 			}
@@ -57,7 +56,8 @@ class AuthController extends Zend_Controller_Action
 	public function logoutAction() {
 		$storage = new Zend_Auth_Storage_Session();
 		$storage->clear();
-		$this->_redirect('/auth/login');
+        Zend_Auth::getInstance()->clearIdentity();
+		$this->_redirect('/');
 	}
 
 }

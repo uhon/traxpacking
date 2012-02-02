@@ -49,6 +49,7 @@ class ModelTestCase
 		$this->doctrineContainer = Zend_Registry::get('doctrine');
 
 		$tool = new \Doctrine\ORM\Tools\SchemaTool($this->doctrineContainer->getEntityManager());
+        $tool->dropDatabase();
 		$metas = $this->getClassMetas(APPLICATION_PATH . '/../library/Tp/Entity','Tp\Entity\\');
 		
 		$tool->createSchema($metas);

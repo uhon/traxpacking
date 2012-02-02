@@ -1,11 +1,14 @@
 <?php
 
-class Admin_IndexController extends Zend_Controller_Action
+class Admin_IndexController extends Tp_Controller_Action
 {
 
     public function init()
     {
-        Zend_Auth::getInstance()->hasIdentity();
+        if(!Zend_Auth::getInstance()->hasIdentity()) {
+            $this->errorMessage('You have to login first!');
+            $this->_redirect('/auth/login');
+        }
 
 		$uri = $this->getRequest()->getPathInfo();
 		$activenav = $this->view->navigation()->findByUri($uri);

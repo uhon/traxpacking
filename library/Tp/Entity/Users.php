@@ -52,14 +52,6 @@ class Users
 	private $password;
 
 	/**
-	 * @var string $salt
-	 *
-	 * @ORM\Column(name="salt", type="string", length=255, nullable=false)
-	 */
-	private $salt;
-
-
-	/**
 	 * @var integer $userType
 	 *
 	 * @ORM\Column(name="user_type", type="integer", nullable=false)

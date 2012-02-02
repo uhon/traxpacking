@@ -37,12 +37,32 @@ $smd = $server->getServiceMap();
 	<title></title>
 </head>
 <body>
+    <?php
+        $authUrl = array(
+            'module' => 'default',
+            'controller' => 'auth',
+            'action' => 'logout',
+        );
+        if(Zend_Auth::getInstance()->hasIdentity()) {
+            echo '<span><a href="' . $this->url($authUrl, null, true) . '">logout</a></span>';
+        } else {
+            $authUrl['action'] = 'login';
+            echo '<span><a href="' . $this->url($authUrl, null, true) . '">login</a></span>';
+        }
+    ?>
     <h1>Welcome to TraxPacking</h1>
 
 	<?php
         $view = Zend_Controller_Front::getInstance()->getParam("bootstrap")->getResource("view");
-        echo $view->messages;
-        echo $this->layout()->content
+        $messages = array();
+
+        $msgProvider = new Tp_Provider_FlashMessage();
+        echo $msgProvider->provideMessages();
+
+
+
+
+        echo $this->layout()->content;
     ?>
 </body>
 </html>
