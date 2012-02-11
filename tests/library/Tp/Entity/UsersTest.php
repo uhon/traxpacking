@@ -11,7 +11,6 @@ class UsersTest
 {
 	/**
 	 *
-	 * @return User
 	 */
 	public function testCanSaveUserAndRetrieveIt()
 	{

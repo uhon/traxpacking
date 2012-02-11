@@ -10,64 +10,77 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Users
+ * Pois
  * 
- * @property int $userId
- * @property string $username
- * @property string $password
- * @property int $userType
- * @property string $email
+ * @property int $poiId
+ * @property float $latitude
+ * @property float $longitude
+ * @property string $title
+ * @property string $description
+ * @property int $type
+ * @property int $picture
  * @property string $createddate
  * @property string $modifieddate
  *
- * @ORM\Table(name="users",
- * 		uniqueConstraints={
- *	@ORM\UniqueConstraint(name="users_username",columns={"username"})
- *	, @ORM\UniqueConstraint(name="users_email",columns={"email"})
- * 		},
- * 		indexes={@ORM\Index(name="users_user_type", columns={"user_type"})}
- * )
+ * @ORM\Table(name="pois")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Users
+class Pois
 {
 	/**
-	 * @var integer $userId
+	 * @var integer $poiId
 	 *
-	 * @ORM\Column(name="user_id", type="integer", nullable=false)
+	 * @ORM\Column(name="poi_id", type="integer", nullable=false)
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="IDENTITY")
 	 */
-	private $userId;
+	private $poiId;
 
 	/**
-	 * @var string $username
+	 * @var float $latitude
 	 *
-	 * @ORM\Column(name="username", type="string", length=255, nullable=false)
+	 * @ORM\Column(name="latitude", type="float", nullable=false)
 	 */
-	private $username;
+	private $latitude;
 
 	/**
-	 * @var string $password
+	 * @var string $longitude
 	 *
-	 * @ORM\Column(name="password", type="string", length=255, nullable=false)
+	 * @ORM\Column(name="longitude", type="float", nullable=false)
 	 */
-	private $password;
+	private $longitude;
 
 	/**
-	 * @var integer $userType
+	 * @var integer $title
 	 *
-	 * @ORM\Column(name="user_type", type="integer", nullable=false)
+	 * @ORM\Column(name="title", type="string", nullable=false)
 	 */
-	private $userType;
+	private $title;
 
 	/**
-	 * @var string $email
+	 * @var string $description
 	 *
-	 * @ORM\Column(name="email", type="string", length=255, nullable=false)
+	 * @ORM\Column(name="description", type="string")
 	 */
-	private $email;
+	private $description;
+
+    /**
+     * @var string $type
+     *
+     * @ORM\Column(name="type", type="integer")
+     */
+	private $type;
+
+    /**
+     * @var string $picture
+     *
+     * @ORM\Column(name="picture", type="integer")
+     * @ORM\ManyToOne(targetEntity="Pictures")
+     * @ORM\JoinColumn(name="picture_id", referencedColumnName="id")
+     */
+	private $picture;
+
 
 	/**
 	 * @var datetime $createddate
@@ -82,7 +95,7 @@ class Users
 	 * @ORM\Column(name="modifieddate", type="datetime", nullable=false)
 	 */
 	private $modifieddate;
-
+	
 	/**
 	 * @ORM\PrePersist
 	 */
@@ -97,7 +110,6 @@ class Users
 	public function datePreUpdate () {
 		$this->modifieddate = new \DateTime('now');
 	}
-
 
     /**
 	 * @param string
