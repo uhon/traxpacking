@@ -1,0 +1,40 @@
+.tp_form {
+    display: block;
+    width: 500px;
+    clear: both;
+    padding: 0;
+    margin: 10px 0;
+    td {
+        label {
+            display:block;
+            margin: 7px 5px;
+            font-weight: bold;
+        }
+        label.required:after {
+            content:" *"attr(id)"";
+        }
+    }
+    td.element {
+        ul.errors {
+            color: red;
+            font-weight: bold;
+            margin: 0 0 10px 7px;
+        }
+        textarea, input, select, p {
+            margin: 5px 5px;
+            width: 90%;
+        }
+        textarea {
+            height: 150px;
+        }
+        p img {
+            width: 100%;
+        }
+    }
+
+    td.hint {
+        padding: 7px 0 3px;
+        font-size: 10px;
+        color:#3d77cb;
+    }
+}

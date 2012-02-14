@@ -69,7 +69,7 @@ class TpEntityUsersProxy extends \Tp\Entity\Users implements \Doctrine\ORM\Proxy
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'userId', 'username', 'password', 'salt', 'userType', 'email', 'createddate', 'modifieddate');
+        return array('__isInitialized__', 'id', 'username', 'password', 'userType', 'email', 'createddate', 'modifieddate');
     }
 
     public function __clone()

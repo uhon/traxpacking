@@ -18,7 +18,7 @@ $smd = $server->getServiceMap();
 	<?=$this->layout()->css?>
 	<?php
 	echo $this->jQuery()
-		->setVersion('1.6')->enable()
+		->setVersion('1.7.1')->enable()
 		->setUiVersion('1.8')->uiEnable()
 		->addStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css');
 	?>
@@ -34,23 +34,29 @@ $smd = $server->getServiceMap();
 			});
 		});</script>
 	<?=$this->layout()->headJavascript?>
-	<title></title>
+	<title>Traxpacking - Backpacking by GPS</title>
 </head>
 <body>
     <?php
-        $authUrl = array(
+        /*$authUrl = array(
             'module' => 'default',
             'controller' => 'auth',
             'action' => 'logout',
         );
+
         if(Zend_Auth::getInstance()->hasIdentity()) {
             echo '<span><a href="' . $this->url($authUrl, null, true) . '">logout</a></span>';
         } else {
             $authUrl['action'] = 'login';
             echo '<span><a href="' . $this->url($authUrl, null, true) . '">login</a></span>';
-        }
+        }*/
     ?>
     <h1>Welcome to TraxPacking</h1>
+    <div id="topnav">
+        <?= $this->navigation()->menu(); ?>
+        <div class="clear"></div>
+    </div>
+
 
 	<?php
         $view = Zend_Controller_Front::getInstance()->getParam("bootstrap")->getResource("view");
@@ -58,11 +64,23 @@ $smd = $server->getServiceMap();
 
         $msgProvider = new Tp_Provider_FlashMessage();
         echo $msgProvider->provideMessages();
-
-
-
-
-        echo $this->layout()->content;
     ?>
+    <div id="content">
+        <?= $this->layout()->content; ?>
+        <div class="clear"></div>
+    </div>
+
+    <div id="footer">
+        <div id="credentials">
+            <?php
+            $user = Zend_Auth::getInstance()->getStorage()->read();
+            $username  = ($user === null) ? 'guest' : $user->email . " ({$user->role})";
+            echo 'User: ' . $username;
+            ?>
+        </div>
+        <div id="breadcrumbs">
+            Breadcrumbs: <?= $this->navigation()->breadcrumbs()->setMinDepth(0)->setLinkLast(true)->setSeparator(" : "); ?>
+        </div>
+    </div>
 </body>
 </html>

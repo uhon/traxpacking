@@ -4,20 +4,20 @@ class Tp_Provider_FlashMessage {
     public function provideMessages() {
         $flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
         $flashMessenger->setNamespace('default');
-        $messageString = $this->getMessages($flashMessenger);
+        $messageString = $this->getMessages($flashMessenger, 'default');
         $flashMessenger->setNamespace('info');
-        $messageString .= $this->getMessages($flashMessenger);
+        $messageString .= $this->getMessages($flashMessenger, 'info');
         $flashMessenger->setNamespace('error');
-        $messageString .= $this->getMessages($flashMessenger);
+        $messageString .= $this->getMessages($flashMessenger, 'error');
         return $messageString;
     }
 
-    private function getMessages(Zend_Controller_Action_Helper_FlashMessenger $flashMessenger) {
+    private function getMessages(Zend_Controller_Action_Helper_FlashMessenger $flashMessenger, $namespace) {
         $message = "";
         if($flashMessenger->hasMessages($flashMessenger) || $flashMessenger->hasCurrentMessages() ) {
-            $message .= '<div class="center"><div id="infoMessages">';
+            $message .= '<div id="' . $namespace . 'Messages">';
             $message .= $this->getMessageContent($flashMessenger);
-            $message .= '</div></div>';
+            $message .= '</div>';
             $flashMessenger->clearMessages();
         }
         return $message;

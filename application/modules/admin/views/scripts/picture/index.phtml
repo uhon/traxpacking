@@ -1,0 +1,5 @@
+<?php
+    if(!empty($this->pictures)) {
+        echo '<h2>Uninitialized Pictures:</h2>';
+        echo $this->table($this->pictures, array('Filename', 'Size', 'Date & Time', ''));
+    }

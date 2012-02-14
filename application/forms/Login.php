@@ -1,6 +1,6 @@
 <?php
 
-class Form_Login extends Zend_Form
+class Form_Login extends Tp_Form
 {
     public function init()
     {

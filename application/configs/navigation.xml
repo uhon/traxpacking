@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<module></module>
+<controller></controller>
+<action></action>
+
+<resource></resource>
+<privilege></privilege>
+
+<resource>visible</resource>
+-->
+
+<configdata>
+    <nav>
+        <home>
+            <label>Home</label>
+            <module>default</module>
+            <controller>index</controller>
+            <action>index</action>
+            <resource>index</resource>
+            <privilege>index</privilege>
+            <pages>
+                <login>
+                    <label>Login</label>
+                    <module>default</module>
+                    <controller>auth</controller>
+                    <action>login</action>
+                    <resource>auth</resource>
+                    <privilege>login</privilege>
+                </login>
+                <logout>
+                    <label>Logout</label>
+                    <uri>/auth/logout</uri>
+                    <resource>auth</resource>
+                    <privilege>logout</privilege>
+                </logout>
+            </pages>
+        </home>
+        <admin>
+            <label>Admin Area</label>
+            <module>admin</module>
+            <controller>index</controller>
+            <action>index</action>
+            <resource>admin</resource>
+            <pages>
+                <poi>
+                    <label>Point of Interests</label>
+                    <module>admin</module>
+                    <controller>poi</controller>
+                    <action>index</action>
+                    <!--<resource>admin:poi</resource>-->
+                    <!--<pages>
+                        <edit>
+                            <label>Edit</label>
+                            <uri>/admin/poi/edit</uri>
+                            <visible>0</visible>
+                        </edit>
+                    </pages>-->
+                </poi>
+                <picture>
+                    <label>Pictures</label>
+                    <module>admin</module>
+                    <controller>picture</controller>
+                    <action>index</action>
+                    <!--<resource>admin:picture</resource>-->
+                </picture>
+            </pages>
+        </admin>
+   	</nav>
+</configdata>

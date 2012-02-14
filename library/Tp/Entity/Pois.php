@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Pois
  * 
- * @property int $poiId
- * @property float $latitude
- * @property float $longitude
+ * @property int $id
+ * @property string $latitude
+ * @property string $longitude
  * @property string $title
  * @property string $description
  * @property int $type
@@ -22,77 +22,74 @@ use Doctrine\ORM\Mapping as ORM;
  * @property string $createddate
  * @property string $modifieddate
  *
- * @ORM\Table(name="pois")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
 class Pois
 {
 	/**
-	 * @var integer $poiId
+	 * @var integer $id
 	 *
-	 * @ORM\Column(name="poi_id", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="IDENTITY")
 	 */
-	private $poiId;
+	private $id;
 
 	/**
 	 * @var float $latitude
 	 *
-	 * @ORM\Column(name="latitude", type="float", nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 */
 	private $latitude;
 
 	/**
 	 * @var string $longitude
 	 *
-	 * @ORM\Column(name="longitude", type="float", nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 */
 	private $longitude;
 
 	/**
 	 * @var integer $title
 	 *
-	 * @ORM\Column(name="title", type="string", nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 */
 	private $title;
 
 	/**
 	 * @var string $description
 	 *
-	 * @ORM\Column(name="description", type="string")
+	 * @ORM\Column(type="string")
 	 */
 	private $description;
 
     /**
      * @var string $type
      *
-     * @ORM\Column(name="type", type="integer")
+     * @ORM\Column(type="integer")
      */
 	private $type;
 
     /**
-     * @var string $picture
+     * @var Pictures $picture
      *
-     * @ORM\Column(name="picture", type="integer")
-     * @ORM\ManyToOne(targetEntity="Pictures")
-     * @ORM\JoinColumn(name="picture_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Pictures")
      */
 	private $picture;
 
 
 	/**
-	 * @var datetime $createddate
+	 * @var \Doctrine\Common\DateTime\DateTime $createddate
 	 *
-	 * @ORM\Column(name="createddate", type="datetime", nullable=false)
+	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $createddate;
 
 	/**
-	 * @var datetime $modifieddate
+	 * @var \Doctrine\Common\DateTime\DateTime $modifieddate
 	 *
-	 * @ORM\Column(name="modifieddate", type="datetime", nullable=false)
+	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $modifieddate;
 	
@@ -146,4 +143,26 @@ class Pois
 	public function toArray() {
 		return get_object_vars($this);
 	}
+    
+    public function getEditUrl() {
+        return \Tp_Shortcut::getView()->url(
+            array(
+                'module' => 'admin',
+                'controller' => 'poi',
+                'action' => 'edit',
+                'poi' => $this->id
+            ), null, true
+        );
+    }
+
+    public function getDeleteUrl() {
+        return \Tp_Shortcut::getView()->url(
+            array(
+                'module' => 'admin',
+                'controller' => 'poi',
+                'action' => 'delete',
+                'poi' => $this->id
+            ), null, true
+        );
+    }
 }

@@ -7,3 +7,6 @@
 [submodule "library/doctrine2-common"]
 	path = library/doctrine2-common
 	url = git://github.com/doctrine/common.git
+[submodule "library/phpThumb"]
+	path = library/phpThumb
+	url = git://github.com/masterexploder/PHPThumb.git

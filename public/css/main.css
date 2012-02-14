@@ -1,0 +1,368 @@
+html {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent; }
+
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent; }
+  body div {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent; }
+
+span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent; }
+
+article, aside, figure, footer, header, hgroup, nav, section {
+  display: block; }
+
+/* Responsive images and other embedded objects
+   Note: keeping IMG here will cause problems if you're using foreground images as sprites.
+   If this default setting for images is causing issues, you might want to replace it with a .responsive class instead. */
+img, object, embed {
+  max-width: 100%; }
+
+/* force a vertical scrollbar to prevent a jumpy page */
+html {
+  overflow-y: scroll; }
+
+/* we use a lot of ULs that aren't bulleted. 
+	don't forget to restore the bullets within content. */
+ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after {
+  content: '';
+  content: none; }
+
+q:before, q:after {
+  content: '';
+  content: none; }
+
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent; }
+
+del {
+  text-decoration: line-through; }
+
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted #000;
+  cursor: help; }
+
+/* tables still need cellspacing="0" in the markup */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+th {
+  font-weight: bold;
+  vertical-align: bottom; }
+
+td {
+  font-weight: normal;
+  vertical-align: top; }
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0; }
+
+input, select {
+  vertical-align: middle; }
+
+pre {
+  white-space: pre;
+  /* CSS2 */
+  white-space: pre-wrap;
+  /* CSS 2.1 */
+  white-space: pre-line;
+  /* CSS 3 (and 2.1 as well, actually) */
+  word-wrap: break-word;
+  /* IE */ }
+
+input[type="radio"] {
+  vertical-align: text-bottom; }
+input[type="checkbox"] {
+  vertical-align: bottom;
+  *vertical-align: baseline; }
+
+.ie6 input {
+  vertical-align: text-bottom; }
+
+select, input, textarea {
+  font: 99% sans-serif; }
+
+table {
+  font-size: inherit;
+  font: 100%; }
+
+/* Accessible focus treatment
+	people.opera.com/patrickl/experiments/keyboard/test */
+a:hover, a:active {
+  outline: none; }
+
+small {
+  font-size: 85%; }
+
+strong, th {
+  font-weight: bold; }
+
+td {
+  vertical-align: top; }
+  td img {
+    vertical-align: top; }
+
+/* Make sure sup and sub don't screw with your line-heights
+	gist.github.com/413930 */
+sub {
+  font-size: 75%;
+  line-height: 0;
+  position: relative; }
+
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+/* standardize any monospaced elements */
+pre, code, kbd, samp {
+  font-family: monospace, sans-serif; }
+
+/* hand cursor on clickable elements */
+.clickable, label {
+  cursor: pointer; }
+
+input[type=button], input[type=submit] {
+  cursor: pointer; }
+
+button {
+  cursor: pointer;
+  margin: 0; }
+
+/* Webkit browsers add a 2px margin outside the chrome of form elements */
+input, select, textarea {
+  margin: 0; }
+
+/* make buttons play nice in IE */
+button {
+  width: auto;
+  overflow: visible; }
+
+/* scale images in IE7 more attractively */
+.ie7 img {
+  -ms-interpolation-mode: bicubic; }
+
+/* prevent BG image flicker upon hover */
+.ie6 html {
+  filter: expression(document.execCommand("BackgroundImageCache", false, true)); }
+
+/* let's clear some floats */
+.clearfix {
+  zoom: 1; }
+  .clearfix:before {
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden; }
+  .clearfix:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    overflow: hidden;
+    clear: both; }
+
+/* Ok, this is where the fun starts.
+-------------------------------------------------------------------------------*/
+/* new Linux- and Windows-friendly sans-serif font stack: http://mky.be/fontstack */
+body {
+  font: 13px Helmet, Freesans, sans-serif;
+  color: #333; }
+
+/* using local fonts? make sure to read up on Paul Irish's 
+	Bulletproof @font-face syntax: http://mky.be/font-face/bulletproof/ */
+/* we like off-black for text */
+select, input, textarea {
+  color: #333; }
+
+a {
+  color: #03f; }
+  a:hover {
+    color: #69f; }
+
+/* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
+::-moz-selection {
+  background: #fcd700;
+  color: #fff;
+  text-shadow: none; }
+
+::selection {
+  background: #fcd700;
+  color: #fff;
+  text-shadow: none; }
+
+/*	j.mp/webkit-tap-highlight-color */
+a:link {
+  -webkit-tap-highlight-color: #fcd700; }
+
+ins {
+  background-color: #fcd700;
+  color: #000;
+  text-decoration: none; }
+
+mark {
+  background-color: #fcd700;
+  color: #000;
+  font-style: italic;
+  font-weight: bold; }
+
+.tp_form {
+  display: block;
+  width: 500px;
+  clear: both;
+  padding: 0;
+  margin: 10px 0; }
+  .tp_form td label {
+    display: block;
+    margin: 7px 5px;
+    font-weight: bold; }
+  .tp_form td label.required:after {
+    content: " *" attr(id) ""; }
+  .tp_form td.element ul.errors {
+    color: red;
+    font-weight: bold;
+    margin: 0 0 10px 7px; }
+  .tp_form td.element textarea, .tp_form td.element input, .tp_form td.element select, .tp_form td.element p {
+    margin: 5px 5px;
+    width: 90%; }
+  .tp_form td.element textarea {
+    height: 150px; }
+  .tp_form td.element p img {
+    width: 100%; }
+  .tp_form td.hint {
+    padding: 7px 0 3px;
+    font-size: 10px;
+    color: #3d77cb; }
+
+h1 {
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 35px; }
+
+h2 {
+  font-size: 18px;
+  line-height: 30px; }
+
+h3 {
+  font-size: 16px; }
+
+h4 {
+  font-size: 14px; }
+
+h5 {
+  font-size: 12px; }
+
+div.clear {
+  clear: both; }
+
+/* Coloring defaults for Tables*/
+table tr.head {
+  color: #EBF09E;
+  background-color: #797979; }
+table tr.even {
+  background-color: #f0fff0; }
+table tr.odd {
+  background-color: #e6e6fa; }
+
+#topnav {
+  margin: 10px 0 30px 0;
+  font-size: 16px;
+  display: block; }
+  #topnav .navigation li {
+    display: block;
+    float: left;
+    width: 150px; }
+    #topnav .navigation li ul li {
+      font-size: 14px;
+      padding-left: 10px; }
+    #topnav .navigation li ul li.active a {
+      color: #555555; }
+    #topnav .navigation li a {
+      color: #3d77cb;
+      text-decoration: none; }
+  #topnav .navigation li.active > a {
+    color: #555555; }
+
+#defaultMessages, #infoMessages, #errorMessages {
+  clear: both;
+  display: block;
+  padding: 5px;
+  margin: 5px 0; }
+  #defaultMessages ul.msgItem, #infoMessages ul.msgItem, #errorMessages ul.msgItem {
+    list-style-type: disc; }
+
+#defaultMessages {
+  color: white;
+  background-color: #2f4f4f; }
+
+#infoMessages {
+  color: #2f4f4f;
+  background-color: #98fb98; }
+
+#errorMessages {
+  color: #8b0000;
+  background-color: #bc8f8f; }
+
+#content {
+  clear: both;
+  font-size: 12px;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid black;
+  border-radius: 10px; }
+  #content table.valueTable {
+    margin: 10px;
+    border: 3px solid #ffebcd;
+    border-radius: 5px; }
+    #content table.valueTable td, #content table.valueTable th {
+      padding: 5px 10px; }
+
+#footer {
+  margin-top: 40px;
+  padding: 5px;
+  background-color: #E4E4E4; }
+  #footer a {
+    color: #556b2f; }

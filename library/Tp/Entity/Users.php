@@ -12,20 +12,19 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Users
  * 
- * @property int $userId
+ * @property int $id
  * @property string $username
  * @property string $password
- * @property int $userType
+ * @property string $role
  * @property string $email
  * @property string $createddate
  * @property string $modifieddate
  *
- * @ORM\Table(name="users",
- * 		uniqueConstraints={
- *	@ORM\UniqueConstraint(name="users_username",columns={"username"})
- *	, @ORM\UniqueConstraint(name="users_email",columns={"email"})
- * 		},
- * 		indexes={@ORM\Index(name="users_user_type", columns={"user_type"})}
+ * @ORM\Table(
+ * 	   uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="users_username",columns={"username"}),
+ *	       @ORM\UniqueConstraint(name="users_email",columns={"email"})
+ * 	   }
  * )
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
@@ -35,51 +34,51 @@ class Users
 	/**
 	 * @var integer $userId
 	 *
-	 * @ORM\Column(name="user_id", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="IDENTITY")
 	 */
-	private $userId;
+	private $id;
 
 	/**
 	 * @var string $username
 	 *
-	 * @ORM\Column(name="username", type="string", length=255, nullable=false)
+	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $username;
 
 	/**
 	 * @var string $password
 	 *
-	 * @ORM\Column(name="password", type="string", length=255, nullable=false)
+	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $password;
 
 	/**
-	 * @var integer $userType
+	 * @var string $role
 	 *
-	 * @ORM\Column(name="user_type", type="integer", nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 */
-	private $userType;
+	private $role;
 
 	/**
 	 * @var string $email
 	 *
-	 * @ORM\Column(name="email", type="string", length=255, nullable=false)
+	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $email;
 
 	/**
-	 * @var datetime $createddate
+	 * @var \Doctrine\Common\DateTime\DateTime $createddate
 	 *
-	 * @ORM\Column(name="createddate", type="datetime", nullable=false)
+	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $createddate;
 
 	/**
-	 * @var datetime $modifieddate
+	 * @var \Doctrine\Common\DateTime\DateTime $modifieddate
 	 *
-	 * @ORM\Column(name="modifieddate", type="datetime", nullable=false)
+	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $modifieddate;
 

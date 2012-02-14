@@ -1,7 +1,8 @@
 library/Zend/
 library/ZendX/
+library/Tp/Entity/Proxy/*
+library/Tp/Phpthumb
 tests/log/
-public/css/.sass-cache/
 
 /.idea
 /.project
@@ -9,36 +10,25 @@ public/css/.sass-cache/
 /.cache
 /.settings
 /.zfproject.xml
-.settings/
 .sass-cache/
-
 
 /log
 
 public/js/ckeditor
-public/js/firebug
 public/js/gmaps
-public/js/ie6update
 public/js/jquery
-public/js/php-js
-public/js/swfupload
-public/js/selectToUISlider
 
 /media
 
 /public/.htaccess
 /public/test.php
 /public/cache/*
-/public/uploads/*
 /public/upload/*
+/public/media/*
 /public/compressed/*
-/public/images/captcha/*
 
 /test/log
 /test/build
-/application/config/sql/dump.sql
-
-*.mwb.bak
 
 /.externalToolBuilders/*
 

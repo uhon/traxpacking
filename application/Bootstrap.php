@@ -14,7 +14,27 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		}
 		return $auth;
 	}
-	
+
+    protected function _initAccessControl()
+	{
+		$front = Zend_Controller_Front::getInstance();
+		$this->_aclManager = new Tp_Controller_Plugin_AclManager(Zend_Auth::getInstance());
+		$front->registerPlugin($this->_aclManager);
+	}
+
+	protected function _initNavigation()
+	{
+		$this->bootstrap('layout');
+		$layout = $this->getResource('layout');
+		$view = $layout->getView();
+		$config = new Zend_Config_Xml(APPLICATION_PATH . '/configs/navigation.xml', 'nav');
+
+		$container = new Zend_Navigation($config);
+		$view->navigation($container)
+			->setAcl($this->_aclManager->getAcl())
+			->setRole($this->_aclManager->getRole());
+	}
+
 	protected function _initFlashMessenger()
 	{
 		/** @var $flashMessenger Zend_Controller_Action_Helper_FlashMessenger */
@@ -66,4 +86,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		//$evm->addEventSubscriber($treeListener);
 	}
 
+
+    protected function _initViewHelpers()
+   	{
+   		$this->bootstrap('layout');
+   		$layout = $this->getResource('layout');
+   		$view = $layout->getView();
+   		$view->doctype('XHTML1_TRANSITIONAL');
+   		$view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+        $view->addHelperPath("ZendX/JQuery/View/Helper", "ZendX_JQuery_View_Helper");
+   	}
 }

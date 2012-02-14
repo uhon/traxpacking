@@ -18,7 +18,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @property string $createddate
  * @property string $modifieddate
  *
- * @ORM\Table(name="pictures")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
@@ -27,37 +26,44 @@ class Pictures
 	/**
 	 * @var integer $pictureId
 	 *
-	 * @ORM\Column(name="picture_id", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="IDENTITY")
 	 */
-	private $pictureId;
+	private $id;
 
 	/**
 	 * @var string $filename
 	 *
-	 * @ORM\Column(name="filename", type="string", length=255, nullable=false)
+	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $filename;
 
 	/**
-	 * @var datetime $datetime
+	 * @var \Doctrine\Common\DateTime\DateTime $datetime
 	 *
-	 * @ORM\Column(name="datetime", type="datetime")
+	 * @ORM\Column(type="datetime")
 	 */
-	private $description;
+	private $datetime;
+
+    /**
+     * @var integer $poi
+     *
+     * @ORM\OneToOne(targetEntity="Pois")
+     */
+    private $poi;
 
 	/**
-	 * @var datetime $createddate
+	 * @var \Doctrine\Common\DateTime\DateTime $createddate
 	 *
-	 * @ORM\Column(name="createddate", type="datetime", nullable=false)
+	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $createddate;
 
 	/**
-	 * @var datetime $modifieddate
+	 * @var \Doctrine\Common\DateTime\DateTime $modifieddate
 	 *
-	 * @ORM\Column(name="modifieddate", type="datetime", nullable=false)
+	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $modifieddate;
 	
@@ -75,5 +81,41 @@ class Pictures
 	public function datePreUpdate () {
 		$this->modifieddate = new \DateTime('now');
 	}
+
+    /**
+    	 * @param string
+    	 * @param mixed
+    	 * @return self
+    	 */
+    	public function __set($property, $value)  {
+    		if(method_exists($this, 'set' . ucfirst($property))) {
+    			return call_user_func(array($this, 'set' . ucfirst($property)), $value);
+    		}
+    		else {
+    			$this->$property = $value;
+    		}
+    		return $this;
+    	}
+
+    	/**
+    	 *
+    	 * @param string
+    	 * @return mixed
+    	 */
+    	public function __get($property) {
+    		if(method_exists($this, 'get' . ucfirst($property))) {
+    			return call_user_func(array($this, 'get' . ucfirst($property)));
+    		}
+    		else {
+    			return $this->$property;
+    		}
+    	}
+
+    	/**
+    	 * @return array
+    	 */
+    	public function toArray() {
+    		return get_object_vars($this);
+    	}
 
 }

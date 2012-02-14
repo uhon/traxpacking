@@ -1,1 +1,112 @@
 @import "reset";
+@import "form";
+
+h1 { font-size: 22px; font-weight: bold; line-height: 35px; }
+h2 { font-size: 18px; line-height: 30px; }
+h3 { font-size: 16px; }
+h4 { font-size: 14px; }
+h5 { font-size: 12px; }
+
+div.clear { clear: both; }
+
+/* Coloring defaults for Tables*/
+table {
+   tr.head {
+        color: #EBF09E;
+        background-color: #797979;
+    }
+    tr.even {
+        background-color: #f0fff0;
+    }
+    tr.odd {
+        background-color: #e6e6fa;
+    }
+}
+
+#topnav {
+    margin: 10px 0 30px 0;
+    font-size: 16px;
+    display: block;
+
+    .navigation {
+        li {
+            display:block;
+            float:left;
+            width: 150px;
+
+            ul {
+                li {
+                    font-size: 14px;
+                    padding-left: 10px;
+                }
+                li.active {
+                     a {
+                        color: #555555;
+                     }
+                }
+            }
+            a {
+                color: #3d77cb;
+                text-decoration: none;
+            }
+        }
+        li.active > a {
+            color: #555555;
+        }
+    }
+}
+
+#defaultMessages, #infoMessages, #errorMessages {
+    clear: both;
+    display:block;
+    padding: 5px;
+    margin: 5px 0;
+
+    ul.msgItem {
+        list-style-type: disc;
+    }
+}
+
+#defaultMessages {
+    color: white;
+    background-color: #2f4f4f;
+}
+
+#infoMessages {
+    color: #2f4f4f;
+    background-color: #98fb98;
+}
+
+#errorMessages {
+    color: #8b0000;
+    background-color: #bc8f8f;
+}
+
+#content {
+    clear: both;
+    font-size: 12px;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid black;
+    border-radius: 10px;
+
+    table.valueTable {
+        margin: 10px;
+        border: 3px solid #ffebcd;
+        border-radius: 5px;
+
+        td, th {
+            padding: 5px 10px;
+        }
+
+    }
+}
+
+#footer {
+    margin-top: 40px;
+    padding: 5px;
+    background-color: #E4E4E4;
+    a {
+        color: #556b2f;
+    }
+}
