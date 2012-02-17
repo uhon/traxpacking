@@ -249,9 +249,12 @@ mark {
   font-style: italic;
   font-weight: bold; }
 
+.ui-dialog .ui-dialog-content {
+  padding: 0; }
+
 .tp_form {
   display: block;
-  width: 500px;
+  width: 100%;
   clear: both;
   padding: 0;
   margin: 10px 0; }
@@ -277,6 +280,9 @@ mark {
     font-size: 10px;
     color: #3d77cb; }
 
+#popupForm {
+  display: none; }
+
 h1 {
   font-size: 22px;
   font-weight: bold;
@@ -297,6 +303,15 @@ h5 {
 
 div.clear {
   clear: both; }
+
+#waitIcon {
+  position: absolute;
+  text-align: center; }
+  #waitIcon img {
+    width: 100%; }
+
+.ui-widget-overlay {
+  background: url("/img/modalBackground.png") repeat scroll 50% 50% #666666; }
 
 /* Coloring defaults for Tables*/
 table tr.head {
@@ -326,12 +341,12 @@ table tr.odd {
   #topnav .navigation li.active > a {
     color: #555555; }
 
-#defaultMessages, #infoMessages, #errorMessages {
+.flashMessages {
   clear: both;
   display: block;
   padding: 5px;
   margin: 5px 0; }
-  #defaultMessages ul.msgItem, #infoMessages ul.msgItem, #errorMessages ul.msgItem {
+  .flashMessages ul.msgItem {
     list-style-type: disc; }
 
 #defaultMessages {

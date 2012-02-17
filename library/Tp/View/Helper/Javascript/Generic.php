@@ -11,27 +11,32 @@ abstract class Tp_View_Helper_Javascript_Generic extends Zend_View_Helper_Abstra
 	 * Add JQuery code (Ajax save)
 	 */
 	protected function prepareScript($javascript, $onDocumentReady, $jquerySelector = null, $event = null) {
+        $isXHR = Zend_Controller_Front::getInstance()->getRequest()->isXmlHttpRequest();
         $javascript = trim($javascript);
-        $javascript = $this->debugInfos($jquerySelector, $event) . $javascript . "\n";
-
-        if($onDocumentReady) {
-            $javascript = "$(function() {\n"
-                . $javascript
-                . "}\n";
-        }
+        $javascript = $this->debugInfos($jquerySelector, $event, $isXHR) . $javascript . "\n";
 
         /// normal Request (published trough Layout)
-        if (!Zend_Controller_Front::getInstance()->getRequest()->isXmlHttpRequest()) {
+        if (!$isXHR) {
+            if($onDocumentReady) {
+                $javascript = "$(function() {\n"
+                    . $javascript
+                    . "});\n";
+            }
+
             $this->view->inlineScript($javascript);
         /// Ajax Request
         } else {
-            echo '<script type="text/javascript">' . "\n" . $javascript . "});</script>\n";
+            echo '<script type="text/javascript">' . "\n" . $javascript . "</script>\n";
         }
 	}
 
-    private function debugInfos($jquerySelector, $event) {
+    private function debugInfos($jquerySelector, $event, $isXHR) {
         if(APPLICATION_ENV !== 'production') {
 
+            $tellXHR = "";
+            if($isXHR) {
+                $tellXHR = " (XmlHttpRequest)";
+            }
             $method = 'Javascript added';
             $messageTail = "'";
             if($jquerySelector !== null && $event !== null) {
@@ -41,7 +46,7 @@ abstract class Tp_View_Helper_Javascript_Generic extends Zend_View_Helper_Abstra
 
             $trace = debug_backtrace();
             $token = uniqid();
-            $debug = "C.log('{$method} by {$trace[3]['class']} :: {$trace[3]['function']}, token: {$token}{$messageTail});\n";
+            $debug = "C.log('{$method} by {$trace[6]['class']}::{$trace[6]['function']}{$tellXHR}, token: {$token}{$messageTail});\n";
 
 
             return $debug;

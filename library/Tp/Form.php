@@ -6,9 +6,11 @@
  */
 
 
-class Tp_Form extends Zend_Form
+abstract class Tp_Form extends Zend_Form
 {
     private $_flashMessenger = null;
+
+    protected $_redirectUrl = '/';
 
     public function __construct($options = null) {
         $this->_flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
@@ -31,12 +33,44 @@ class Tp_Form extends Zend_Form
             array(array('row' => 'HtmlTag'), array('tag' => 'tr'))
         ));
 
+        $this->_redirectUrl = Zend_Controller_Front::getInstance()->getRequest()->getParam('formOrigin', $this->_redirectUrl);
 
         parent::__construct($options);
     }
 
     public function render(Zend_View_Interface $view = null)
     {
+        $isXHR = Zend_Controller_Front::getInstance()->getRequest()->isXmlHttpRequest();
+        if($view === null) {
+            $view = $this->getView();
+        }
+
+        if($isXHR) {
+            // Initialize Ajaxified Form (if Ajax-Request)
+            $this->getView()->javascript('
+                C.log("initialize AjaxForm: ' . $this->getId() . '");
+                initForm(
+                    "' . $this->getId() . '",
+                    function() { // pre-submit callback
+                        $("#popupForm").waitForIt();
+                    },
+                    function(responseText, statusText) { // post-submit callback remove the dialog
+                        C.log("statusText: " + statusText);
+                        if(responseText.indexOf("id=\"' . $this->getId() . '\"") !== -1) {
+                            $("#popupForm").html(responseText);
+                        } else {
+                            $("#popupForm").dialog("close", function() { $(this).destroy(); });
+                            $("#content").html(responseText);
+                            onContentReady();
+                        }
+                        //$("#popupForm").waitForItStop();
+                    }
+                );
+            ');
+        }
+
+
+
         $counter = 0;
         foreach($this->getElements() as $element) {
             if($element instanceof Zend_Form_Element_Submit) {
@@ -69,6 +103,10 @@ class Tp_Form extends Zend_Form
 
         if ($this->isErrors()) {
             $this->errorMessage('Something went wrong. Please check the form-data!');
+            if($isXHR) {
+                $fmProvider = new Tp_Provider_FlashMessage();
+                $content = $fmProvider->provideMessages() . $content;
+            }
         }
 
         return $content;
@@ -85,5 +123,20 @@ class Tp_Form extends Zend_Form
     {
         $this->_flashMessenger->setNamespace('error');
         $this->_flashMessenger->addMessage($message);
+    }
+
+    /**
+     * @abstract
+     * @return string
+     */
+    abstract public function getDefaultRedirectUrl();
+
+    /**
+     *
+     */
+    public function redirectOnSuccess()
+    {
+        $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+        $redirector->gotoUrl($this->_redirectUrl);
     }
 }

@@ -9,6 +9,7 @@
 class Tp_View_Helper_LinkiconEdit extends Zend_View_Helper_Abstract
 {
     public function linkiconEdit($editUrl, $editText = "edit") {
-        return '<a href="' . $editUrl . '">' . $editText . '</a>';
+
+        return '<a id="ajaxEdit_' . uniqid() . '" class="ajaxEdit" href="' . $editUrl . '">' . $editText . '</a>';
     }
 }

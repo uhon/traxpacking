@@ -43,6 +43,7 @@ class Admin_PoiController extends Tp_Controller_Action
 
         $form = new Form_Poi(
             array(
+                'id' => 'poiForm',
                 'picture' => ($picture->filename == null) ? null : $picture,
                 'cachedPicture' => $this->_getParam('cachedPicture'),
                 'removablePicture' => $this->_getParam('removablePicture'),
@@ -91,7 +92,7 @@ class Admin_PoiController extends Tp_Controller_Action
 
                 $message = $add ? 'POI was successfully added' : 'POI was successfully updated';
                 $this->infoMessage($message);
-                $this->_redirect("/admin/poi");
+                $form->redirectOnSuccess();
 
             }
         } else {

@@ -9,6 +9,18 @@ h5 { font-size: 12px; }
 
 div.clear { clear: both; }
 
+#waitIcon {
+    position: absolute;
+    text-align:center;
+    img {
+        width: 100%;
+    }
+}
+
+.ui-widget-overlay {
+    background: url("/img/modalBackground.png") repeat scroll 50% 50% #666666;
+}
+
 /* Coloring defaults for Tables*/
 table {
    tr.head {
@@ -56,7 +68,7 @@ table {
     }
 }
 
-#defaultMessages, #infoMessages, #errorMessages {
+.flashMessages {
     clear: both;
     display:block;
     padding: 5px;

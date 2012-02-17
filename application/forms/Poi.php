@@ -98,4 +98,12 @@ class Form_Poi extends Tp_Form
             $this->_removablePicture = $removablePicture;
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getDefaultRedirectUrl()
+    {
+        return '/admin/poi/index';
+    }
 }

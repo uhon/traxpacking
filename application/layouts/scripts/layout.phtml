@@ -13,17 +13,25 @@ $smd = $server->getServiceMap();
 		'',
 	), (array)$this->keywords)))?>">
 	<meta name="description" content="<?=$this->escape($this->description)?>">
-	<?=$this->headLink()->appendStylesheet($this->baseUrl() . '/css/main.css')?>
-	<?=$this->headStyle()?>
-	<?=$this->layout()->css?>
-	<?php
-	echo $this->jQuery()
-		->setVersion('1.7.1')->enable()
-		->setUiVersion('1.8')->uiEnable()
-		->addStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css');
-	?>
-	<script>const BASE_URL = <?=json_encode($this->baseUrl())?>;</script>
-	<?=$this->headScript()->appendFile('/js/jquery.zend.jsonrpc.js')->appendFile('/js/json2.js')->appendFile('/js/site.js')?>
+    <?php
+        echo $this->jQuery()
+            ->setVersion('1.7.1')->enable()
+            ->setUiVersion('1.8')->uiEnable()
+            ->addStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css');
+    ?>
+    <?=$this->headLink()->appendStylesheet($this->baseUrl() . '/css/main.css')?>
+    <?=$this->headStyle()?>
+    <?=$this->layout()->css?>
+	<script>/*const BASE_URL = <?=json_encode($this->baseUrl())?>;*/</script>
+	<?= $this->headScript()
+        ->appendFile('/js/jquery/3rd_party/jquery.form.js')
+        ->appendFile('/js/jquery/3rd_party/jquery.zend.jsonrpc.js')
+        ->appendFile('/js/jquery/3rd_party/jquery.maxZIndex.js')
+        ->appendFile('/js/jquery/3rd_party/json2.js')
+        ->appendFile('/js/jquery/jquery.waitForIt.js')
+        ->appendFile('/js/site.js')
+        ->appendFile('/js/form.js')
+    ?>
 	<script>
 		var rpc;
 		$(document).ready(function() {
@@ -60,12 +68,12 @@ $smd = $server->getServiceMap();
 
 	<?php
         $view = Zend_Controller_Front::getInstance()->getParam("bootstrap")->getResource("view");
-        $messages = array();
-
-        $msgProvider = new Tp_Provider_FlashMessage();
-        echo $msgProvider->provideMessages();
     ?>
     <div id="content">
+        <?php
+            $msgProvider = new Tp_Provider_FlashMessage();
+            echo $msgProvider->provideMessages();
+        ?>
         <?= $this->layout()->content; ?>
         <div class="clear"></div>
     </div>
@@ -81,6 +89,7 @@ $smd = $server->getServiceMap();
         <div id="breadcrumbs">
             Breadcrumbs: <?= $this->navigation()->breadcrumbs()->setMinDepth(0)->setLinkLast(true)->setSeparator(" : "); ?>
         </div>
+        <div id="popupForm"></div>
     </div>
 </body>
 </html>

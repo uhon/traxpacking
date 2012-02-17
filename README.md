@@ -10,6 +10,9 @@ Some brief overview of what it should do, once finished:
     - Attach URIs (for Blog integration)
 
 
+# Requirements
+    sass:   $ gem install sass
+
 # Setup process
 	git clone git://github.com/uhon/traxpacking.git traxpacking
 

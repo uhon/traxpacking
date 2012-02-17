@@ -15,7 +15,7 @@ class Tp_Provider_FlashMessage {
     private function getMessages(Zend_Controller_Action_Helper_FlashMessenger $flashMessenger, $namespace) {
         $message = "";
         if($flashMessenger->hasMessages($flashMessenger) || $flashMessenger->hasCurrentMessages() ) {
-            $message .= '<div id="' . $namespace . 'Messages">';
+            $message .= '<div id="' . $namespace . 'Messages" class="flashMessages">';
             $message .= $this->getMessageContent($flashMessenger);
             $message .= '</div>';
             $flashMessenger->clearMessages();

@@ -1,6 +1,6 @@
 .tp_form {
     display: block;
-    width: 500px;
+    width: 100%;
     clear: both;
     padding: 0;
     margin: 10px 0;
@@ -37,4 +37,8 @@
         font-size: 10px;
         color:#3d77cb;
     }
+}
+
+#popupForm {
+    display:none;
 }
