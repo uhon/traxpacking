@@ -45,7 +45,7 @@ class AuthController extends Tp_Controller_Action
                     $auth->getStorage()->write($authAdapter->getEntityResult());
 
                     $this->infoMessage('Welcome ' . $result->getIdentity() . ' You are now logged in');
-					$this->_redirect('/admin');
+					$form->redirectOnSuccess();
 				} else {
 					$this->errorMessage('Invalid email or password.');
 					$this->_redirect('/auth/login');

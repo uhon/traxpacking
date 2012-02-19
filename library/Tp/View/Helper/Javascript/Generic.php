@@ -23,7 +23,7 @@ abstract class Tp_View_Helper_Javascript_Generic extends Zend_View_Helper_Abstra
                     . "});\n";
             }
 
-            $this->view->inlineScript($javascript);
+            Tp_Shortcut::getView()->headScript()->appendScript($javascript);
         /// Ajax Request
         } else {
             echo '<script type="text/javascript">' . "\n" . $javascript . "</script>\n";

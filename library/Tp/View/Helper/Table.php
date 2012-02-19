@@ -8,19 +8,20 @@
 
 class Tp_View_Helper_Table extends Zend_View_Helper_Abstract
 {
-    public function table($data = array(), array $dataHeaders = null, $class = "valueTable", $noneText = "No Data available!") {
+    public function table($data = array(), array $dataHeaders = null, $class = "valueTable", $jQueryfy = true, $noneText = "No Data available!") {
         if(empty($data)) {
             $output = $noneText;
         } else {
-            $output = "<table class=\"{$class}\">";
+            $uniqId = "vT_" . uniqid();
+            $output = "<table id=\"{$uniqId}\" class=\"{$class}\">";
 
             // Print Headers if available
             if($dataHeaders !== null) {
-                $output .= '<tr class="head">';
+                $output .= '<thead><tr class="head">';
                 foreach($dataHeaders as $th) {
                     $output .= '<th>' . $th . '</th>';
                 }
-                $output .= '</tr>';
+                $output .= '</tr></thead>';
             }
 
             // Print Data
@@ -30,15 +31,19 @@ class Tp_View_Helper_Table extends Zend_View_Helper_Abstract
                 if($counter % 2 === 0) {
                     $evenOdd="odd";
                 }
-                $output .= '<tr class="' . $evenOdd . '">';
+                $output .= '<tbody><tr class="' . $evenOdd . '">';
                 foreach($row as $td) {
                     $output .= '<td>' . $td . '</td>';
                 }
-                $output .= '</tr>';
+                $output .= '</tr></tbody>';
                 $counter++;
             }
 
             $output .= "</table>";
+
+            if($jQueryfy) {
+                Tp_Shortcut::getView()->javascript("$('#{$uniqId}').tablesorter();");
+            }
         }
         return $output;
     }

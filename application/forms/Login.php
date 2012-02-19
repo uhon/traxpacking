@@ -16,5 +16,13 @@ class Form_Login extends Tp_Form
 
         $this->addElement("submit", "login");
     }
+
+    /**
+     * @return string
+     */
+    public function getDefaultRedirectUrl()
+    {
+        return "/admin";
+    }
 }
 

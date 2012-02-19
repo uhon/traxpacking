@@ -283,6 +283,9 @@ mark {
 #popupForm {
   display: none; }
 
+.deleteForm .confirm {
+  display: none; }
+
 h1 {
   font-size: 22px;
   font-weight: bold;

@@ -4,15 +4,17 @@ $server = new Zend_Json_Server();
 //$server->setClass('');
 $smd = $server->getServiceMap();
 
-?><?=$this->doctype()?>
-<html lang="en">
+header("Content-Type: text/html; charset=UTF-8");
+echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
+
+?><?=$this->doctype('XHTML1_TRANSITIONAL')?>
+<html xml:lang="en-US" lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta charset="utf-8">
-	<meta name="" content="<?=$this->escape($this->title)?>">
+	<meta name="" content="<?=$this->escape($this->title)?>" />
 	<meta name="keywords" content="<?=$this->escape(implode(',', array_merge(array(
 		'',
-	), (array)$this->keywords)))?>">
-	<meta name="description" content="<?=$this->escape($this->description)?>">
+	), (array)$this->keywords)))?>" />
+	<meta name="description" content="<?=$this->escape($this->description)?>" />
     <?php
         echo $this->jQuery()
             ->setVersion('1.7.1')->enable()
@@ -22,26 +24,26 @@ $smd = $server->getServiceMap();
     <?=$this->headLink()->appendStylesheet($this->baseUrl() . '/css/main.css')?>
     <?=$this->headStyle()?>
     <?=$this->layout()->css?>
-	<script>/*const BASE_URL = <?=json_encode($this->baseUrl())?>;*/</script>
+	<script type="text/javascript">const BASE_URL = <?=json_encode($this->baseUrl())?>;</script>
 	<?= $this->headScript()
-        ->appendFile('/js/jquery/3rd_party/jquery.form.js')
-        ->appendFile('/js/jquery/3rd_party/jquery.zend.jsonrpc.js')
-        ->appendFile('/js/jquery/3rd_party/jquery.maxZIndex.js')
-        ->appendFile('/js/jquery/3rd_party/json2.js')
-        ->appendFile('/js/jquery/jquery.waitForIt.js')
-        ->appendFile('/js/site.js')
-        ->appendFile('/js/form.js')
+        ->prependFile('/js/jquery/3rd_party/jquery.form.js')
+        ->prependFile('/js/jquery/3rd_party/jquery.tablesorter.js')
+        ->prependFile('/js/jquery/3rd_party/jquery.zend.jsonrpc.js')
+        ->prependFile('/js/jquery/3rd_party/jquery.maxZIndex.js')
+        ->prependFile('/js/jquery/3rd_party/json2.js')
+        ->prependFile('/js/jquery/jquery.waitForIt.js')
+        ->prependFile('/js/site.js')
     ?>
-	<script>
+	<script type="text/javascript">
 		var rpc;
-		$(document).ready(function() {
+		$(function() {
 			rpc = jQuery.Zend.jsonrpc({
-				url : <?=json_encode($this->baseUrl('/ajax'))?>
-				, smd : <?=$smd?>
+				url : <?= Zend_Json::encode($this->baseUrl('/ajax')); ?>
+				//, smd : <?= $server->getServiceMap()->toJson();?> + "\n"
 				, async : true
 			});
-		});</script>
-	<?=$this->layout()->headJavascript?>
+		});
+    </script>
 	<title>Traxpacking - Backpacking by GPS</title>
 </head>
 <body>

@@ -13,14 +13,16 @@ class Tp_Provider_FlashMessage {
     }
 
     private function getMessages(Zend_Controller_Action_Helper_FlashMessenger $flashMessenger, $namespace) {
-        $message = "";
+        $message = '';
+        $visability = '';
         if($flashMessenger->hasMessages($flashMessenger) || $flashMessenger->hasCurrentMessages() ) {
-            $message .= '<div id="' . $namespace . 'Messages" class="flashMessages">';
-            $message .= $this->getMessageContent($flashMessenger);
-            $message .= '</div>';
-            $flashMessenger->clearMessages();
+            $message = $this->getMessageContent($flashMessenger);
+        } else {
+            $visability = 'style="display:none;"';
         }
-        return $message;
+        $flashMessenger->clearMessages();
+
+        return '<div id="' . $namespace . 'Messages" class="flashMessages" ' . $visability . '>' . $message . '</div>';
     }
 
 
@@ -40,11 +42,11 @@ class Tp_Provider_FlashMessage {
 
     private function formatMessages($messages) {
        $returnString = "";
+        $returnString .= '<ul class="msgItems">';
         foreach ($messages as $message) {
-            $returnString .= '<ul class="msgItems">';
             $returnString .= '<li class="msgItem">' . $message . '</li>';
-            $returnString .= '</ul>';
         }
+        $returnString .= '</ul>';
         return $returnString;
     }
 

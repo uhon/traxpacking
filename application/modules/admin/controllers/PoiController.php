@@ -103,4 +103,20 @@ class Admin_PoiController extends Tp_Controller_Action
 
         $this->view->form = $form;
     }
+
+    public function deleteAction() {
+        if($this->_request->isPost()) {
+            $post = $this->_request->getPost();
+            if(isset($post['doIt'])) {
+                $poi = $this->_em->find('Tp\Entity\Pois', $this->_getParam('poi'));
+                if($poi !== null) {
+                    $this->_em->remove($poi);
+                    $this->_em->flush();
+                    $this->infoMessage("POI was successfully deleted");
+                    $this->_redirect("/admin/poi/index");
+                }
+            }
+            $this->errorMessage('There was an error deleting that POI');
+        }
+    }
 }

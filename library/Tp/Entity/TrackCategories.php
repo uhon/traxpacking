@@ -10,29 +10,22 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Users
+ * TrackCategories
  * 
  * @property int $id
- * @property string $username
- * @property string $password
- * @property string $role
- * @property string $email
+ * @property string $title
+ * @property string $color
+ * @property Tracks $tracks
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
- * @ORM\Table(
- * 	   uniqueConstraints={
- *         @ORM\UniqueConstraint(name="users_username",columns={"username"}),
- *	       @ORM\UniqueConstraint(name="users_email",columns={"email"})
- * 	   }
- * )
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Users
+class TrackCategories
 {
 	/**
-	 * @var integer $userId
+	 * @var integer $id
 	 *
 	 * @ORM\Column(type="integer", nullable=false)
 	 * @ORM\Id
@@ -40,33 +33,26 @@ class Users
 	 */
 	private $id;
 
-	/**
-	 * @var string $username
+    /**
+	 * @var integer $title
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
-	private $username;
+	private $title;
 
 	/**
-	 * @var string $password
+	 * @var string $color
 	 *
-	 * @ORM\Column(type="string", length=255, nullable=false)
+	 * @ORM\Column(type="string")
 	 */
-	private $password;
+	private $color;
 
-	/**
-	 * @var string $role
-	 *
-	 * @ORM\Column(type="string", nullable=false)
-	 */
-	private $role;
-
-	/**
-	 * @var string $email
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=false)
-	 */
-	private $email;
+    /**
+     * @var Tracks $tracks
+     *
+     * @ORM\OneToMany(targetEntity="Tracks", mappedBy="category")
+     */
+	private $tracks;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate
@@ -81,7 +67,7 @@ class Users
 	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $modifieddate;
-
+	
 	/**
 	 * @ORM\PrePersist
 	 */
@@ -96,7 +82,6 @@ class Users
 	public function datePreUpdate () {
 		$this->modifieddate = new \DateTime('now');
 	}
-
 
     /**
 	 * @param string
@@ -133,4 +118,26 @@ class Users
 	public function toArray() {
 		return get_object_vars($this);
 	}
+    
+    public function getEditUrl() {
+        return \Tp_Shortcut::getView()->url(
+            array(
+                'module' => 'admin',
+                'controller' => 'poi',
+                'action' => 'edit-category',
+                'poi' => $this->id
+            ), null, true
+        );
+    }
+
+    public function getDeleteUrl() {
+        return \Tp_Shortcut::getView()->url(
+            array(
+                'module' => 'admin',
+                'controller' => 'poi',
+                'action' => 'delete-category',
+                'poi' => $this->id
+            ), null, true
+        );
+    }
 }

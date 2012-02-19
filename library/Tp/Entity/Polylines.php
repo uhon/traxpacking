@@ -10,19 +10,19 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Pictures
+ * Polylines
  * 
  * @property int $id
- * @property string $filename
- * @property \Doctrine\Common\DateTime\DateTime $datetime
- * @property Pois $poi
+ * @property string $data
+ * @property \Doctrine\Common\DateTime\DateTime $startDate
+ * @property Tracks $track
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Pictures
+class Polylines
 {
 	/**
 	 * @var integer $id
@@ -34,25 +34,25 @@ class Pictures
 	private $id;
 
 	/**
-	 * @var string $filename
+	 * @var string $data
 	 *
-	 * @ORM\Column(type="string", length=255, nullable=false)
+	 * @ORM\Column(type="string", nullable=false)
 	 */
-	private $filename;
+	private $data;
 
 	/**
-	 * @var \Doctrine\Common\DateTime\DateTime $datetime
+	 * @var \Doctrine\Common\DateTime\DateTime $startDate
 	 *
 	 * @ORM\Column(type="datetime")
 	 */
-	private $datetime;
+	private $startDate;
 
     /**
-     * @var Pois $poi
+     * @var Tracks $track
      *
-     * @ORM\ManyToOne(targetEntity="Pois")
+     * @ORM\ManyToOne(targetEntity="Tracks")
      */
-    private $poi;
+    private $track;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate

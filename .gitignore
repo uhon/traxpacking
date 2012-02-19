@@ -4,6 +4,8 @@ library/Tp/Entity/Proxy/*
 library/Tp/Phpthumb
 tests/log/
 
+/scratch
+
 /.idea
 /.project
 /.buildpath

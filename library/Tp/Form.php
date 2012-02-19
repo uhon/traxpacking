@@ -49,7 +49,7 @@ abstract class Tp_Form extends Zend_Form
             // Initialize Ajaxified Form (if Ajax-Request)
             $this->getView()->javascript('
                 C.log("initialize AjaxForm: ' . $this->getId() . '");
-                initForm(
+                FORM.initForm(
                     "' . $this->getId() . '",
                     function() { // pre-submit callback
                         $("#popupForm").waitForIt();
@@ -61,7 +61,7 @@ abstract class Tp_Form extends Zend_Form
                         } else {
                             $("#popupForm").dialog("close", function() { $(this).destroy(); });
                             $("#content").html(responseText);
-                            onContentReady();
+                            FORM.onContentReady();
                         }
                         //$("#popupForm").waitForItStop();
                     }
