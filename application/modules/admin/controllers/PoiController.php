@@ -30,12 +30,13 @@ class Admin_PoiController extends Tp_Controller_Action
 
     public function editAction() {
         $add = true;
+        $initPicture = $this->_em->find('Tp\Entity\Pictures', $this->_getParam('picture', 0));
         $poi = $this->_em->find('Tp\Entity\Pois', $this->_getParam('poi', 0));
-        $picture = new \Tp\Entity\Pictures();
+        $pictures = null;
         if($poi) {
             $add = false;
-            if($poi->picture) {
-                $picture = $poi->picture;
+            if($poi->pictures) {
+                $pictures = $poi->pictures;
             }
         } else {
             $poi = new Pois();
@@ -44,16 +45,14 @@ class Admin_PoiController extends Tp_Controller_Action
         $form = new Form_Poi(
             array(
                 'id' => 'poiForm',
-                'picture' => ($picture->filename == null) ? null : $picture,
-                'cachedPicture' => $this->_getParam('cachedPicture'),
-                'removablePicture' => $this->_getParam('removablePicture'),
-                'action' => $this->view->url(array(
+                'pictures' => $pictures,
+                'initPicture' => $initPicture
+                /*'action' => $this->view->url(array(
                     'module' => 'admin',
                     'controller' => 'poi',
                     'action' => 'edit',
-                    'pic' => $this->_getParam('pic'),
                     'poi' => $this->_getParam('poi'))
-                    , null, true)
+                    , null, true)*/
             )
         );
 
@@ -64,9 +63,7 @@ class Admin_PoiController extends Tp_Controller_Action
                 if($cachedPicture != null) {
                     $picVersions = glob(APPLICATION_PATH . '/../public/cache/' . $cachedPicture . "*");
                     foreach($picVersions as $pv) {
-                        if(rename($pv, APPLICATION_PATH . '/../public/media/' . basename($pv)) === false) {
-                            throw new Exception("failed to move $pv to media directory (is directory writable?)\n");
-                        }
+
                     }
                     $removablePicture = APPLICATION_PATH . '/../public/upload/' . $form->getValue('removablePicture');
                     if(file_exists($removablePicture)) {
@@ -97,7 +94,9 @@ class Admin_PoiController extends Tp_Controller_Action
             }
         } else {
             if($poi && !$add) {
-                $form->populate($poi->toArray());
+                $data = $poi->toArray();
+                unset($data['pictures']);
+                $form->populate($data);
             }
         }
 
@@ -117,6 +116,21 @@ class Admin_PoiController extends Tp_Controller_Action
                 }
             }
             $this->errorMessage('There was an error deleting that POI');
+            $this->_redirect("/admin/poi/index");
         }
+    }
+
+    public function removePictureAction() {
+        $poi = $this->_em->find('\Tp\Entity\Pois', $this->_getParam('poi'));
+        $picture = $this->_em->find('\Tp\Entity\Pictures', $this->_getParam('picture'));
+
+        if($picture !== null && $poi !== null) {
+            $poi->remove($picture);
+            $this->_em->flush();
+            $this->infoMessage("Picture was successfully removed and is now uninitalized");
+            $this->_redirect("/admin/poi/index");
+        }
+        $this->errorMessage('There was an error removing that Picture');
+        $this->_redirect("/admin/poi/index");
     }
 }

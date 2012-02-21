@@ -12,9 +12,6 @@ class Tp_Form_Element_PlainHtml extends Zend_Form_Element
 
     private $_tag = 'p';
 
-    /**
-     * @see Notnet_Form_Element_Interface::loadDefaultDecorators()
-     */
     public function loadDefaultDecorators()
     {
         if ($this->loadDefaultDecoratorsIsDisabled()) {
@@ -23,8 +20,15 @@ class Tp_Form_Element_PlainHtml extends Zend_Form_Element
 
         if (empty($decorators)) {
             $getId = create_function('$decorator', 'return $decorator->getElement()->getId() . "-element";');
-            $this->addDecorator('ViewHelper')
-                ->addDecorator('HtmlTag', array('tag' => 'dd', 'id'  => array('callback' => $getId)));
+            $this->addDecorators(array(
+                'ViewHelper',
+                array(array('data' => 'HtmlTag'), array('tag' => 'td', 'class' => 'element')),
+                array(new Tp_Form_Decorator_Description(), array('tag' => 'td', 'class' => 'description')),
+                array('Label', array('tag' => 'td', 'class' => 'label')),
+                array(array('row' => 'HtmlTag'), array('tag' => 'tr'))
+            ));
+
+
         }
 
         return $this;

@@ -106,13 +106,13 @@ FORM = {  // start of FORM object scope.
 
 INIT = {   // start of INIT object scope.
     onContentReady:function () {
-        C.log('Content Replaced rerunning all ContentBindings');
-        FORM.bindEditLinks();
-        FORM.bindDeleteForms();
-        $(".flashMessages").hide();
         window.setTimeout(function () {
             UI.showFlashMessages();
         }, 400);
+
+        C.log('Content Replaced rerunning all ContentBindings');
+        FORM.bindEditLinks();
+        FORM.bindDeleteForms();
     }
 }; // end of INIT object scope.
 
@@ -134,8 +134,43 @@ UI = { // start of INIT object scope.
         }
         //noinspection JSCheckFunctionSignatures
         $(".infoMessages .msgItem").append('<li class="msgItem">' + message + '</li>');
+    },
+    errorMessage: function(message, removeOthers) {
+        if(removeOthers) {
+            $(".errorMessages .msgItem").slideUp(function() { $(".infoMessages .msgItem").remove(); } );
+        }
+        //noinspection JSCheckFunctionSignatures
+        $(".errorMessages .msgItem").append('<li class="msgItem">' + message + '</li>');
+    },
+    activateTabs: function() {
+        // Do it for Tabbed Subforms
+        UI.activateTabsOnPoiForm();
+    },
+    activateTabsOnPoiForm: function() {
+        if($('#poiForm').length > 0) {
+            var tabContainer = $('#poiForm .tp_subform_tabbed:first');
+            $('#removePictureLink').each(function() {
+                var removeLink = $(this).attr('href');
+                $(this).closest('tr').hide();
+            });
+            $('ul', tabContainer).show();
+            tabContainer.tabs({
+            });
+            // close icon: removing the tab on click
+            $(".tabList span.ui-icon-close", tabContainer).click(function() {
+                var index = $(".tabList li", tabContainer).index( $( this ).closest('li') ),
+                    deleteLink = $('div:nth-of-type(' + (index+1) + ') a#removePictureLink', tabContainer).attr('href');
+                    if(confirm('do yo really want to remove this Picture from POI?')) {
+                        tabContainer.waitForIt();
+                        $.get(deleteLink, function(data) {
+                            tabContainer.waitForItStop();
+                            // TODO: No success/error szenario catched
+                            tabContainer.tabs( "remove", index );
+                        });
+                    }
+            });
+        }
     }
-    
 }; // end of UI object scope.
 
 $(function () {

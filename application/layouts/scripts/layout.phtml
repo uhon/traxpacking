@@ -18,7 +18,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
     <?php
         echo $this->jQuery()
             ->setVersion('1.7.1')->enable()
-            ->setUiVersion('1.8')->uiEnable()
+            ->setUiVersion('1.8.17')->uiEnable()
             ->addStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css');
     ?>
     <?=$this->headLink()->appendStylesheet($this->baseUrl() . '/css/main.css')?>
@@ -93,5 +93,9 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
         </div>
         <div id="popupForm"></div>
     </div>
+    <?php
+        $msgProvider = new Tp_Provider_FlashMessage();
+        echo $msgProvider->provideDebugMessages();
+    ?>
 </body>
 </html>

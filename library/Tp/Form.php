@@ -8,34 +8,47 @@
 
 abstract class Tp_Form extends Zend_Form
 {
-    private $_flashMessenger = null;
-
     protected $_redirectUrl = '/';
 
     public function __construct($options = null) {
-        $this->_flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
-
+        $this->getView()->doctype('XHTML1_STRICT');
         $this->addPrefixPath('Tp_Form', 'Tp/Form');
         $this->addPrefixPath('Tp_Form_Decorator', 'Tp/Form/Decorator', 'decorator');
 
-        $this->setDecorators(array(
-            'FormElements',
-            array('HtmlTag', array('tag' => 'table', 'class' => 'tp_form')),
-            'Form'
-        ));
-
-        $this->setElementDecorators(array(
+/*        $this->setElementDecorators(array(
             'ViewHelper',
             'Errors',
             array(array('data' => 'HtmlTag'), array('tag' => 'td', 'class' => 'element')),
             array(new Tp_Form_Decorator_Description(), array('tag' => 'td', 'class' => 'description')),
             array('Label', array('tag' => 'td', 'class' => 'label')),
             array(array('row' => 'HtmlTag'), array('tag' => 'tr'))
-        ));
+        ));*/
+        parent::__construct($options);
+
 
         $this->_redirectUrl = Zend_Controller_Front::getInstance()->getRequest()->getParam('formOrigin', $this->_redirectUrl);
+    }
 
-        parent::__construct($options);
+    /**
+     * Load the default decorators
+     *
+     * @return Zend_Form
+     */
+    public function loadDefaultDecorators()
+    {
+        if ($this->loadDefaultDecoratorsIsDisabled()) {
+            return $this;
+        }
+
+        $decorators = $this->getDecorators();
+        if (empty($decorators)) {
+            $this->addDecorators(array(
+                'FormElements',
+                array('HtmlTag', array('tag' => 'table', 'class' => 'tp_form')),
+                'Form'
+            ));
+        }
+        return $this;
     }
 
     public function render(Zend_View_Interface $view = null)
@@ -61,7 +74,7 @@ abstract class Tp_Form extends Zend_Form
                         } else {
                             $("#popupForm").dialog("close", function() { $(this).destroy(); });
                             $("#content").html(responseText);
-                            FORM.onContentReady();
+                            INIT.onContentReady();
                         }
                         //$("#popupForm").waitForItStop();
                     }
@@ -79,12 +92,8 @@ abstract class Tp_Form extends Zend_Form
                     $dLabel->setLabel('');
                 }
             }
-            if($element instanceof Zend_Form_Element_Hidden) {
-                $dRow = $element->getDecorator('row');
-                if($dRow !== false) {
-                    $dRow->setOption('style', trim($dRow->getOption('style') . ' ' . "display:none;"));
-                }
-            } else {
+
+            if(!$element instanceof Zend_Form_Element_Hidden) {
                 /* @var Zend_Form_Element $element */
                 $evenOdd = 'even';
                 if($counter % 2 === 0) {
@@ -115,14 +124,12 @@ abstract class Tp_Form extends Zend_Form
 
     public function infoMessage($message)
     {
-        $this->_flashMessenger->setNamespace('info');
-        $this->_flashMessenger->addMessage($message);
+        Tp_Shortcut::infoMessage($message);
     }
 
     public function errorMessage($message)
     {
-        $this->_flashMessenger->setNamespace('error');
-        $this->_flashMessenger->addMessage($message);
+        Tp_Shortcut::errorMessage($message);
     }
 
     /**

@@ -8,17 +8,17 @@
 
 class Form_Poi extends Tp_Form
 {
-    private $_removablePicture = null;
-
-    private $_cachedPicture = null;
-
-    private $_pictureDateTime = null;
-
-    private $_picturePreview = null;
+    private $_initPicture = null;
 
     private $_longitude = null;
 
     private $_latitude = null;
+
+    private $_pictures = null;
+
+    private $_pictureSubforms = array();
+
+    private $_subformCounter = 0;
 
     private $_id = null;
 
@@ -45,57 +45,32 @@ class Form_Poi extends Tp_Form
             'label' => 'Description'
         ));
 
-        $this->addElement('hidden', 'removablePicture', array(
-            'value' => $this->_removablePicture,
-        ));
+        $pictureSubform = new Tp_Form_TabbedSubform();
+        $pictureSubform->addSubForms($this->_pictureSubforms);
 
-        $this->addElement('hidden', 'cachedPicture', array(
-            'value' => $this->_cachedPicture,
-        ));
-
-        if($this->_pictureDateTime !== null) {
-            $this->addElement('text', 'dateTime', array(
-                'value' => $this->_pictureDateTime,
-                'label' => 'Date & Time (of picture)'
-            ));
-        }
-
-        if($this->_picturePreview !== null) {
-            $this->addElement('plainHtml', 'preview', array(
-                'value' => '<img src="' . $this->_picturePreview . '" alt="">'
-            ));
-        }
+        $this->addSubForm($pictureSubform, 'pictures');
 
         $this->addElement('submit', 'save');
     }
 
-    public function setPicture(\Tp\Entity\Pictures $p = null)
+    public function setInitPicture(\Tp\Entity\Pictures $p = null)
     {
         if($p !== null) {
-            $this->_pictureDateTime = $p->datetime->format('Y-m-d H:i:s');
-            $this->_picturePreview = "/media/{$p->filename}_small.jpg";
-        }
-    }
-
-    public function setCachedPicture($cachedPicture)
-    {
-        if($cachedPicture !== null && $this->getValue('cachedPicture') == null) {
             $gpsProvider = new Tp_Provider_Gps();
-
-            $exif = exif_read_data(APPLICATION_PATH . '/../public/cache/' . $cachedPicture . '_orig.jpg');
-            $this->_cachedPicture = $cachedPicture;
+            $exif = exif_read_data(APPLICATION_PATH . '/../public/media/' . $p->filename . '_orig.jpg');
             $this->_latitude = $exif['GPSLatitudeRef'] . $gpsProvider->getGpsDigitFormat($exif['GPSLatitude']);
             $this->_longitude = $exif['GPSLongitudeRef'] . $gpsProvider->getGpsDigitFormat($exif['GPSLongitude']);
-            $this->_pictureDateTime = new Zend_Date($exif['DateTimeOriginal'], "yyyy:MM:dd HH:mm:ss");
-            $this->_pictureDateTime = $this->_pictureDateTime->get('yyyy-MM-dd HH:mm:ss');
-            $this->_picturePreview = '/cache/' . $cachedPicture . '_small.jpg';
+
+            $this->addPicture($p);
         }
     }
 
-    public function setremovablePicture($removablePicture)
+    public function setPictures(\Doctrine\ORM\PersistentCollection $pictures = null)
     {
-        if($removablePicture !== null) {
-            $this->_removablePicture = $removablePicture;
+        if($pictures !== null) {
+            foreach($pictures->toArray() as $p) {
+                $this->addPicture($p);
+            }
         }
     }
 
@@ -105,5 +80,27 @@ class Form_Poi extends Tp_Form
     public function getDefaultRedirectUrl()
     {
         return '/admin/poi/index';
+    }
+
+    private function addPicture(\Tp\Entity\Pictures $picture) {
+        $subForm = new Tp_Form_Subform();
+
+        $subForm->addElement('plainHtml', 'removePictureLink', array(
+            'value' => '<a id="removePictureLink" href="' . $this->getView()->url(array('action' => 'remove-picture', 'picture' => $picture->id)) . '">remove</a>',
+            'label' => 'Remove Picture from POI?',
+        ));
+
+        $subForm->addElement('text', 'dateTime', array(
+            'label' => 'Date & Time (of picture)',
+            'value' => $picture->datetime->format('Y-m-d H:m:s')
+        ));
+
+        $subForm->addElement('plainHtml', 'preview', array(
+            'value' => '<img class="thumbPic" src="/media/' . $picture->filename . '_small.jpg" alt="" />',
+            'label' => 'Preview'
+        ));
+
+        $this->_pictureSubforms[((string)$this->_subformCounter+1)] = $subForm;
+        $this->_subformCounter++;
     }
 }

@@ -3,13 +3,17 @@
 class Tp_Provider_FlashMessage {
     public function provideMessages() {
         $flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
-        $flashMessenger->setNamespace('default');
-        $messageString = $this->getMessages($flashMessenger, 'default');
         $flashMessenger->setNamespace('info');
-        $messageString .= $this->getMessages($flashMessenger, 'info');
+        $messageString = $this->getMessages($flashMessenger, 'info');
         $flashMessenger->setNamespace('error');
         $messageString .= $this->getMessages($flashMessenger, 'error');
         return $messageString;
+    }
+
+    public function provideDebugMessages() {
+        $flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+        $flashMessenger->setNamespace('debug');
+        return $this->getMessages($flashMessenger, 'debug');
     }
 
     private function getMessages(Zend_Controller_Action_Helper_FlashMessenger $flashMessenger, $namespace) {
@@ -22,7 +26,7 @@ class Tp_Provider_FlashMessage {
         }
         $flashMessenger->clearMessages();
 
-        return '<div id="' . $namespace . 'Messages" class="flashMessages" ' . $visability . '>' . $message . '</div>';
+        return '<div class="flashMessages ' . $namespace . 'Messages" ' . $visability . '>' . $message . '</div>';
     }
 
 

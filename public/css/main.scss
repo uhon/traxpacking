@@ -9,12 +9,19 @@ h5 { font-size: 12px; }
 
 div.clear { clear: both; }
 
-#waitIcon {
+.waitIcon {
     position: absolute;
     text-align:center;
     img {
         width: 100%;
     }
+}
+
+.waitIconOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
 }
 
 .ui-widget-overlay {
@@ -74,22 +81,22 @@ table {
     padding: 5px;
     margin: 5px 0;
 
-    ul.msgItem {
-        list-style-type: disc;
+    ul {
+        list-style: circle inside;
     }
 }
 
-#defaultMessages {
+.debugMessages {
     color: white;
     background-color: #2f4f4f;
 }
 
-#infoMessages {
+.infoMessages {
     color: #2f4f4f;
     background-color: #98fb98;
 }
 
-#errorMessages {
+.errorMessages {
     color: #8b0000;
     background-color: #bc8f8f;
 }
@@ -110,7 +117,6 @@ table {
         td, th {
             padding: 5px 10px;
         }
-
     }
 }
 

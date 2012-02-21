@@ -119,4 +119,14 @@ class Pictures
     		return get_object_vars($this);
     	}
 
+    public function getAssignUrl() {
+        return \Tp_Shortcut::getView()->url(
+            array(
+                'module' => 'admin',
+                'controller' => 'poi',
+                'action' => 'edit',
+                'picture' => $this->id
+            ), null, true
+        );
+    }
 }

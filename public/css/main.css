@@ -279,6 +279,16 @@ mark {
     padding: 7px 0 3px;
     font-size: 10px;
     color: #3d77cb; }
+  .tp_form .tp_subform {
+    width: 100%; }
+  .tp_form .tp_subform_tabbed {
+    padding: 0; }
+    .tp_form .tp_subform_tabbed ul.tabList {
+      display: none; }
+    .tp_form .tp_subform_tabbed .tabList .ui-icon-close {
+      margin: 0.4em 0.2em 0 0;
+      cursor: pointer;
+      float: left; }
 
 #popupForm {
   display: none; }
@@ -307,11 +317,17 @@ h5 {
 div.clear {
   clear: both; }
 
-#waitIcon {
+.waitIcon {
   position: absolute;
   text-align: center; }
-  #waitIcon img {
+  .waitIcon img {
     width: 100%; }
+
+.waitIconOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white; }
 
 .ui-widget-overlay {
   background: url("/img/modalBackground.png") repeat scroll 50% 50% #666666; }
@@ -349,18 +365,18 @@ table tr.odd {
   display: block;
   padding: 5px;
   margin: 5px 0; }
-  .flashMessages ul.msgItem {
-    list-style-type: disc; }
+  .flashMessages ul {
+    list-style: circle inside; }
 
-#defaultMessages {
+.debugMessages {
   color: white;
   background-color: #2f4f4f; }
 
-#infoMessages {
+.infoMessages {
   color: #2f4f4f;
   background-color: #98fb98; }
 
-#errorMessages {
+.errorMessages {
   color: #8b0000;
   background-color: #bc8f8f; }
 
