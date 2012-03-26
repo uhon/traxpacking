@@ -10,23 +10,19 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Pois
+ * TrackCategory
  * 
  * @property int $id
- * @property float $latitude
- * @property float $longitude
  * @property string $title
- * @property string $description
- * @property PoiCategories $category
- * @property Pictures $pictures
- * @property Routes $routes
+ * @property string $color
+ * @property Track $tracks
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Pois
+class TrackCategory
 {
 	/**
 	 * @var integer $id
@@ -37,54 +33,26 @@ class Pois
 	 */
 	private $id;
 
-	/**
-	 * @var float $latitude
-	 *
-	 * @ORM\Column(type="float", nullable=false)
-	 */
-	private $latitude;
-
-	/**
-	 * @var float $longitude
-	 *
-	 * @ORM\Column(type="float", nullable=false)
-	 */
-	private $longitude;
-
-	/**
-	 * @var string $title
+    /**
+	 * @var integer $title
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $title;
 
 	/**
-	 * @var string $description
+	 * @var string $color
 	 *
 	 * @ORM\Column(type="string")
 	 */
-	private $description;
+	private $color;
 
     /**
-	 * @var PoiCategories $category
-	 *
-	 * @ORM\ManyToOne(targetEntity="PoiCategories")
-	 */
-	private $category;
-
-    /**
-     * @var Pictures $pictures
+     * @var Track $tracks
      *
-     * @ORM\OneToMany(targetEntity="Pictures", mappedBy="poi")
+     * @ORM\OneToMany(targetEntity="Track", mappedBy="category")
      */
-	private $pictures;
-
-    /**
-     * @var Routes $routes
-     *
-     * @ORM\ManyToMany(targetEntity="Routes", mappedBy="pois")
-     */
-	private $routes;
+	private $tracks;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate
@@ -156,7 +124,7 @@ class Pois
             array(
                 'module' => 'admin',
                 'controller' => 'poi',
-                'action' => 'edit',
+                'action' => 'edit-category',
                 'poi' => $this->id
             ), null, true
         );
@@ -167,7 +135,7 @@ class Pois
             array(
                 'module' => 'admin',
                 'controller' => 'poi',
-                'action' => 'delete',
+                'action' => 'delete-category',
                 'poi' => $this->id
             ), null, true
         );

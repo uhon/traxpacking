@@ -5,18 +5,18 @@
  * GitHub: git@github.com:uhon/traxpacking.git
  */
 
-use \Tp\Entity\Pictures;
-use \Tp\Entity\Pois;
+use \Tp\Entity\Picture;
+use \Tp\Entity\Poi;
 
 class Admin_PoiController extends Tp_Controller_Action
 {
 
     public function indexAction() {
-        $repository = $this->_em->getRepository('Tp\Entity\Pois');
+        $repository = $this->_em->getRepository('Tp\Entity\Poi');
         $pois = $repository->findAll();
         $this->view->pois = array();
         foreach($pois as $poi) {
-            /* @var \Tp\Entity\Pois $poi */
+            /* @var \Tp\Entity\Poi $poi */
             $this->view->pois[] = array(
                 $poi->title,
                 $poi->latitude,
@@ -30,8 +30,8 @@ class Admin_PoiController extends Tp_Controller_Action
 
     public function editAction() {
         $add = true;
-        $initPicture = $this->_em->find('Tp\Entity\Pictures', $this->_getParam('picture', 0));
-        $poi = $this->_em->find('Tp\Entity\Pois', $this->_getParam('poi', 0));
+        $initPicture = $this->_em->find('Tp\Entity\Picture', $this->_getParam('picture', 0));
+        $poi = $this->_em->find('Tp\Entity\Poi', $this->_getParam('poi', 0));
         $pictures = null;
         if($poi) {
             $add = false;
@@ -39,7 +39,7 @@ class Admin_PoiController extends Tp_Controller_Action
                 $pictures = $poi->pictures;
             }
         } else {
-            $poi = new Pois();
+            $poi = new Poi();
         }
 
         $form = new Form_Poi(
@@ -107,7 +107,7 @@ class Admin_PoiController extends Tp_Controller_Action
         if($this->_request->isPost()) {
             $post = $this->_request->getPost();
             if(isset($post['doIt'])) {
-                $poi = $this->_em->find('Tp\Entity\Pois', $this->_getParam('poi'));
+                $poi = $this->_em->find('Tp\Entity\Poi', $this->_getParam('poi'));
                 if($poi !== null) {
                     $this->_em->remove($poi);
                     $this->_em->flush();
@@ -121,8 +121,8 @@ class Admin_PoiController extends Tp_Controller_Action
     }
 
     public function removePictureAction() {
-        $poi = $this->_em->find('\Tp\Entity\Pois', $this->_getParam('poi'));
-        $picture = $this->_em->find('\Tp\Entity\Pictures', $this->_getParam('picture'));
+        $poi = $this->_em->find('\Tp\Entity\Poi', $this->_getParam('poi'));
+        $picture = $this->_em->find('\Tp\Entity\Picture', $this->_getParam('picture'));
 
         if($picture !== null && $poi !== null) {
             $poi->remove($picture);

@@ -10,19 +10,19 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Polylines
+ * Polyline
  * 
  * @property int $id
  * @property string $data
  * @property \Doctrine\Common\DateTime\DateTime $startDate
- * @property Tracks $track
+ * @property Track $track
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Polylines
+class Polyline
 {
 	/**
 	 * @var integer $id
@@ -48,9 +48,9 @@ class Polylines
 	private $startDate;
 
     /**
-     * @var Tracks $track
+     * @var Track $track
      *
-     * @ORM\ManyToOne(targetEntity="Tracks")
+     * @ORM\ManyToOne(targetEntity="Track")
      */
     private $track;
 

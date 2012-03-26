@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property int $id
  * @property string $filename
  * @property \Doctrine\Common\DateTime\DateTime $startDate
- * @property Tracks $track
+ * @property Track $track
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
@@ -48,9 +48,9 @@ class Gps
 	private $startDate;
 
     /**
-     * @var Tracks $track
+     * @var Track $track
      *
-     * @ORM\ManyToOne(targetEntity="Tracks")
+     * @ORM\ManyToOne(targetEntity="Track")
      */
     private $track;
 

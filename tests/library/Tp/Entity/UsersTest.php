@@ -14,7 +14,7 @@ class UsersTest
 	 */
 	public function testCanSaveUserAndRetrieveIt()
 	{
-		$user = new Users();
+		$user = new User();
         $user->username = "admin";
         $user->email = "admin@traxpacking.dev";
         $user->role = "admin";
@@ -23,7 +23,7 @@ class UsersTest
         $em->persist($user);
         $em->flush();
 
-        $user = new Users();
+        $user = new User();
         $user->username = "member";
         $user->email = "member@traxpacking.dev";
         $user->role = "member";

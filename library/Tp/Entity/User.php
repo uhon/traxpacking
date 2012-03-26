@@ -10,22 +10,29 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TrackCategories
+ * User
  * 
  * @property int $id
- * @property string $title
- * @property string $color
- * @property Tracks $tracks
+ * @property string $username
+ * @property string $password
+ * @property string $role
+ * @property string $email
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
+ * @ORM\Table(
+ * 	   uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="user_username",columns={"username"}),
+ *	       @ORM\UniqueConstraint(name="user_email",columns={"email"})
+ * 	   }
+ * )
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class TrackCategories
+class User
 {
 	/**
-	 * @var integer $id
+	 * @var integer $userId
 	 *
 	 * @ORM\Column(type="integer", nullable=false)
 	 * @ORM\Id
@@ -33,26 +40,33 @@ class TrackCategories
 	 */
 	private $id;
 
-    /**
-	 * @var integer $title
+	/**
+	 * @var string $username
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
-	private $title;
+	private $username;
 
 	/**
-	 * @var string $color
+	 * @var string $password
 	 *
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
-	private $color;
+	private $password;
 
-    /**
-     * @var Tracks $tracks
-     *
-     * @ORM\OneToMany(targetEntity="Tracks", mappedBy="category")
-     */
-	private $tracks;
+	/**
+	 * @var string $role
+	 *
+	 * @ORM\Column(type="string", nullable=false)
+	 */
+	private $role;
+
+	/**
+	 * @var string $email
+	 *
+	 * @ORM\Column(type="string", length=255, nullable=false)
+	 */
+	private $email;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate
@@ -67,7 +81,7 @@ class TrackCategories
 	 * @ORM\Column(type="datetime", nullable=false)
 	 */
 	private $modifieddate;
-	
+
 	/**
 	 * @ORM\PrePersist
 	 */
@@ -82,6 +96,7 @@ class TrackCategories
 	public function datePreUpdate () {
 		$this->modifieddate = new \DateTime('now');
 	}
+
 
     /**
 	 * @param string
@@ -118,26 +133,4 @@ class TrackCategories
 	public function toArray() {
 		return get_object_vars($this);
 	}
-    
-    public function getEditUrl() {
-        return \Tp_Shortcut::getView()->url(
-            array(
-                'module' => 'admin',
-                'controller' => 'poi',
-                'action' => 'edit-category',
-                'poi' => $this->id
-            ), null, true
-        );
-    }
-
-    public function getDeleteUrl() {
-        return \Tp_Shortcut::getView()->url(
-            array(
-                'module' => 'admin',
-                'controller' => 'poi',
-                'action' => 'delete-category',
-                'poi' => $this->id
-            ), null, true
-        );
-    }
 }

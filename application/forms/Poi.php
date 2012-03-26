@@ -53,7 +53,7 @@ class Form_Poi extends Tp_Form
         $this->addElement('submit', 'save');
     }
 
-    public function setInitPicture(\Tp\Entity\Pictures $p = null)
+    public function setInitPicture(\Tp\Entity\Picture $p = null)
     {
         if($p !== null) {
             $gpsProvider = new Tp_Provider_Gps();
@@ -82,7 +82,7 @@ class Form_Poi extends Tp_Form
         return '/admin/poi/index';
     }
 
-    private function addPicture(\Tp\Entity\Pictures $picture) {
+    private function addPicture(\Tp\Entity\Picture $picture) {
         $subForm = new Tp_Form_Subform();
 
         $subForm->addElement('plainHtml', 'removePictureLink', array(

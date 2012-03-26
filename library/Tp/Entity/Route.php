@@ -10,19 +10,19 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Routes
+ * Route
  * 
  * @property int $id
  * @property string $title
  * @property string $description
- * @property Pois $pois
- * @property Tracks $tracks
+ * @property Poi $pois
+ * @property Track $tracks
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Routes
+class Route
 {
 	/**
 	 * @var integer $id
@@ -48,16 +48,16 @@ class Routes
 	private $description;
 
     /**
-     * @var Pois $pois
+     * @var Poi $pois
      *
-     * @ORM\ManyToMany(targetEntity="Pois")
+     * @ORM\ManyToMany(targetEntity="Poi")
      */
     private $pois;
 
     /**
-     * @var Tracks $tracks
+     * @var Track $tracks
      *
-     * @ORM\ManyToMany(targetEntity="Tracks")
+     * @ORM\ManyToMany(targetEntity="Track")
      */
     private $tracks;
 

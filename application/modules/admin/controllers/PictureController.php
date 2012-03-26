@@ -5,13 +5,14 @@
  * GitHub: git@github.com:uhon/traxpacking.git
  */
 
-use \Tp\Entity\Pictures as Pictures;
+use \Tp\Entity\Picture as Picture;
 
 class Admin_PictureController extends Tp_Controller_Action
 {
     public function indexAction()
     {
         $pictures = glob(APPLICATION_PATH . "/../public/upload/*.jpg");
+        $pictures = array_merge($pictures, glob(APPLICATION_PATH . "/../public/upload/*.JPG"));
         $this->view->newPictures = array();
         foreach($pictures as $p) {
             $exif=exif_read_data($p);
@@ -27,9 +28,9 @@ class Admin_PictureController extends Tp_Controller_Action
             );
         }
         $this->view->unassignedPictures = array();
-        $unassigned = $this->_em->getRepository('Tp\Entity\Pictures')->findBy(array('poi' => null));
+        $unassigned = $this->_em->getRepository('Tp\Entity\Picture')->findBy(array('poi' => null));
         foreach($unassigned as $p) {
-            /* @var \Pictures $p */
+            /* @var \Picture $p */
             $this->view->unassignedPictures[] = array(
                 'name' => $p->filename,
                 'datetime' => $p->datetime->format('Y-m-d H:m:s'),
@@ -53,16 +54,18 @@ class Admin_PictureController extends Tp_Controller_Action
             require_once APPLICATION_PATH . '/../library/phpThumb/src/ThumbLib.inc.php';
 
             $thumb = PhpThumbFactory::create($genericFilename . "_orig.jpg");
+            $this->rotateThumbIfNeeded($thumb, $exif);
             $thumb->resize(Tp_Shortcut::PIC_MEDIUM_X, Tp_Shortcut::PIC_MEDIUM_Y);
             $thumb->save($genericFilename . '_medium.jpg');
 
             $thumb = PhpThumbFactory::create($genericFilename . "_orig.jpg");
-            $thumb->resize(Tp_Shortcut::PIC_SMALL_X, PIC_SMALL_Y);
+            $this->rotateThumbIfNeeded($thumb, $exif);
+            $thumb->resize(Tp_Shortcut::PIC_SMALL_X, Tp_Shortcut::PIC_SMALL_Y);
             $thumb->save($genericFilename . '_small.jpg');
 
             $dateTimeOfPicture = new Zend_Date($exif['DateTimeOriginal'], "yyyy:MM:dd HH:mm:ss");
 
-            $picture = new Pictures();
+            $picture = new Picture();
             $picture->filename = basename($genericFilename);
             $picture->datetime = new \DateTime($dateTimeOfPicture->get('yyyy-MM-dd HH:mm:ss'));
 
@@ -74,4 +77,34 @@ class Admin_PictureController extends Tp_Controller_Action
         }
     }
 
+    private function rotateThumbIfNeeded(GdThumb $thumb, array $exif)
+    {
+        if(isset($exif['Orientation'])) {
+
+            switch($exif['Orientation']) {
+                case 1: // nothing
+                    break;
+                case 2: // horizontal flip
+                    break;
+                case 3: // 180 rotate
+                    $thumb->rotateImage();
+                    $thumb->rotateImage();
+                    break;
+                case 4: // vertical flip
+                    break;
+                case 5: // vertical flip + 90 rotate right
+                    $thumb->rotateImage();
+                    break;
+                case 6: // 90 rotate right
+                    $thumb->rotateImage();
+                    break;
+
+                case 7: // horizontal flip + 90 rotate right
+                    break;
+                case 8:    // 90 rotate left
+                    $thumb->rotateImage('CC');
+                    break;
+            }
+        }
+    }
 }

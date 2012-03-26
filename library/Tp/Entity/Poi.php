@@ -10,26 +10,23 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Tracks
+ * Poi
  * 
  * @property int $id
+ * @property float $latitude
+ * @property float $longitude
  * @property string $title
  * @property string $description
- * @property float $latitudeMin
- * @property float $latitudeMax
- * @property float $longitudeMin
- * @property float $longitudeMax
- * @property TrackCategories $category
- * @property Gps $gps
- * @property Polylines $polylines
- * @property Routes $routes
+ * @property PoiCategory $category
+ * @property Picture $pictures
+ * @property Route $routes
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class Tracks
+class Poi
 {
 	/**
 	 * @var integer $id
@@ -39,6 +36,20 @@ class Tracks
 	 * @ORM\GeneratedValue(strategy="IDENTITY")
 	 */
 	private $id;
+
+	/**
+	 * @var float $latitude
+	 *
+	 * @ORM\Column(type="float", nullable=false)
+	 */
+	private $latitude;
+
+	/**
+	 * @var float $longitude
+	 *
+	 * @ORM\Column(type="float", nullable=false)
+	 */
+	private $longitude;
 
 	/**
 	 * @var string $title
@@ -55,58 +66,23 @@ class Tracks
 	private $description;
 
     /**
-     * @var float $latitudeMin
-     *
-     * @ORM\Column(type="float", nullable=false)
-     */
-    private $latitudeMin;
-
-    /**
-     * @var float $latitudeMax
-     *
-     * @ORM\Column(type="float", nullable=false)
-     */
-    private $latitudeMax;
-
-    /**
-     * @var float longitudeMin
-     *
-     * @ORM\Column(type="float", nullable=false)
-     */
-    private $longitudeMin;
-
-    /**
-     * @var float longitudeMax
-     *
-     * @ORM\Column(type="float", nullable=false)
-     */
-    private $longitudeMax;
-
-    /**
-	 * @var TrackCategories $category
+	 * @var PoiCategory $category
 	 *
-	 * @ORM\ManyToOne(targetEntity="TrackCategories")
+	 * @ORM\ManyToOne(targetEntity="PoiCategory")
 	 */
 	private $category;
 
     /**
-     * @var Gps $gps
+     * @var Picture $pictures
      *
-     * @ORM\OneToMany(targetEntity="Gps", mappedBy="track")
+     * @ORM\OneToMany(targetEntity="Picture", mappedBy="poi")
      */
-	private $gps;
+	private $pictures;
 
     /**
-     * @var Polylines $polylines
+     * @var Route $routes
      *
-     * @ORM\OneToMany(targetEntity="Polylines", mappedBy="track")
-     */
-	private $polylines;
-
-    /**
-     * @var Routes $routes
-     *
-     * @ORM\ManyToMany(targetEntity="Routes", mappedBy="tracks")
+     * @ORM\ManyToMany(targetEntity="Route", mappedBy="poi")
      */
 	private $routes;
 

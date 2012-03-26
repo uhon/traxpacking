@@ -34,7 +34,7 @@ class AuthController extends Tp_Controller_Action
 
 				$data = $form->getValues();
 				$auth = Zend_Auth::getInstance();
-				$authAdapter = new Tp_Auth_Adapter_Doctrine2(Zend_Registry::get('doctrine')->getEntityManager(), 'Tp\Entity\Users', 'email', 'password');
+				$authAdapter = new Tp_Auth_Adapter_Doctrine2(Zend_Registry::get('doctrine')->getEntityManager(), 'Tp\Entity\User', 'email', 'password');
 
 
                 $authAdapter->setIdentity($form->getValue('email'))

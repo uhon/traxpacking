@@ -10,19 +10,26 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PoiCategories
+ * Track
  * 
  * @property int $id
  * @property string $title
- * @property string $color
- * @property Pois $pois
+ * @property string $description
+ * @property float $latitudeMin
+ * @property float $latitudeMax
+ * @property float $longitudeMin
+ * @property float $longitudeMax
+ * @property TrackCategory $category
+ * @property Gps $gps
+ * @property Polyline $polylines
+ * @property Route $routes
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class PoiCategories
+class Track
 {
 	/**
 	 * @var integer $id
@@ -33,26 +40,75 @@ class PoiCategories
 	 */
 	private $id;
 
-    /**
-	 * @var integer $title
+	/**
+	 * @var string $title
 	 *
 	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $title;
 
 	/**
-	 * @var string $color
+	 * @var string $description
 	 *
 	 * @ORM\Column(type="string")
 	 */
-	private $color;
+	private $description;
 
     /**
-     * @var Pois $pois
+     * @var float $latitudeMin
      *
-     * @ORM\OneToMany(targetEntity="Pois", mappedBy="category")
+     * @ORM\Column(type="float", nullable=false)
      */
-	private $pois;
+    private $latitudeMin;
+
+    /**
+     * @var float $latitudeMax
+     *
+     * @ORM\Column(type="float", nullable=false)
+     */
+    private $latitudeMax;
+
+    /**
+     * @var float longitudeMin
+     *
+     * @ORM\Column(type="float", nullable=false)
+     */
+    private $longitudeMin;
+
+    /**
+     * @var float longitudeMax
+     *
+     * @ORM\Column(type="float", nullable=false)
+     */
+    private $longitudeMax;
+
+    /**
+	 * @var TrackCategory $category
+	 *
+	 * @ORM\ManyToOne(targetEntity="TrackCategory")
+	 */
+	private $category;
+
+    /**
+     * @var Gps $gps
+     *
+     * @ORM\OneToMany(targetEntity="Gps", mappedBy="track")
+     */
+	private $gps;
+
+    /**
+     * @var Polyline $polylines
+     *
+     * @ORM\OneToMany(targetEntity="Polyline", mappedBy="track")
+     */
+	private $polylines;
+
+    /**
+     * @var Route $routes
+     *
+     * @ORM\ManyToMany(targetEntity="Route", mappedBy="tracks")
+     */
+	private $routes;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate
@@ -124,7 +180,7 @@ class PoiCategories
             array(
                 'module' => 'admin',
                 'controller' => 'poi',
-                'action' => 'edit-category',
+                'action' => 'edit',
                 'poi' => $this->id
             ), null, true
         );
@@ -135,7 +191,7 @@ class PoiCategories
             array(
                 'module' => 'admin',
                 'controller' => 'poi',
-                'action' => 'delete-category',
+                'action' => 'delete',
                 'poi' => $this->id
             ), null, true
         );
