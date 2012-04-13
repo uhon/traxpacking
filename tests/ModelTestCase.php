@@ -2,12 +2,11 @@
 
 
 /**
- * Description of ModelTestCase
+ * Runs the Testcases of Traxpacking via PHPUnit Framework
  * 
  * 
  */
-class ModelTestCase
-	extends PHPUnit_Framework_TestCase
+class ModelTestCase extends PHPUnit_Framework_TestCase
 {
 	/**
 	 *
@@ -51,7 +50,7 @@ class ModelTestCase
 		$tool = new \Doctrine\ORM\Tools\SchemaTool($this->doctrineContainer->getEntityManager());
         $tool->dropDatabase();
 		$metas = $this->getClassMetas(APPLICATION_PATH . '/../library/Tp/Entity','Tp\Entity\\');
-		
+
 		$tool->createSchema($metas);
 		
 		parent::setUp();

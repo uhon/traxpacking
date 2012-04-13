@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property string $title
  * @property string $description
  * @property PoiCategory $category
+ * @property Country $country
  * @property Picture $pictures
  * @property Route $routes
  * @property \Doctrine\Common\DateTime\DateTime $createddate
@@ -71,6 +72,14 @@ class Poi
 	 * @ORM\ManyToOne(targetEntity="PoiCategory")
 	 */
 	private $category;
+
+    /**
+     * @var Country $country
+     *
+     * @ORM\ManyToOne(targetEntity="Country")
+     */
+    private $country;
+
 
     /**
      * @var Picture $pictures

@@ -19,6 +19,11 @@ class Tp_Controller_Action extends Zend_Controller_Action
         if($request->isXmlHttpRequest()) {
             $this->_isXHR = true;
             Zend_Controller_Action_HelperBroker::getExistingHelper('layout')->disableLayout();
+        } else if($request->getModuleName() != "default") {
+            $lh = Zend_Controller_Action_HelperBroker::getExistingHelper('layout');
+            $lh->setLayoutPath(
+                $lh->getLayoutPath() . $request->getModuleName()
+            );
         }
 
         parent::__construct($request, $response, $invokeArgs);

@@ -45,6 +45,12 @@ class Form_Poi extends Tp_Form
             'label' => 'Description'
         ));
 
+        $this->addElement('multiCheckbox', 'categories', array(
+            'value' => $this->_longitude,
+            'required' => true,
+            'label' => 'Longitude'
+        ));
+
         $pictureSubform = new Tp_Form_TabbedSubform();
         $pictureSubform->addSubForms($this->_pictureSubforms);
 

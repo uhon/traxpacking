@@ -46,10 +46,10 @@ abstract class Tp_View_Helper_Javascript_Generic extends Zend_View_Helper_Abstra
 
             $trace = debug_backtrace();
             $token = uniqid();
-            $debug = "C.log('{$method} by {$trace[6]['class']}::{$trace[6]['function']}{$tellXHR}, token: {$token}{$messageTail});\n";
+            if(isset($trace[6]['class'])) {
+                return "C.log('{$method} by {$trace[6]['class']}::{$trace[6]['function']}{$tellXHR}, token: {$token}{$messageTail});\n";
+            }
 
-
-            return $debug;
         }
         return "";
     }

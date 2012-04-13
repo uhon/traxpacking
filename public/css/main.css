@@ -400,3 +400,9 @@ table tr.odd {
   background-color: #E4E4E4; }
   #footer a {
     color: #556b2f; }
+
+#svgMapContainer {
+  width: 900px;
+  height: 400px;
+  display: block;
+  overflow: hidden; }

@@ -26,6 +26,11 @@ class IndexController extends Tp_Controller_Action
     	echo $this->view->navigation()->sitemap();
     }
 
+    public function countriesAction()
+    {
+
+    }
+
 }
 
 

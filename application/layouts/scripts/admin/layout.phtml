@@ -43,8 +43,41 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
             echo '<span><a href="' . $this->url($authUrl, null, true) . '">login</a></span>';
         }*/
     ?>
-    <div id="playground">
-        <?= $this->layout()->content; ?>
+    <h1>Welcome to TraxPacking</h1>
+    <div id="topnav">
+        <?= $this->navigation()->menu(); ?>
+        <div class="clear"></div>
     </div>
+
+
+	<?php
+        $view = Zend_Controller_Front::getInstance()->getParam("bootstrap")->getResource("view");
+    ?>
+    <div id="content">
+        <?php
+            $msgProvider = new Tp_Provider_FlashMessage();
+            echo $msgProvider->provideMessages();
+        ?>
+        <?= $this->layout()->content; ?>
+        <div class="clear"></div>
+    </div>
+
+    <div id="footer">
+        <div id="credentials">
+            <?php
+            $user = Zend_Auth::getInstance()->getStorage()->read();
+            $username  = ($user === null) ? 'guest' : $user->email . " ({$user->role})";
+            echo 'User: ' . $username;
+            ?>
+        </div>
+        <div id="breadcrumbs">
+            Breadcrumbs: <?= $this->navigation()->breadcrumbs()->setMinDepth(0)->setLinkLast(true)->setSeparator(" : "); ?>
+        </div>
+        <div id="popupForm"></div>
+    </div>
+    <?php
+        $msgProvider = new Tp_Provider_FlashMessage();
+        echo $msgProvider->provideDebugMessages();
+    ?>
 </body>
 </html>

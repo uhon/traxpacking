@@ -12,6 +12,9 @@ class Tp_Shortcut
     const PIC_SMALL_Y = 300;
     const PIC_MEDIUM_X = 900;
     const PIC_MEDIUM_Y = 600;
+
+    private static $version;
+
     /**
      * Get View
      * Does not work during bootstrap !
@@ -27,6 +30,20 @@ class Tp_Shortcut
 
         return new Zend_View();
     }
+
+    /**
+     * Returns current Version
+     * @return string
+     */
+    public static function getVersion()
+    {
+        if(is_null(self::$version)) {
+            self::$version = trim(file_get_contents(APPLICATION_PATH . '/../version.txt'));
+        }
+        return self::$version;
+    }
+
+
 
     public static function debugMessage($message)
     {

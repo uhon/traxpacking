@@ -1,50 +1,44 @@
-var C, INIT, FORM, UI;
+var C, INIT, FORM, UI, SVG;
 
 C = {
     // console wrapper
     debug:true, // global debug on|off
     quietDismiss:true, // may want to just drop, or alert instead
     log:function () {
-        "use strict";
-        var curdate,
-            dateString,
-            i,
-            l,
-            result,
-            j,
-            le;
+        C = {
+            // console wrapper
+            debug: true, // global debug on|off
+            quietDismiss: true, // may want to just drop, or alert instead
+            log: function() {
+                if (!C.debug) { return false; }
 
-        if (!C.debug) {
-            return false;
-        }
+                if (typeof (console) === 'object' && typeof console.log !== "undefined") {
+                    try {
+                        var curdate = new Date();
+                        var dateString = curdate.getHours() + curdate.getMinutes() + curdate.getSeconds();
 
-        if (typeof (console) === 'object' && typeof console.log !== "undefined") {
-            try {
-                curdate = new Date();
-                dateString = curdate.getHours() + curdate.getMinutes() + curdate.getSeconds();
+                        arguments.unshift(dateString);
+                        console.log.apply(this, arguments); // safari's console.log can't accept scope...
+                    } catch (e) {
+                        // so we loop instead.
+                        var i, l;
+                        for (i = 0, l = arguments.length; i < l; i++) {
+                            console.log(arguments[i]);
+                        }
+                    }
+                } else {
+                    if (!C.quietDismiss) {
+                        var result = "", j, le;
+                        for (j = 0, le = arguments.length; j < le; j++) {
+                            result += arguments[j] + " (" + typeof arguments[j] + ") ";
+                        }
 
-                arguments.unshift(dateString);
-                console.log.apply(this, arguments); // safari's console.log can't accept scope...
-            } catch (e) {
-                // so we loop instead.
-                for (i = 0, l = arguments.length; i < l; i) {
-                    console.log(arguments[i]);
-                    i = i + 1;
+                        alert(result);
+                    }
                 }
+                return true;
             }
-        } else {
-            if (!C.quietDismiss) {
-                result = "";
-                for (j = 0, le = arguments.length; j < le; j) {
-                    result += arguments[j] + " (" + typeof arguments[j] + ") ";
-                    j = j + 1;
-                }
-
-
-                alert(result);
-            }
-        }
-        return true;
+        }; // end console wrapper.
     }
 }; // end console wrapper.
 
@@ -52,7 +46,11 @@ C = {
 FORM = {  // start of FORM object scope.
     bindEditLinks: function() {
         // Bind Edit-Links
-        C.log('Bind edit-Links: ' + $('a.ajaxEdit'));
+        var logObj = 'none';
+        if($('a.ajaxEdit').length > 0) {
+            logObj = $('a.ajaxEdit');
+        }
+        C.log('Bind edit-Links: ', logObj);
         $('a.ajaxEdit').each(function () {
             $(this).click(function () {
                 $(".flashMessages").slideUp();
@@ -64,7 +62,11 @@ FORM = {  // start of FORM object scope.
 
     bindDeleteForms: function() {
         // Bind Edit-Links
-        C.log('Bind delete-Links: ' + $('form.deleteForm'));
+        var logObj = 'none';
+        if($('form.deleteForm').length > 0) {
+            logObj = $('form.deleteForm');
+        }
+        C.log('Bind delete-Links: ', logObj);
         $('form.deleteForm').bind('submit', function () {
             $(".flashMessages").slideUp();
             if($('.confirm', $(this)).length > 0) {
@@ -173,6 +175,139 @@ UI = { // start of INIT object scope.
     }
 }; // end of UI object scope.
 
+
+SVG = { // start of SVG object scope.
+    worldMap: null,
+    createSvgWorldMap: function() {
+        SVG.worldMap = $('#svgMapContainer').svg();
+        SVG.worldMap = $('#svgMapContainer').svg('get');
+        SVG.worldMap.load("/img/world_map.svg", {addTo: true, changeSize: false, onLoad: SVG.setupSvgWorldMap });
+    },
+
+    setupSvgWorldMap: function() {
+        //svg.configure({viewBox: '-0 0 600 400'}, true)
+        var minX = 99999,
+            minY = 99999,
+            maxX = -99999,
+            maxY = -99999,
+            maxWidth = 0,
+            maxHeight = 0,
+            borderSize = 25,
+            dimensions = null,
+            growHeight,
+            growWidth,
+            countryList = {
+                0 : {name : 'Switzerland', pictures : '5'},
+                1 : {name : 'Austria', pictures : '9'},
+                /*2 : {name : 'Romania', pictures : '5'},
+                3 : {name : 'Hungary', pictures : '5'},
+                4 : {name : 'Bulgaria', pictures : '5'},
+                5 : {name : 'Turkey', pictures : '5'},
+                6 : {name : 'Georgia', pictures : '5'},
+                7 : {name : 'Azerbaijan', pictures : '5'},
+                8 : {name : 'Turkmenistan', pictures : '5'},
+                9 : {name : 'Uzbekistan', pictures : '5'},
+                10 : {name : 'Kyrgyzstan', pictures : '5'},
+                11 : {name : 'China', pictures : '5'},
+                12 : {name : 'Vietnam', pictures : '5'},
+                13 : {name : 'Laos', pictures : '5'},
+                14 : {name : 'Thailand', pictures : '5'},
+                15 : {name : 'Cambodia', pictures : '5'},
+                16 : {name : 'Burma', pictures : '5'},
+                17 : {name : 'India', pictures : '9'}*/
+                /*18 : {name : 'Australia', pictures : '9'},
+                19: {name : 'Chile', pictures : '5'},*/
+            };
+
+
+        //countryList = VODOO
+        $.each(countryList, function(key, country) {
+            if(country.pictures > 0) {
+                C.log(country.name);
+                var element = $('#' + country.name, SVG.worldMap.root());
+                element.attr("fill", '#ccc');
+                element.attr("class", 'active');
+
+                dimensions = element.get(0).getBBox();
+            C.log(dimensions);
+                if(dimensions.x - borderSize < minX) {
+                    minX = dimensions.x - borderSize;
+                }
+                if(dimensions.y - borderSize < minY) {
+                    minY = dimensions.y - borderSize;
+                }
+                if(dimensions.x + dimensions.width + borderSize > maxX) {
+                    maxX = dimensions.x + dimensions.width + borderSize;
+                }
+                if(dimensions.y + dimensions.height + borderSize > maxY) {
+                    maxY = dimensions.y + dimensions.height + borderSize;
+                }
+                maxWidth = (maxX - minX);
+                maxHeight = Math.abs(maxY - minY);
+
+            }
+        });
+
+        if(maxWidth === 0 || maxHeight === 0) {
+            SVG.worldMap.configure({viewBox: "50 -800 740 240"}, true);
+            SVG.worldMap.configure({scale: 3});
+        } else {
+
+            if((maxWidth / maxHeight > 900/400)) {
+                growHeight = maxWidth / 900 * 400 - maxHeight;
+                maxHeight += growHeight;
+                minY -= growHeight / 2;
+            } else {
+                growWidth = maxHeight / 400 * 900 - maxWidth;
+                maxWidth += growWidth;
+                minX -= (growWidth / 2);
+            }
+
+            C.log("minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
+            SVG.worldMap.configure({viewBox: minX + " " + minY + " " + maxWidth + " " + maxHeight}, true);
+
+            SVG.worldMap.configure({scale: 3});
+
+            $('path.active', SVG.worldMap.root()).bind('mouseover', function(e) {
+                $(this).attr('fill', 'green');
+            });
+            $('path.active', SVG.worldMap.root()).bind('mouseout', function(e) {
+                $(this).attr('fill', '#ccc');
+            });
+        }
+    }
+}; // end of SVG object scope.
+
 $(function () {
     INIT.onContentReady();
+
+    rpc = jQuery.Zend.jsonrpc({ url : "/ajax/rpc.php", async : true});
+
+    C.log(rpc.random());
+    C.log(rpc.random());
+    C.log(rpc.random());
+    C.log(rpc.random());
+    C.log(rpc.hello());
+    C.log(rpc.hello());
+    C.log(rpc.hello());
+    C.log(rpc.hello());
+
+    /*var testPremadeSmd = jQuery.Zend.jsonrpc({
+        url: '/ajax/rpc.php',
+        smd: {"transport":"POST","envelope":"JSON-RPC-2.0","contentType":"application\/json","SMDVersion":"2.0","target":"rpc.php","services":{"add":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"subtract":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"multiply":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"divide":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"float"},"hang":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"sleepTime","optional":false}],"returns":"boolean"}},"methods":{"add":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"subtract":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"multiply":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"divide":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"float"},"hang":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"sleepTime","optional":false}],"returns":"boolean"}}}
+    });
+
+    C.log(testPremadeSmd.random());
+    C.log(testPremadeSmd.random());
+    C.log(testPremadeSmd.random());
+    C.log(testPremadeSmd.random());
+    C.log(testPremadeSmd.hello());
+    C.log(testPremadeSmd.hello());
+    C.log(testPremadeSmd.hello());
+    C.log(testPremadeSmd.hello());*/
+
+
+
+
 });
+

@@ -12,14 +12,27 @@ Some brief overview of what it should do, once finished:
 
 # Requirements
     sass:   $ gem install sass
+    doctrineORM and PHPUnit:
+        $ sudo pear channel-discover pear.symfony.com
+        $ sudo pear channel-discover pear.phpunit.de
+        $ sudo pear channel-discover pear.symfony-project.com
+        $ pear channel-discover pear.doctrine-project.org
+        $ sudo pear update-channels
+        $ sudo pear install symfony2/Yaml
+        $ sudo pear install symfony2/Console
+        $ sudo pear install –alldeps doctrine/DoctrineORM
+        $ sudo pear install –alldeps phpunit/Phpunit
 
 # Setup process
 	git clone git://github.com/uhon/traxpacking.git traxpacking
 
 	cd traxpacking
-	chmod 777 data/session
-	chmod 777 public/cache
-	chmod 777 public/media
+    cp public/_htaccess public/_htaccess
+    
+	mkdir -p -m 777 data/session
+	mkdir -p -m 777 public/cache
+	mkdir -p -m 777 public/media
+	chmod 777 public/compressed
 
 	git submodule init
 	git submodule update
@@ -31,3 +44,4 @@ Some brief overview of what it should do, once finished:
 	cd ../scripts
 	php doctrine.php orm:schema-tool:create
 	php doctrine.php orm:generate-proxies
+

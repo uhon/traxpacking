@@ -20,6 +20,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$front = Zend_Controller_Front::getInstance();
 		$this->_aclManager = new Tp_Controller_Plugin_AclManager(Zend_Auth::getInstance());
 		$front->registerPlugin($this->_aclManager);
+
+        // configure View Environment
+        $front->registerPlugin(new Tp_Controller_Plugin_ViewSetup());
 	}
 
 	protected function _initNavigation()

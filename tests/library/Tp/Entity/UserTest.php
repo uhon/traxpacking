@@ -2,12 +2,12 @@
 
 namespace Tp\Entity;
 /**
- * Description of UserTest
- *
- * @author jon
+ * User: uhon
+ * Date: 2012/04/10
+ * GitHub: git@github.com:uhon/traxpacking.git
  */
-class UsersTest
-	extends \ModelTestCase
+
+class UserTest extends \ModelTestCase
 {
 	/**
 	 *
