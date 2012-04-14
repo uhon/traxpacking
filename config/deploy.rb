@@ -72,7 +72,7 @@ namespace :deploy do
           
             migrate = Capistrano::CLI.ui.ask "Would you like to update the database (Y/n)? "
             if migrate.empty? || migrate != 'n'
-                run "#{current_release}/bin/doctrine -e #{stage} -- orm:schema-tool:update --force"
+                run "doctrine -e #{stage} -- orm:schema-tool:update --force"
             end
         end
     end
@@ -84,7 +84,7 @@ namespace :deploy do
         run "ln -sf #{shared_path}/public/.htaccess #{current_release}/public/.htaccess"
         run "ln -sf #{shared_path}/data/session #{current_release}/data/session"
         run "ln -sf #{shared_path}/public/js/jquery #{current_release}/public/js/jquery"
-        run "ln -sf #{shared_path}/public/js/cache #{current_release}/public/cache"
+        run "ln -sf #{shared_path}/public/cache #{current_release}/public/cache"
         run "ln -sf #{shared_path}/public/compressed #{current_release}/public/compressed"
         run "ln -sf #{shared_path}/public/media #{current_release}/public/media"
         run "ln -sf #{shared_path}/library/Zend #{current_release}/library/Zend"
@@ -123,7 +123,8 @@ before("deploy:symlink", "deploy:doctrine")
 require 'net/smtp'
 
 def send_email(to, opts={})
-
+    puts "--------xxxxxxxxxxxxxxxxxx"
+    puts msg
     opts[:server] ||= 'localhost'
     opts[:from] ||= 'deploy@#{domain}'
     opts[:from_alias] ||= 'Traxpacking Deployment'
