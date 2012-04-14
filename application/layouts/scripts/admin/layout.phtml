@@ -5,7 +5,7 @@ $server = new Zend_Json_Server();
 $smd = $server->getServiceMap();
 
 header("Content-Type: text/html; charset=UTF-8");
-echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
+echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
 ?><?=$this->doctype('XHTML1_TRANSITIONAL')?>
 <html xml:lang="en-US" lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
@@ -24,7 +24,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
     <?=$this->headLink()?>
     <?=$this->headScript()?>
 
-	<script type="text/javascript">const BASE_URL = <?=json_encode($this->baseUrl())?>;</script>
+
 
 	<title>Traxpacking - Backpacking by GPS</title>
 </head>

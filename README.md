@@ -11,37 +11,48 @@ Some brief overview of what it should do, once finished:
 
 
 # Requirements
-    sass:   $ gem install sass
+    sass:
+        $ gem install sass
     doctrineORM and PHPUnit:
         $ sudo pear channel-discover pear.symfony.com
         $ sudo pear channel-discover pear.phpunit.de
         $ sudo pear channel-discover pear.symfony-project.com
-        $ pear channel-discover pear.doctrine-project.org
+        $ sudo pear channel-discover pear.doctrine-project.org
         $ sudo pear update-channels
         $ sudo pear install symfony2/Yaml
         $ sudo pear install symfony2/Console
         $ sudo pear install –alldeps doctrine/DoctrineORM
         $ sudo pear install –alldeps phpunit/Phpunit
+    capistran deployment:
+        $ sudo apt-get install capistrano rubygems ruby
+        $ sudo gem install railsless-deploy capistrano-ext
 
 # Setup process
-	git clone git://github.com/uhon/traxpacking.git traxpacking
+    git clone git://github.com/uhon/traxpacking.git traxpacking
 
-	cd traxpacking
-    cp public/_htaccess public/_htaccess
+    cd traxpacking
+    cp public/_htaccess public/.htaccess
     
-	mkdir -p -m 777 data/session
-	mkdir -p -m 777 public/cache
-	mkdir -p -m 777 public/media
-	chmod 777 public/compressed
+    mkdir -p -m 777 data/session
+    mkdir -p -m 777 public/cache
+    mkdir -p -m 777 public/media
+    mkdir -p -m 777 public/compressed
 
-	git submodule init
-	git submodule update
+    git submodule init
+    git submodule update
 
-	cd library
-	svn co http://framework.zend.com/svn/framework/standard/branches/release-1.11/library/Zend
-	svn co http://framework.zend.com/svn/framework/extras/branches/release-1.11/library/ZendX
+    cd library
+    svn co http://framework.zend.com/svn/framework/standard/branches/release-1.11/library/Zend
+    svn co http://framework.zend.com/svn/framework/extras/branches/release-1.11/library/ZendX
 
-	cd ../scripts
-	php doctrine.php orm:schema-tool:create
-	php doctrine.php orm:generate-proxies
+    cd ../scripts
+    php doctrine.php orm:schema-tool:create
+    php doctrine.php orm:generate-proxies
+    
+# Deploy to a Production-Server
+    # first crate a config/deploy/production.rb file
+    # Sample File config/deploy/production_sample.rb
+    cap production deploy:setup
+    cap production deploy
+    
 

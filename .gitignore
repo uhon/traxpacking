@@ -14,11 +14,9 @@ tests/log/
 /.zfproject.xml
 .sass-cache/
 
-/log
+/config/deploy/production.rb
 
-public/js/ckeditor
-public/js/gmaps
-public/js/jquery
+/log
 
 /media
 
