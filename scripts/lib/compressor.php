@@ -25,9 +25,6 @@
 
 $publicDir = APPLICATION_PATH . "/../public";
 $compressedDir = $publicDir . "/compressed";
-if(!is_dir($compressedDir)) {
-    mkdir($compressedDir);
-}
 
 $styleFiles = Tp_Controller_Plugin_ViewSetup::getHeadStyles();
 $scriptFiles = Tp_Controller_Plugin_ViewSetup::getHeadScripts();

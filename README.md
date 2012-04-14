@@ -51,7 +51,7 @@ Some brief overview of what it should do, once finished:
     
 # Deploy to a Production-Server
     # first crate a config/deploy/production.rb file
-    # Sample File config/deploy/production_sample.rb
+    # Sample File config/deploy/environment.sample.rb
     cap production deploy:setup
     cap production deploy
     

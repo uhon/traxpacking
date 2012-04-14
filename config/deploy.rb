@@ -115,7 +115,7 @@ before("deploy:symlink", "deploy:notify")
 before("deploy:symlink", "deploy:update_submodules")
 before("deploy:symlink", "deploy:link_shared_data")
 before("deploy:symlink", "deploy:minify_js_and_css")
-before("deploy:symlink", "deploy:db-backup")
+before("deploy:symlink", "deploy:db_backup")
 before("deploy:symlink", "deploy:doctrine")
 
 
