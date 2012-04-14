@@ -51,6 +51,7 @@ foreach($scriptFiles as $file) {
     $scriptString .= "\n\n/* #### MERGED: " . $file . "*/\n" . file_get_contents($publicDir . "/" . $file);
 }
 
+throw new Exception($compressedDir);
 file_put_contents($compressedDir . "/traxpacking.css",  $styleString);
 file_put_contents($compressedDir . "/traxpacking.js",  $scriptString);
 
