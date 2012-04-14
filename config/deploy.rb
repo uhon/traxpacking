@@ -27,12 +27,12 @@ namespace :deploy do
             
             run "cd #{shared_path}/library && svn co http://framework.zend.com/svn/framework/standard/branches/release-1.11/library/Zend"
             run "cd #{shared_path}/library && svn co http://framework.zend.com/svn/framework/extras/branches/release-1.11/library/ZendX"
-            run "cd #{current_path} && git submodule init"
         end
     end
     
     desc "Updates submodules"
     task :update_submodules do
+        run "cd #{remote_cached_repo} && git submodule init"
         run "cd #{remote_cached_repo} && git submodule update"
     end
     
@@ -66,7 +66,7 @@ namespace :deploy do
 
     desc "Migrates the database changes."
     task :doctrine do
-        changes = capture("#{current_release}/bin/doctrine -e #{stage} -- orm:schema-tool:update --dump-sql")
+        changes = capture("doctrine -e #{stage} -- orm:schema-tool:update --dump-sql")
         if !(changes.include? "Nothing to update")
             puts "Pending database updates:\n#{changes}"
           
@@ -85,7 +85,7 @@ namespace :deploy do
         run "ln -sf #{shared_path}/data/session #{current_release}/data/session"
         run "ln -sf #{shared_path}/public/js/jquery #{current_release}/public/js/jquery"
         run "ln -sf #{shared_path}/public/js/cache #{current_release}/public/cache"
-        run "ln -sf #{shared_path}/public/js/compressed #{current_release}/public/compressed"
+        run "ln -sf #{shared_path}/public/compressed #{current_release}/public/compressed"
         run "ln -sf #{shared_path}/public/media #{current_release}/public/media"
         run "ln -sf #{shared_path}/library/Zend #{current_release}/library/Zend"
         run "ln -sf #{shared_path}/library/ZendX #{current_release}/library/ZendX"
