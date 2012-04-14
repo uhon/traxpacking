@@ -66,13 +66,13 @@ namespace :deploy do
 
     desc "Migrates the database changes."
     task :doctrine do
-        changes = capture("doctrine -e #{stage} -- orm:schema-tool:update --dump-sql")
+        changes = capture("cd #{current_release}/scripts && doctrine orm:schema-tool:update --dump-sql")
         if !(changes.include? "Nothing to update")
             puts "Pending database updates:\n#{changes}"
           
             migrate = Capistrano::CLI.ui.ask "Would you like to update the database (Y/n)? "
             if migrate.empty? || migrate != 'n'
-                run "doctrine -e #{stage} -- orm:schema-tool:update --force"
+                run "cd #{current_release}/scripts && doctrine orm:schema-tool:update --force"
             end
         end
     end
