@@ -18,20 +18,25 @@ namespace :deploy do
         end
         
         if not defined?(@previous_revision)
+
+        end
+    end
+    
+    desc "Does the things needed for firt time deployment"
+    task :initialize_app do
+        if not remote_file_exists?("#{shared_path}/public/.htaccess")  
             puts "create things we need at first deployment"
+            run "cp #{remote_cached_repo}/public/_htaccess_prod #{shared_path}/public/.htaccess"
             run "mkdir -p -m 777 #{shared_path}/data/session"
             run "mkdir -p -m 777 #{shared_path}/public/cache"
             run "mkdir -p -m 777 #{shared_path}/public/media"
             run "mkdir -p -m 777 #{shared_path}/public/compressed"
             run "mkdir -p -m 777 #{shared_path}/library"
-            
             run "cd #{shared_path}/library && svn co http://framework.zend.com/svn/framework/standard/branches/release-1.11/library/Zend"
             run "cd #{shared_path}/library && svn co http://framework.zend.com/svn/framework/extras/branches/release-1.11/library/ZendX"
         end
-    end
     
-    desc "Updates submodules"
-    task :update_submodules do
+    
         run "cd #{remote_cached_repo} && git submodule init"
         run "cd #{remote_cached_repo} && git submodule update"
     end
@@ -47,10 +52,10 @@ namespace :deploy do
         if defined?(@previous_revision)
             changes = `git log --no-merges --pretty=format:"* %s %b (%cn)" #{previous_revision}.. | replace '<unknown>' ''`
 
-            #if not changes.empty?
+            if not changes.empty?
                 
                 send_email email_response, {:body => "Deployed changes:\n#{changes}", :subject => "Deploying to #{stage}"}
-            #end
+            end
         end
         
     end
@@ -111,8 +116,8 @@ namespace :logs do
 end
 
 # Let's run this tasks immediately before the final symlink is made
+before("deploy:symlink", "deploy:initialize_app")
 before("deploy:symlink", "deploy:notify")
-before("deploy:symlink", "deploy:update_submodules")
 before("deploy:symlink", "deploy:link_shared_data")
 before("deploy:symlink", "deploy:minify_js_and_css")
 before("deploy:symlink", "deploy:db_backup")
@@ -123,10 +128,9 @@ before("deploy:symlink", "deploy:doctrine")
 require 'net/smtp'
 
 def send_email(to, opts={})
-    puts "--------xxxxxxxxxxxxxxxxxx"
-    puts msg
+   
     opts[:server] ||= 'localhost'
-    opts[:from] ||= 'deploy@#{domain}'
+    opts[:from] ||= "deploy@#{domain}"
     opts[:from_alias] ||= 'Traxpacking Deployment'
     opts[:subject] ||= "Deployment Summary"
     opts[:body] ||= "Code has been deployed..."
@@ -141,9 +145,11 @@ Subject: #{opts[:subject]}
 #{opts[:body]}
 END_OF_MESSAGE
 
-    puts "--------"
-    puts msg
     Net::SMTP.start(opts[:server]) do |smtp|
         smtp.send_message msg, opts[:from], to
   end
+end
+
+def remote_file_exists?(full_path)
+  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
 end
