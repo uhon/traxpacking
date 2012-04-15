@@ -58,7 +58,7 @@ class Picture
 	/**
 	 * @var string $scratch
 	 *
-	 * @ORM\Column(type="scratch", length=255, nullable=false)
+	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $scratch;
 
