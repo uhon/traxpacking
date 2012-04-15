@@ -406,3 +406,6 @@ table tr.odd {
   height: 400px;
   display: block;
   overflow: hidden; }
+  #svgMapContainer svg {
+    width: 900px;
+    height: 400px; }

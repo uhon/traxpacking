@@ -26,14 +26,14 @@ namespace :deploy do
     task :initialize_app do
         if not remote_file_exists?("#{shared_path}/public/.htaccess")  
             puts "create things we need at first deployment"
-            run "cp #{remote_cached_repo}/public/_htaccess_prod #{shared_path}/public/.htaccess"
             run "mkdir -p -m 777 #{shared_path}/data/session"
             run "mkdir -p -m 777 #{shared_path}/public/cache"
             run "mkdir -p -m 777 #{shared_path}/public/media"
             run "mkdir -p -m 777 #{shared_path}/public/compressed"
             run "mkdir -p -m 777 #{shared_path}/library"
-            run "cd #{shared_path}/library && svn co http://framework.zend.com/svn/framework/standard/branches/release-1.11/library/Zend"
-            run "cd #{shared_path}/library && svn co http://framework.zend.com/svn/framework/extras/branches/release-1.11/library/ZendX"
+            run "cp #{remote_cached_repo}/public/_htaccess_prod #{shared_path}/public/.htaccess"
+            run "cd #{shared_path}/library && svn co -q http://framework.zend.com/svn/framework/standard/branches/release-1.11/library/Zend"
+            run "cd #{shared_path}/library && svn co -q http://framework.zend.com/svn/framework/extras/branches/release-1.11/library/ZendX"
         end
     
     
