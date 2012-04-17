@@ -10,3 +10,6 @@
 [submodule "library/phpThumb"]
 	path = library/phpThumb
 	url = git://github.com/masterexploder/PHPThumb.git
+[submodule "public/js/jquery/3rd_party/supersized"]
+	path = public/js/jquery/3rd_party/supersized
+	url = git://github.com/uhon/supersized.git
