@@ -50,14 +50,14 @@ class Route
     /**
      * @var Poi $pois
      *
-     * @ORM\ManyToMany(targetEntity="Poi")
+     * @ORM\ManyToMany(targetEntity="Poi", mappedBy="routes")
      */
     private $pois;
 
     /**
      * @var Track $tracks
      *
-     * @ORM\ManyToMany(targetEntity="Track")
+     * @ORM\ManyToMany(targetEntity="Track", mappedBy="routes")
      */
     private $tracks;
 

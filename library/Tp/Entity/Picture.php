@@ -16,7 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @property string $filename
  * @property \Doctrine\Common\DateTime\DateTime $datetime
  * @property Poi $poi
- * @property string $scratch
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
@@ -54,13 +53,6 @@ class Picture
      * @ORM\ManyToOne(targetEntity="Poi")
      */
     private $poi;
-
-	/**
-	 * @var string $scratch
-	 *
-	 * @ORM\Column(type="string", length=255, nullable=false)
-	 */
-	private $scratch;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate

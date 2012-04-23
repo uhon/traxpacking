@@ -199,8 +199,9 @@ SVG = { // start of SVG object scope.
             countryList = {
                 0 : {name : 'Switzerland', pictures : '5'},
                 1 : {name : 'Austria', pictures : '9'},
-                /*2 : {name : 'Romania', pictures : '5'},
-                3 : {name : 'Hungary', pictures : '5'},
+                2 : {name : 'Hungary', pictures : '5'},
+                3 : {name : 'Romania', pictures : '5'},
+                
                 4 : {name : 'Bulgaria', pictures : '5'},
                 5 : {name : 'Turkey', pictures : '5'},
                 6 : {name : 'Georgia', pictures : '5'},
@@ -214,7 +215,7 @@ SVG = { // start of SVG object scope.
                 14 : {name : 'Thailand', pictures : '5'},
                 15 : {name : 'Cambodia', pictures : '5'},
                 16 : {name : 'Burma', pictures : '5'},
-                17 : {name : 'India', pictures : '9'}*/
+                17 : {name : 'India', pictures : '9'}
                 /*18 : {name : 'Australia', pictures : '9'},
                 19: {name : 'Chile', pictures : '5'},*/
             };

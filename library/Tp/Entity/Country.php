@@ -15,6 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @property int $id
  * @property string name
+ * @property float long_west
+ * @property float lat_south
+ * @property float long_east
+ * @property float lat_north
  * @property Poi $pois
  *
  * @ORM\Entity
@@ -46,6 +50,33 @@ class Country
      */
     private $pois;
 
+    /**
+   	 * @var float $long_west
+   	 *
+   	 * @ORM\Column(type="float")
+   	 */
+   	private $long_west;
+
+    /**
+   	 * @var float $lat_south
+   	 *
+   	 * @ORM\Column(type="float")
+   	 */
+   	private $lat_south;
+
+    /**
+   	 * @var float $long_east
+   	 *
+   	 * @ORM\Column(type="float")
+   	 */
+   	private $long_east;
+
+    /**
+   	 * @var float $lat_north
+   	 *
+   	 * @ORM\Column(type="float")
+   	 */
+   	private $lat_north;
 
     /**
    	 * @var \Doctrine\Common\DateTime\DateTime $createddate

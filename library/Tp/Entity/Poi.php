@@ -91,7 +91,7 @@ class Poi
     /**
      * @var Route $routes
      *
-     * @ORM\ManyToMany(targetEntity="Route", mappedBy="poi")
+     * @ORM\ManyToMany(targetEntity="Route", mappedBy="pois")
      */
 	private $routes;
 
