@@ -214,7 +214,7 @@ SVG = { // start of SVG object scope.
                 13 : {name : 'Laos', pictures : '5'},
                 14 : {name : 'Thailand', pictures : '5'},
                 15 : {name : 'Cambodia', pictures : '5'},
-                16 : {name : 'Burma', pictures : '5'},
+                16 : {name : 'Myanmar (Burma)', pictures : '5'},
                 17 : {name : 'India', pictures : '9'}
                 /*18 : {name : 'Australia', pictures : '9'},
                 19: {name : 'Chile', pictures : '5'},*/
@@ -225,7 +225,9 @@ SVG = { // start of SVG object scope.
         $.each(countryList, function(key, country) {
             if(country.pictures > 0) {
                 C.log(country.name);
-                var element = $('#' + country.name, SVG.worldMap.root());
+
+                var element = $('path[title="' + country.name + '"]', SVG.worldMap.root());
+
                 element.attr("fill", '#ccc');
                 element.attr("class", 'active');
 

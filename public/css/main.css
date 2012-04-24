@@ -402,10 +402,10 @@ table tr.odd {
     color: #556b2f; }
 
 #svgMapContainer {
-  width: 900px;
+  width: 100%;
   height: 400px;
   display: block;
   overflow: hidden; }
   #svgMapContainer svg {
-    width: 900px;
+    width: 100%;
     height: 400px; }
