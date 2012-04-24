@@ -16,10 +16,13 @@ class Tp_Controller_Plugin_ViewSetup extends Zend_Controller_Plugin_Abstract
         '/js/jquery/3rd_party/jquery.svg.js',
         '/js/jquery/3rd_party/jquery.svgdom.js',
         '/js/jquery/3rd_party/json2.js',
+        '/js/jquery/3rd_party/supersized/slideshow/js/jquery.easing.min.js',
+        '/js/jquery/3rd_party/supersized/slideshow/js/supersized.3.2.7.js',
+        '/js/jquery/3rd_party/supersized/slideshow/theme/supersized.shutter.js',
         '/js/jquery/jquery.waitForIt.js',
-
         '/js/site.js',
     );
+
 
     private static $headStyles = array(
         '/css/main.css'

@@ -1,4 +1,4 @@
-var C, INIT, FORM, UI, SVG;
+var C, GEN, INIT, FORM, UI, SVG;
 
 C = {
     // console wrapper
@@ -42,6 +42,40 @@ C = {
     }
 }; // end console wrapper.
 
+GEN = {   // start of GEN object scope.
+    /*
+     * Returns an Object or Function-Pointer based on a String-Representation of ObjectHirarchy.
+     * If exectute property is set, the function gets executed
+     *
+     * E.x.:  "GEN.getObjectBYString"
+     *         turns to: window["GEN"]["getObjectBYString"]
+     */
+    getObjectByString: function(objectString, execute) {
+        var hirarchyArray = objectString.split("."),
+        curMember = window;
+
+        $.each(hirarchyArray, function(key, value) {
+            curMember = curMember[value];
+        });
+        if (typeof (execute) !== "undefined" && execute === true) {
+            return curMember();
+        } else {
+            return curMember;
+        }
+    }
+}; // end of GEN object scope.
+
+INIT = {   // start of INIT object scope.
+    onContentReady:function () {
+        window.setTimeout(function () {
+            UI.showFlashMessages();
+        }, 400);
+
+        C.log('Content Replaced rerunning all ContentBindings');
+        FORM.bindEditLinks();
+        FORM.bindDeleteForms();
+    }
+}; // end of INIT object scope.
 
 FORM = {  // start of FORM object scope.
     bindEditLinks: function() {
@@ -106,18 +140,6 @@ FORM = {  // start of FORM object scope.
     }
 };  // end of FORM object scope.
 
-INIT = {   // start of INIT object scope.
-    onContentReady:function () {
-        window.setTimeout(function () {
-            UI.showFlashMessages();
-        }, 400);
-
-        C.log('Content Replaced rerunning all ContentBindings');
-        FORM.bindEditLinks();
-        FORM.bindDeleteForms();
-    }
-}; // end of INIT object scope.
-
 UI = { // start of INIT object scope.
     showFlashMessages: function() {
         $(".flashMessages").each(function () {
@@ -136,6 +158,11 @@ UI = { // start of INIT object scope.
         }
         //noinspection JSCheckFunctionSignatures
         $(".infoMessages .msgItem").append('<li class="msgItem">' + message + '</li>');
+    },
+    createButton: function(buttonText, theFunction) {
+        var button = $('<button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">' + buttonText + '</span></button>');
+        button.bind('click', theFunction);
+        return button;
     },
     errorMessage: function(message, removeOthers) {
         if(removeOthers) {
@@ -172,6 +199,133 @@ UI = { // start of INIT object scope.
                     }
             });
         }
+    },
+    startSlideshow: function() {
+        $("#playground").hide();
+        $('body', window.parent.document).append('<div id="supersized-loader"></div><div id="supersized"></div>');
+        $('body', window.parent.document).append(
+            '<!--Thumbnail Navigation-->' +
+            '<div id="prevthumb"></div>' +
+            '<div id="nextthumb"></div>' +
+
+            '<!--Arrow Navigation-->' +
+            '<a id="prevslide" class="load-item"></a>' +
+            '<a id="nextslide" class="load-item"></a>' +
+
+            '<div id="thumb-tray" class="load-item">' +
+            '<div id="thumb-back"></div>' +
+            '<div id="thumb-forward"></div>' +
+            '</div>' +
+
+            '<!--Time Bar-->' +
+            '<div id="progress-back" class="load-item">' +
+            '<div id="progress-bar"></div>' +
+            '</div>' +
+
+            '<!--Control Bar-->' +
+            '<div id="controls-wrapper" class="load-item">' +
+            '<div id="controls">' +
+
+            '<a id="play-button"><img id="pauseplay" src="/img/pause.png"/></a>' +
+
+            '<!--Slide counter-->' +
+            '<div id="slidecounter">' +
+            '<span class="slidenumber"></span> / <span class="totalslides"></span>' +
+            '</div>' +
+
+            '<!--Slide captions displayed here-->' +
+            '<div id="slidecaption"></div>' +
+
+            '<!--Thumb Tray button-->' +
+            '<a id="tray-button"><img id="tray-arrow" src="http://uhon.ch/sent/img/button-tray-up.png"/></a>' +
+
+            '<!--Navigation-->' +
+            '<ul id="slide-list"></ul>' +
+
+            '</div>' +
+            '</div>'
+        );
+
+        //alert("startSlideshow");
+        $.supersized({
+            // Functionality
+            slideshow               :   1,            // Slideshow on/off
+            autoplay                :   0,            // Slideshow starts playing automatically
+            start_slide             :   1,            // Start slide (0 is random)
+            stop_loop               :   1,            // Pauses slideshow on last slide
+            random                  :   0,            // Randomize slide order (Ignores start slide)
+            slide_interval          :   3000,         // Length between transitions
+            transition              :   1,            // 0-None, 1-Fade, 2-Slide Top, 3-Slide Right, 4-Slide Bottom, 5-Slide Left, 6-Carousel Right, 7-Carousel Left
+            transition_speed        :   1300,         // Speed of transition
+            new_window              :   1,            // Image links open in new window/tab
+            pause_hover             :   0,            // Pause slideshow on hover
+            keyboard_nav            :   1,            // Keyboard navigation on/off
+            performance             :   3,            // 0-Normal, 1-Hybrid speed/quality, 2-Optimizes image quality, 3-Optimizes transition speed // (Only works for Firefox/IE, not Webkit)
+            image_protect           :   1,            // Disables image dragging and right click with Javascript
+
+            // Size & Position
+            min_width               :   0,            // Min width allowed (in pixels)
+            min_height              :   0,            // Min height allowed (in pixels)
+            vertical_center         :   1,            // Vertically center background
+            horizontal_center       :   1,            // Horizontally center background
+            fit_always              :   0,            // Image will never exceed browser width or height (Ignores min. dimensions)
+            fit_portrait            :   1,            // Portrait images will not exceed browser height
+            fit_landscape           :   0,            // Landscape images will not exceed browser width
+
+            // Components
+            slide_links             :   'blank',      // Individual links for each slide (Options: false, 'number', 'name', 'blank')
+            thumb_links             :   1,            // Individual thumb links for each slide
+            thumbnail_navigation    :   0,            // Thumbnail navigation
+            // Theme Options
+            progress_bar            :    0,            // Timer for each slide
+            mouse_scrub             :    0,
+            // Slideshow Images
+            slides                  :      [
+
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00465.jpg', title : 'DSC00465', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00465.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00480.jpg', title : 'DSC00480', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00480.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00502.jpg', title : 'DSC00502', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00502.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00395.jpg', title : 'DSC00395', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00395.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00440.jpg', title : 'DSC00440', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00440.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00466.jpg', title : 'DSC00466', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00466.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00482.jpg', title : 'DSC00482', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00482.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00505.jpg', title : 'DSC00505', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00505.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00396.jpg', title : 'DSC00396', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00396.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00443.jpg', title : 'DSC00443', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00443.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00468.jpg', title : 'DSC00468', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00468.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00484.jpg', title : 'DSC00484', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00484.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00518.jpg', title : 'DSC00518', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00518.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00400.jpg', title : 'DSC00400', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00400.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00445.jpg', title : 'DSC00445', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00445.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00470.jpg', title : 'DSC00470', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00470.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00486.jpg', title : 'DSC00486', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00486.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00524.jpg', title : 'DSC00524', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00524.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00402.jpg', title : 'DSC00402', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00402.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00447.jpg', title : 'DSC00447', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00447.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00473.jpg', title : 'DSC00473', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00473.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00490.jpg', title : 'DSC00490', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00490.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00528.jpg', title : 'DSC00528', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00528.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00405.jpg', title : 'DSC00405', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00405.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00448.jpg', title : 'DSC00448', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00448.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00475.jpg', title : 'DSC00475', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00475.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00491.jpg', title : 'DSC00491', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00491.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00529.jpg', title : 'DSC00529', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00529.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00420.jpg', title : 'DSC00420', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00420.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00451.jpg', title : 'DSC00451', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00451.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00477.jpg', title : 'DSC00477', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00477.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00492.jpg', title : 'DSC00492', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00492.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00530.jpg', title : 'DSC00530', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00530.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00421.jpg', title : 'DSC00421', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00421.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00455.jpg', title : 'DSC00455', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00455.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00478.jpg', title : 'DSC00478', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00478.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00496.jpg', title : 'DSC00496', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00496.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00532.jpg', title : 'DSC00532', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00532.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00426.jpg', title : 'DSC00426', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00426.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00460.jpg', title : 'DSC00460', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00460.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00479.jpg', title : 'DSC00479', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00479.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00497.jpg', title : 'DSC00497', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00497.jpg', url : ''}
+            ]
+        });
     }
 }; // end of UI object scope.
 
@@ -201,7 +355,7 @@ SVG = { // start of SVG object scope.
                 1 : {name : 'Austria', pictures : '9'},
                 2 : {name : 'Hungary', pictures : '5'},
                 3 : {name : 'Romania', pictures : '5'},
-                
+
                 4 : {name : 'Bulgaria', pictures : '5'},
                 5 : {name : 'Turkey', pictures : '5'},
                 6 : {name : 'Georgia', pictures : '5'},
@@ -230,6 +384,35 @@ SVG = { // start of SVG object scope.
 
                 element.attr("fill", '#ccc');
                 element.attr("class", 'active');
+                element.bind('click', function(e) {
+                    var dialogContent,
+                        dialog,
+                        button,
+                        pictures;
+
+                    dialogContent = $('<div><div style="text-align:center; margin-top: 20px;"></div></div>');
+                    if(country.pictures > 0) {
+                        button = UI.createButton('slideshow (' + country.pictures + ' pictures)');
+                        button.bind('click', function() {
+                            $(".ui-dialog-content").dialog("close");
+                            UI.startSlideshow(country.name);
+                        });
+
+                        dialogContent.find('div').append(button);
+
+                    }
+
+                    $(dialogContent).dialog({
+                        modal: true,
+                        title: $(this).attr('title'),
+                        autoOpen: true,
+                        closeOnEscape: true,
+                        show: "fade",
+                        hide: "explode",
+                        resizable: false
+                    });
+
+                });
 
                 dimensions = element.get(0).getBBox();
             C.log(dimensions);
@@ -274,6 +457,7 @@ SVG = { // start of SVG object scope.
             $('path.active', SVG.worldMap.root()).bind('mouseover', function(e) {
                 $(this).attr('fill', 'green');
             });
+
             $('path.active', SVG.worldMap.root()).bind('mouseout', function(e) {
                 $(this).attr('fill', '#ccc');
             });
