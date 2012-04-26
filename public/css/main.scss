@@ -141,3 +141,24 @@ table {
 	    height: 400px;
     }
 }
+
+
+#fullscreen_toggle {
+    position: absolute;
+    width: 100px;
+    height:30px;
+    top: 10px;
+    right: 10px;
+}
+
+#close-supersized {
+    position: absolute;
+    width: 20px;
+    height:30px;
+    top: 10px;
+    left: 10px;
+}
+
+#supersized-wrapper {
+    display:none;
+}

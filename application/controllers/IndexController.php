@@ -31,6 +31,11 @@ class IndexController extends Tp_Controller_Action
 
     }
 
+    public function blogAction()
+    {
+
+    }
+
 }
 
 

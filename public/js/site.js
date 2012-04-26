@@ -1,4 +1,4 @@
-var C, GEN, INIT, FORM, UI, SVG;
+var C, GEN, INIT, FORM, UI, SVG, WHYJUSTIFY;
 
 C = {
     // console wrapper
@@ -200,51 +200,17 @@ UI = { // start of INIT object scope.
             });
         }
     },
+    initalSlideshowState: null,
     startSlideshow: function() {
-        $("#playground").hide();
-        $('body', window.parent.document).append('<div id="supersized-loader"></div><div id="supersized"></div>');
-        $('body', window.parent.document).append(
-            '<!--Thumbnail Navigation-->' +
-            '<div id="prevthumb"></div>' +
-            '<div id="nextthumb"></div>' +
+        UI.initalSlideshowState = $('#supersized-wrapper').html();
+        //$("#playground").hide();
+        C.log($("iframe", window.top.document));
+        // TODO: Comment this out
 
-            '<!--Arrow Navigation-->' +
-            '<a id="prevslide" class="load-item"></a>' +
-            '<a id="nextslide" class="load-item"></a>' +
+        $('body', window.document).append('<div id="supersized-loader"></div><div id="supersized"></div>');
+        $('#supersized-wrapper').show();
+        $('#svgMapContainer').hide();
 
-            '<div id="thumb-tray" class="load-item">' +
-            '<div id="thumb-back"></div>' +
-            '<div id="thumb-forward"></div>' +
-            '</div>' +
-
-            '<!--Time Bar-->' +
-            '<div id="progress-back" class="load-item">' +
-            '<div id="progress-bar"></div>' +
-            '</div>' +
-
-            '<!--Control Bar-->' +
-            '<div id="controls-wrapper" class="load-item">' +
-            '<div id="controls">' +
-
-            '<a id="play-button"><img id="pauseplay" src="/img/pause.png"/></a>' +
-
-            '<!--Slide counter-->' +
-            '<div id="slidecounter">' +
-            '<span class="slidenumber"></span> / <span class="totalslides"></span>' +
-            '</div>' +
-
-            '<!--Slide captions displayed here-->' +
-            '<div id="slidecaption"></div>' +
-
-            '<!--Thumb Tray button-->' +
-            '<a id="tray-button"><img id="tray-arrow" src="http://uhon.ch/sent/img/button-tray-up.png"/></a>' +
-
-            '<!--Navigation-->' +
-            '<ul id="slide-list"></ul>' +
-
-            '</div>' +
-            '</div>'
-        );
 
         //alert("startSlideshow");
         $.supersized({
@@ -326,6 +292,16 @@ UI = { // start of INIT object scope.
                 {image : 'http://uhon.ch/sent/img/pictures/DSC00497.jpg', title : 'DSC00497', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00497.jpg', url : ''}
             ]
         });
+        $('#fullscreen_toggle').empty().append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
+        $('#close-supersized').empty().append(UI.createButton('X', UI.stopSlideshow));
+    },
+    stopSlideshow: function() {
+        $('#supersized-wrapper').hide();
+        $('#svgMapContainer').show();
+        $("#supersized-loader").remove();
+        $('#supersized-wrapper').empty();
+        $('#supersized-wrapper').html(UI.initalSlideshowState);
+        $('#supersized').remove();
     }
 }; // end of UI object scope.
 
@@ -335,6 +311,7 @@ SVG = { // start of SVG object scope.
     createSvgWorldMap: function() {
         SVG.worldMap = $('#svgMapContainer').svg();
         SVG.worldMap = $('#svgMapContainer').svg('get');
+        $('#svgMapContainer').waitForIt();
         SVG.worldMap.load("/img/world_map.svg", {addTo: true, changeSize: false, onLoad: SVG.setupSvgWorldMap });
     },
 
@@ -415,7 +392,7 @@ SVG = { // start of SVG object scope.
                 });
 
                 dimensions = element.get(0).getBBox();
-            C.log(dimensions);
+                C.log(dimensions);
                 if(dimensions.x - borderSize < minX) {
                     minX = dimensions.x - borderSize;
                 }
@@ -462,8 +439,30 @@ SVG = { // start of SVG object scope.
                 $(this).attr('fill', '#ccc');
             });
         }
+        $('#fullscreen_toggle').append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
+        $('#svgMapContainer').waitForItStop();
     }
 }; // end of SVG object scope.
+
+WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
+    fullscreenRestore: null,
+    toggleFullscreen: function() {
+        var iframe = $("iframe", window.top.document);
+        if(WHYJUSTIFY.fullscreenRestore === null) {
+            WHYJUSTIFY.fullscreenRestore = { width: iframe.css('width'), height: iframe.css('height') };
+            C.log("restore-css-string: ", WHYJUSTIFY.fullscreenRestore);
+            iframe.css({ border: 0, position:"fixed", top:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
+            $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).hide();
+            $("#main", window.top.document).css('padding-top: 0px');
+        } else {
+            $(".entry-actions", window.top.document).css('padding-top: 40px');
+            $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).show();
+            iframe.css(WHYJUSTIFY.fullscreenRestore);
+            iframe.css({position:"static", top:"auto", left:"auto"});
+            WHYJUSTIFY.fullscreenRestore = null;
+        }
+    }
+}; // end of WHYJUSTIFY-specific object scope.
 
 $(function () {
     INIT.onContentReady();
