@@ -29,6 +29,7 @@ namespace :deploy do
             run "mkdir -p -m 777 #{shared_path}/data/session"
             run "mkdir -p -m 777 #{shared_path}/public/cache"
             run "mkdir -p -m 777 #{shared_path}/public/media"
+            run "mkdir -p -m 777 #{shared_path}/public/upload"
             run "mkdir -p -m 777 #{shared_path}/public/compressed"
             run "mkdir -p -m 777 #{shared_path}/library"
             run "cp #{remote_cached_repo}/public/_htaccess_prod #{shared_path}/public/.htaccess"

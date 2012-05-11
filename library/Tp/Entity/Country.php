@@ -143,4 +143,14 @@ class Country
         return get_object_vars($this);
     }
 
+    public function getCountryNameArray() {
+        $countryArray = array();
+        $repository = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Country');
+        $countries = $repository->findBy(array(), array("name" => "ASC"));
+        foreach($countries as $country) {
+            $countryArray[$country->id] = $country->name;
+        }
+        return $countryArray;
+    }
+
 }

@@ -21,6 +21,7 @@ class Admin_PoiController extends Tp_Controller_Action
                 $poi->title,
                 $poi->latitude,
                 $poi->longitude,
+                $poi->country,
                 $poi->description,
                 $this->view->linkiconEdit($poi->getEditUrl()),
                 $this->view->linkiconDelete($poi->getDeleteUrl())
@@ -46,13 +47,13 @@ class Admin_PoiController extends Tp_Controller_Action
             array(
                 'id' => 'poiForm',
                 'pictures' => $pictures,
-                'initPicture' => $initPicture
-                /*'action' => $this->view->url(array(
+                'initPicture' => $initPicture,
+                'action' => $this->view->url(array(
                     'module' => 'admin',
                     'controller' => 'poi',
                     'action' => 'edit',
                     'poi' => $this->_getParam('poi'))
-                    , null, true)*/
+                    , null, true)
             )
         );
 
@@ -81,6 +82,7 @@ class Admin_PoiController extends Tp_Controller_Action
                 $poi->description = $form->getValue('description');
                 $poi->latitude = $form->getValue('latitude');
                 $poi->longitude = $form->getValue('longitude');
+                $poi->country = new Tp\Entity\Country($form->getValue('country'));
                 $poi->picture = $picture;
                 $poi->type = 1;
                 $this->_em->persist($poi);

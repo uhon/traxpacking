@@ -88,12 +88,7 @@ class Poi
      */
 	private $pictures;
 
-    /**
-     * @var Route $routes
-     *
-     * @ORM\ManyToMany(targetEntity="Route", mappedBy="pois")
-     */
-	private $routes;
+
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate

@@ -103,12 +103,7 @@ class Track
      */
 	private $polylines;
 
-    /**
-     * @var Route $routes
-     *
-     * @ORM\ManyToMany(targetEntity="Route", mappedBy="tracks")
-     */
-	private $routes;
+
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate

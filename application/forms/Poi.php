@@ -41,15 +41,23 @@ class Form_Poi extends Tp_Form
             'label' => 'Longitude'
         ));
 
+        $country = new \Tp\Entity\Country();
+        $this->addElement('select', 'country', array(
+            'required' => true,
+            'multiOptions' => $country->getCountryNameArray()
+        ));
+
         $this->addElement('textarea', 'description', array(
             'label' => 'Description'
         ));
 
+        /*$category = new \Tp\Entity\PoiCategory();
         $this->addElement('multiCheckbox', 'categories', array(
-            'value' => $this->_longitude,
+            'value' => $this->_categories,
             'required' => true,
-            'label' => 'Longitude'
-        ));
+            'label' => 'Categories',
+            'multiOptions' => array('1' => 'A', '2' ="B")
+        ));*/
 
         $pictureSubform = new Tp_Form_TabbedSubform();
         $pictureSubform->addSubForms($this->_pictureSubforms);

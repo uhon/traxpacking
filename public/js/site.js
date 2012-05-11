@@ -316,7 +316,7 @@ SVG = { // start of SVG object scope.
     },
 
     setupSvgWorldMap: function() {
-        //svg.configure({viewBox: '-0 0 600 400'}, true)
+        SVG.worldMap.root().css('height', $(window).height());
         var minX = 99999,
             minY = 99999,
             maxX = -99999,

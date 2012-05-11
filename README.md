@@ -36,6 +36,7 @@ Some brief overview of what it should do, once finished:
     mkdir -p -m 777 data/session
     mkdir -p -m 777 public/cache
     mkdir -p -m 777 public/media
+    mkdir -p -m 777 public/upload
     mkdir -p -m 777 public/compressed
 
     git submodule init
