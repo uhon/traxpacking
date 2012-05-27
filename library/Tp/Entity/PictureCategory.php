@@ -10,19 +10,19 @@ namespace Tp\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PoiCategory
+ * PictureCategory
  * 
  * @property int $id
  * @property string $title
  * @property string $color
- * @property Poi $pois
+ * @property Pictures $pictures
  * @property \Doctrine\Common\DateTime\DateTime $createddate
  * @property \Doctrine\Common\DateTime\DateTime $modifieddate
  *
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class PoiCategory
+class PictureCategory
 {
 	/**
 	 * @var integer $id
@@ -48,11 +48,11 @@ class PoiCategory
 	private $color;
 
     /**
-     * @var Poi $pois
+     * @var Picture $pictures
      *
-     * @ORM\OneToMany(targetEntity="Poi", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Picture", mappedBy="category")
      */
-	private $pois;
+	private $pictures;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate
@@ -118,26 +118,5 @@ class PoiCategory
 	public function toArray() {
 		return get_object_vars($this);
 	}
-    
-    public function getEditUrl() {
-        return \Tp_Shortcut::getView()->url(
-            array(
-                'module' => 'admin',
-                'controller' => 'poi',
-                'action' => 'edit-category',
-                'poi' => $this->id
-            ), null, true
-        );
-    }
 
-    public function getDeleteUrl() {
-        return \Tp_Shortcut::getView()->url(
-            array(
-                'module' => 'admin',
-                'controller' => 'poi',
-                'action' => 'delete-category',
-                'poi' => $this->id
-            ), null, true
-        );
-    }
 }

@@ -16,11 +16,11 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 	), (array)$this->keywords)))?>" />
 	<meta name="description" content="<?=$this->escape($this->description)?>" />
     <?php
-        echo $this->jQuery()
-            ->setVersion('1.7.1')->enable()
-            ->setUiVersion('1.8.17')->uiEnable()
-            ->addStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css');
+        $this->headScript()
+            ->appendFile('/js/3rd_party/ckeditor/ckeditor.js')
+            ->appendFile('/js/3rd_party/ckeditor/adapters/jquery.js');
     ?>
+
     <?=$this->headLink()?>
     <?=$this->headScript()?>
 

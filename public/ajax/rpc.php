@@ -7,6 +7,16 @@
 class MapDataProvider
 {
 
+
+    /** @var $_em \Doctrine\ORM\EntityManager */
+    private $_em = null;
+
+    public function __construct() {
+        /** @var $doctrine  \Bisna\Application\Container\DoctrineContainer */
+        $doctrine = Zend_Registry::get('doctrine');
+        $this->_em = $doctrine->getEntityManager();
+    }
+
 	/**
 	 * This hangs for a given number of seconds and is for testing async
 	 * calls to make sure it doesn't lock up the browser.
@@ -22,6 +32,21 @@ class MapDataProvider
 
     public function random() {
         return rand(0, 199929);
+    }
+
+    public function getCountriesWithPictures() {
+        $cByPoi = $this->_em->createQueryBuilder()
+            ->select('c, poi')
+            ->from('\Tp\Entity\Poi', 'poi')
+            ->innerJoin('poi.country', 'c')
+            ->groupBy('c')
+            ->getQuery()->execute();
+
+            $countryArray = array();
+            foreach($cByPoi as $result) {
+                $countryArray[] = array("name" => $result->country->name);
+            }
+            return $countryArray;
     }
 
     public function hello() {
@@ -77,7 +102,6 @@ $application = new Zend_Application(
     , $config
 );
 $application->bootstrap();
-
 
 clearstatcache();
 

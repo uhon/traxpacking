@@ -31,7 +31,8 @@ div.clear { clear: both; }
 
 /* Coloring defaults for Tables*/
 table {
-   tr.head {
+    color: green;
+    tr.head {
         color: #EBF09E;
         background-color: #797979;
     }
@@ -41,6 +42,10 @@ table {
     tr.odd {
         background-color: #e6e6fa;
     }
+    /*textarea {
+        width: 98%;
+        height:100px;
+    }*/
 }
 
 #topnav {
@@ -138,6 +143,18 @@ table {
     
     svg {
 	    width: 100%;
+    }
+}
+
+div.worldMapLarge {
+    svg {
+  	    height:400px;
+    }
+}
+
+div.worldMapSmall {
+    svg {
+  	    height:120px;
     }
 }
 

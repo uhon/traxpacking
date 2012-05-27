@@ -14,6 +14,7 @@ class Admin_PoiController extends Tp_Controller_Action
     public function indexAction() {
         $repository = $this->_em->getRepository('Tp\Entity\Poi');
         $pois = $repository->findAll();
+
         $this->view->pois = array();
         foreach($pois as $poi) {
             /* @var \Tp\Entity\Poi $poi */
@@ -21,7 +22,7 @@ class Admin_PoiController extends Tp_Controller_Action
                 $poi->title,
                 $poi->latitude,
                 $poi->longitude,
-                $poi->country,
+                $poi->country->name,
                 $poi->description,
                 $this->view->linkiconEdit($poi->getEditUrl()),
                 $this->view->linkiconDelete($poi->getDeleteUrl())
@@ -31,7 +32,6 @@ class Admin_PoiController extends Tp_Controller_Action
 
     public function editAction() {
         $add = true;
-        $initPicture = $this->_em->find('Tp\Entity\Picture', $this->_getParam('picture', 0));
         $poi = $this->_em->find('Tp\Entity\Poi', $this->_getParam('poi', 0));
         $pictures = null;
         if($poi) {
@@ -47,7 +47,6 @@ class Admin_PoiController extends Tp_Controller_Action
             array(
                 'id' => 'poiForm',
                 'pictures' => $pictures,
-                'initPicture' => $initPicture,
                 'action' => $this->view->url(array(
                     'module' => 'admin',
                     'controller' => 'poi',
@@ -59,32 +58,28 @@ class Admin_PoiController extends Tp_Controller_Action
 
         if($this->_request->isPost()) {
             if($form->isValid($this->_request->getPost())) {
-                $cachedPicture = $form->getValue('cachedPicture');
 
-                if($cachedPicture != null) {
-                    $picVersions = glob(APPLICATION_PATH . '/../public/cache/' . $cachedPicture . "*");
-                    foreach($picVersions as $pv) {
-
+                // Save Picture-Specific Information
+                foreach($form->getValue('pictures') as $p) {
+                    $picture = $this->_em->find('Tp\Entity\Picture', $p['pId']);
+                    if($picture->filename !== null) {
+                        $picture->datetime = new \DateTime($p['datetime']);
+                        $picture->description = $p['description'];
+                        $this->_em->persist($picture);
+                        $this->_em->flush();
                     }
-                    $removablePicture = APPLICATION_PATH . '/../public/upload/' . $form->getValue('removablePicture');
-                    if(file_exists($removablePicture)) {
-                        unlink($removablePicture);
-                    }
-
-                    $picture->filename = $cachedPicture;
-                    $picture->datetime = new \DateTime($form->getValue('dateTime'));
-                    $this->_em->persist($picture);
-                } elseif($picture->filename !== null) {
-                    $picture->datetime = new \DateTime($form->getValue('dateTime'));
                 }
+
 
                 $poi->title = $form->getValue('title');
                 $poi->description = $form->getValue('description');
                 $poi->latitude = $form->getValue('latitude');
                 $poi->longitude = $form->getValue('longitude');
-                $poi->country = new Tp\Entity\Country($form->getValue('country'));
-                $poi->picture = $picture;
+                $poi->svgCoordinates = $form->getValue('svgCoordinates');
+                //$poi->country = new Tp\Entity\Country($form->getValue('country'));
+                $poi->country = $this->_em->find('Tp\Entity\Country', $form->getValue('country'));
                 $poi->type = 1;
+                //$this->_em->persist($poi->country);
                 $this->_em->persist($poi);
 
                 $this->_em->flush();
@@ -97,6 +92,7 @@ class Admin_PoiController extends Tp_Controller_Action
         } else {
             if($poi && !$add) {
                 $data = $poi->toArray();
+                $data['country'] = $data['country']->id;
                 unset($data['pictures']);
                 $form->populate($data);
             }
@@ -127,12 +123,13 @@ class Admin_PoiController extends Tp_Controller_Action
         $picture = $this->_em->find('\Tp\Entity\Picture', $this->_getParam('picture'));
 
         if($picture !== null && $poi !== null) {
-            $poi->remove($picture);
+            $picture->poi = null;
+            $this->_em->persist($picture);
             $this->_em->flush();
             $this->infoMessage("Picture was successfully removed and is now uninitalized");
-            $this->_redirect("/admin/poi/index");
+        } else {
+           $this->errorMessage('There was an error removing that Picture');
         }
-        $this->errorMessage('There was an error removing that Picture');
-        $this->_redirect("/admin/poi/index");
+        //$this->_redirect("/admin/poi/index");
     }
 }

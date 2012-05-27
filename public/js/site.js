@@ -103,6 +103,7 @@ FORM = {  // start of FORM object scope.
         C.log('Bind delete-Links: ', logObj);
         $('form.deleteForm').bind('submit', function () {
             $(".flashMessages").slideUp();
+
             if($('.confirm', $(this)).length > 0) {
                 return confirm($('.confirm', $(this)).html());
             }
@@ -123,16 +124,18 @@ FORM = {  // start of FORM object scope.
     },
 
     popupForm:function (linkElement) {
+        C.log(linkElement);
         $('#popupForm').load(
             linkElement.attr('href'),
             function () {
                 $('#popupForm').dialog({
-                    title:"My Form",
-                    width:500,
+                    title:"FormDialog",
+                    width:700,
                     show:{effect:'explode', duration:750 },
                     hide:{effect:'explode', duration:750 },
                     modal:true,
-                    autoOpen:false
+                    autoOpen:false,
+                    closeOnEscape: true
                 });
                 $('#popupForm').dialog('open');
             }
@@ -178,7 +181,7 @@ UI = { // start of INIT object scope.
     activateTabsOnPoiForm: function() {
         if($('#poiForm').length > 0) {
             var tabContainer = $('#poiForm .tp_subform_tabbed:first');
-            $('#removePictureLink').each(function() {
+            $('.removeLink').each(function() {
                 var removeLink = $(this).attr('href');
                 $(this).closest('tr').hide();
             });
@@ -188,20 +191,47 @@ UI = { // start of INIT object scope.
             // close icon: removing the tab on click
             $(".tabList span.ui-icon-close", tabContainer).click(function() {
                 var index = $(".tabList li", tabContainer).index( $( this ).closest('li') ),
-                    deleteLink = $('div:nth-of-type(' + (index+1) + ') a#removePictureLink', tabContainer).attr('href');
+                    deleteLink = $('div:nth-of-type(' + (index+1) + ') a.removeLink', tabContainer).attr('href');
+                C.log('tabContainer', tabContainer);
+                C.log('index', index);
+                C.log('nth div', $('div:nth-of-type(' + (index+1) + ')', tabContainer));
                     if(confirm('do yo really want to remove this Picture from POI?')) {
                         tabContainer.waitForIt();
                         $.get(deleteLink, function(data) {
+                            C.log($('#popupForm .flashMessages'));
+                            C.log($('.flashMessages', data));
+                            $('#popupForm .flashMessages').remove();
+                            $('#popupForm').prepend(data);
+                            UI.showFlashMessages();
                             tabContainer.waitForItStop();
                             // TODO: No success/error szenario catched
                             tabContainer.tabs( "remove", index );
+                            var tabCounter = 1;
+                            $('.tabList li a', tabContainer).each(function() {
+                                $(this).text(tabCounter);
+                                tabCounter++;
+                            });
                         });
                     }
             });
         }
     },
+    markTabsWithErrors: function() {
+        $.each($(".tp_subform_tabbed ul.errors").closest(".tp_subform_tabbed"), function() {
+            C.log($(this));
+            index = $(this).attr('id').substr(4, $(this).attr('id').length-4);
+            var correspondingTab = $("ul li:nth-of-type(" + (index) + ")", $(this).closest('.subform_container'));
+            C.log('correspondingTab', correspondingTab);
+            $('a', correspondingTab).css('color', 'red');
+        });
+
+
+        //.attr('href');
+
+    },
     initalSlideshowState: null,
     startSlideshow: function() {
+        C.log('Starting Slideshow');
         UI.initalSlideshowState = $('#supersized-wrapper').html();
         //$("#playground").hide();
         C.log($("iframe", window.top.document));
@@ -308,26 +338,43 @@ UI = { // start of INIT object scope.
 
 SVG = { // start of SVG object scope.
     worldMap: null,
+
     createSvgWorldMap: function() {
         SVG.worldMap = $('#svgMapContainer').svg();
         SVG.worldMap = $('#svgMapContainer').svg('get');
         $('#svgMapContainer').waitForIt();
-        SVG.worldMap.load("/img/world_map.svg", {addTo: true, changeSize: false, onLoad: SVG.setupSvgWorldMap });
+        SVG.worldMap.load("/img/world_map.svg", {addTo: true, changeSize: false, onLoad: SVG.callForCountriesWithPictures });
     },
 
-    setupSvgWorldMap: function() {
-        SVG.worldMap.root().css('height', $(window).height());
+    callForCountriesWithPictures: function() {
+        rpc.setAsyncSuccess(SVG.setupSvgWorldMap);
+        rpc.getCountriesWithPictures();
+        C.log('hello');
+    },
+
+    setupSvgWorldMap: function(countryArray) {
+        C.log('setupWorldMap with following array', countryArray);
+        // SVG.worldMap.root().css('height', $(window).height());
+        //C.log('------- -0 0 ' + $(window).width() + ' ' + $(window).height());
+        //SVG.worldMap.configure({viewBox: '-400 -400 ' + $(window).width() + ' ' + $(window).height()}, true);
+        if($(window).width() > 300) {
+            $('#svgMapContainer').attr("class", "worldMapLarge");
+        } else {
+            $('#svgMapContainer').attr("class", "worldMapSmall");
+        }
+
+
         var minX = 99999,
             minY = 99999,
             maxX = -99999,
             maxY = -99999,
             maxWidth = 0,
             maxHeight = 0,
-            borderSize = 25,
+            borderSize = 3,
             dimensions = null,
             growHeight,
             growWidth,
-            countryList = {
+            countryList = countryArray; /*{
                 0 : {name : 'Switzerland', pictures : '5'},
                 1 : {name : 'Austria', pictures : '9'},
                 2 : {name : 'Hungary', pictures : '5'},
@@ -348,67 +395,68 @@ SVG = { // start of SVG object scope.
                 16 : {name : 'Myanmar (Burma)', pictures : '5'},
                 17 : {name : 'India', pictures : '9'}
                 /*18 : {name : 'Australia', pictures : '9'},
-                19: {name : 'Chile', pictures : '5'},*/
-            };
+                19: {name : 'Chile', pictures : '5'},
+            };*/
 
 
         //countryList = VODOO
         $.each(countryList, function(key, country) {
-            if(country.pictures > 0) {
-                C.log(country.name);
+            C.log(country.name);
 
-                var element = $('path[title="' + country.name + '"]', SVG.worldMap.root());
+            var element = $('path[title="' + country.name + '"]', SVG.worldMap.root());
 
-                element.attr("fill", '#ccc');
-                element.attr("class", 'active');
-                element.bind('click', function(e) {
-                    var dialogContent,
-                        dialog,
-                        button,
-                        pictures;
+            element.attr("fill", '#ccc');
+            element.attr("class", 'active');
+            element.bind('click', function(e) {
+                var dialogContent,
+                    dialog,
+                    button,
+                    pictures;
 
-                    dialogContent = $('<div><div style="text-align:center; margin-top: 20px;"></div></div>');
-                    if(country.pictures > 0) {
-                        button = UI.createButton('slideshow (' + country.pictures + ' pictures)');
-                        button.bind('click', function() {
-                            $(".ui-dialog-content").dialog("close");
-                            UI.startSlideshow(country.name);
-                        });
+                dialogContent = $('<div><div style="text-align:center; margin-top: 20px;"></div></div>');
 
-                        dialogContent.find('div').append(button);
-
-                    }
-
-                    $(dialogContent).dialog({
-                        modal: true,
-                        title: $(this).attr('title'),
-                        autoOpen: true,
-                        closeOnEscape: true,
-                        show: "fade",
-                        hide: "explode",
-                        resizable: false
+                if(country.pictures > 0) {
+                    button = UI.createButton('slideshow (' + country.pictures + ' pictures)');
+                    button.bind('click', function() {
+                        $(".ui-dialog-content").dialog("destroy");
+                        UI.startSlideshow(country.name);
                     });
 
+                    dialogContent.find('div').append(button);
+                }
+
+                dialogContent.dialog({
+                    modal: true,
+                    title: $(this).attr('title'),
+                    autoOpen: true,
+                    closeOnEscape: true,
+                    show: "explode",
+                    hide: "explode",
+                    resizable: false,
+                    stack: false
                 });
+                C.log('country clicked' + $(this));
+                $(this).show();
+                $(this).attr("fill", '#ccc');
 
-                dimensions = element.get(0).getBBox();
-                C.log(dimensions);
-                if(dimensions.x - borderSize < minX) {
-                    minX = dimensions.x - borderSize;
-                }
-                if(dimensions.y - borderSize < minY) {
-                    minY = dimensions.y - borderSize;
-                }
-                if(dimensions.x + dimensions.width + borderSize > maxX) {
-                    maxX = dimensions.x + dimensions.width + borderSize;
-                }
-                if(dimensions.y + dimensions.height + borderSize > maxY) {
-                    maxY = dimensions.y + dimensions.height + borderSize;
-                }
-                maxWidth = (maxX - minX);
-                maxHeight = Math.abs(maxY - minY);
+            });
 
+            dimensions = element.get(0).getBBox();
+            C.log(dimensions);
+            if(dimensions.x - borderSize < minX) {
+                minX = dimensions.x - borderSize;
             }
+            if(dimensions.y - borderSize < minY) {
+                minY = dimensions.y - borderSize;
+            }
+            if(dimensions.x + dimensions.width + borderSize > maxX) {
+                maxX = dimensions.x + dimensions.width + borderSize;
+            }
+            if(dimensions.y + dimensions.height + borderSize > maxY) {
+                maxY = dimensions.y + dimensions.height + borderSize;
+            }
+            maxWidth = (maxX - minX);
+            maxHeight = Math.abs(maxY - minY);
         });
 
         if(maxWidth === 0 || maxHeight === 0) {
@@ -469,14 +517,15 @@ $(function () {
 
     rpc = jQuery.Zend.jsonrpc({ url : "/ajax/rpc.php", async : true});
 
-    C.log(rpc.random());
+
+    /*C.log(rpc.random());
     C.log(rpc.random());
     C.log(rpc.random());
     C.log(rpc.random());
     C.log(rpc.hello());
     C.log(rpc.hello());
     C.log(rpc.hello());
-    C.log(rpc.hello());
+    C.log(rpc.hello());*/
 
     /*var testPremadeSmd = jQuery.Zend.jsonrpc({
         url: '/ajax/rpc.php',

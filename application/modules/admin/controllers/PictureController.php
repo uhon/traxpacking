@@ -39,6 +39,51 @@ class Admin_PictureController extends Tp_Controller_Action
         }
     }
 
+    public function editAction() {
+        $picture = $this->_em->find('Tp\Entity\Picture', $this->_getParam('picture', 0));
+
+        if($picture) {
+
+            $form = new Form_Picture(
+                array(
+                    'id' => 'pictureForm',
+                    'picture' => $picture,
+                    'action' => $this->view->url(array(
+                        'module' => 'admin',
+                        'controller' => 'picture',
+                        'action' => 'edit',
+                        'picture' => $picture->id)
+                        , null, true
+                    )
+                )
+            );
+
+            if($this->_request->isPost()) {
+                if($form->isValid($this->_request->getPost())) {
+                    $picture->description = $form->getValue('description');
+                    $picture->poi = $this->_em->find('Tp\Entity\Poi', $form->getValue('poi'));
+                    $picture->dateTime = $form->getValue('dateTime');
+
+                    $this->_em->persist($picture);
+
+                    $this->_em->flush();
+
+                    $message = 'Picture was successfully updated';
+                    $this->infoMessage($message);
+                    $form->redirectOnSuccess();
+
+                }
+            } else {
+                if($picture) {
+                    $data = $picture->toArray();
+                    $form->populate($data);
+                }
+            }
+
+            $this->view->form = $form;
+        }
+    }
+
     public function convertAction() {
         if(($pic = $this->_getParam('pic')) !== null) {
             $uploadedPicture = APPLICATION_PATH . "/../public/upload/" . $pic;

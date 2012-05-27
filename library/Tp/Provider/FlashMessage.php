@@ -40,6 +40,7 @@ class Tp_Provider_FlashMessage {
 
         if($flashMessenger->hasMessages()) {
            $msgString .= $this->formatMessages($flashMessenger->getMessages());
+           $flashMessenger->clearMessages();
         }
         return $msgString;
     }

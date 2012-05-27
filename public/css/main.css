@@ -271,7 +271,9 @@ mark {
     margin: 0 0 10px 7px; }
   .tp_form td.element textarea, .tp_form td.element input, .tp_form td.element select, .tp_form td.element p {
     margin: 5px 5px;
-    width: 90%; }
+    width: 85%; }
+  .tp_form td.element label input {
+    width: 15%; }
   .tp_form td.element textarea {
     height: 150px; }
   .tp_form td.element p img {
@@ -286,10 +288,13 @@ mark {
     padding: 0; }
     .tp_form .tp_subform_tabbed ul.tabList {
       display: none; }
-    .tp_form .tp_subform_tabbed .tabList .ui-icon-close {
-      margin: 0.4em 0.2em 0 0;
-      cursor: pointer;
-      float: left; }
+      .tp_form .tp_subform_tabbed ul.tabList li span.ui-icon {
+        display: none; }
+      .tp_form .tp_subform_tabbed ul.tabList li.ui-tabs-selected span.ui-icon {
+        display: inline;
+        margin: 0.4em 0.2em 0 0;
+        cursor: pointer;
+        float: left; }
 
 #popupForm {
   display: none; }
@@ -334,13 +339,19 @@ div.clear {
   background: url("/img/modalBackground.png") repeat scroll 50% 50% #666666; }
 
 /* Coloring defaults for Tables*/
-table tr.head {
-  color: #EBF09E;
-  background-color: #797979; }
-table tr.even {
-  background-color: #f0fff0; }
-table tr.odd {
-  background-color: #e6e6fa; }
+table {
+  color: green;
+  /*textarea {
+      width: 98%;
+      height:100px;
+  }*/ }
+  table tr.head {
+    color: #EBF09E;
+    background-color: #797979; }
+  table tr.even {
+    background-color: #f0fff0; }
+  table tr.odd {
+    background-color: #e6e6fa; }
 
 #topnav {
   margin: 10px 0 30px 0;
@@ -409,6 +420,12 @@ table tr.odd {
   overflow: hidden; }
   #svgMapContainer svg {
     width: 100%; }
+
+div.worldMapLarge svg {
+  height: 400px; }
+
+div.worldMapSmall svg {
+  height: 120px; }
 
 #fullscreen_toggle {
   position: absolute;

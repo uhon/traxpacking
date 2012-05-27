@@ -15,9 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @property int $id
  * @property float $latitude
  * @property float $longitude
+ * @property float $svgCoordinates
  * @property string $title
  * @property string $description
- * @property PoiCategory $category
  * @property Country $country
  * @property Picture $pictures
  * @property Route $routes
@@ -52,6 +52,13 @@ class Poi
 	 */
 	private $longitude;
 
+    /**
+   	 * @var string $svgCoordinates
+   	 *
+   	 * @ORM\Column(type="string", nullable=false)
+   	 */
+   	private $svgCoordinates;
+
 	/**
 	 * @var string $title
 	 *
@@ -66,12 +73,6 @@ class Poi
 	 */
 	private $description;
 
-    /**
-	 * @var PoiCategory $category
-	 *
-	 * @ORM\ManyToOne(targetEntity="PoiCategory")
-	 */
-	private $category;
 
     /**
      * @var Country $country
@@ -147,6 +148,17 @@ class Poi
 			return $this->$property;
 		}
 	}
+
+
+    public function getPoiTitleArray() {
+        $poiArray = array();
+        $repository = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Poi');
+        $pois = $repository->findBy(array(), array("id" => "DESC"));
+        foreach($pois as $poi) {
+            $poiArray[$poi->id] = $poi->title;
+        }
+        return $poiArray;
+    }
 
 	/**
 	 * @return array

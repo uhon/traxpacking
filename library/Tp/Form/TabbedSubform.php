@@ -49,9 +49,13 @@ class Tp_Form_TabbedSubform extends Tp_Form_Subform
                 $form->addDecorator(
                     array('tab' => 'HtmlTag'), array('tag' => 'div', 'class' => 'tp_subform_tabbed', 'id' => 'tab_' . $form->getName())
                 );
+
+                if($form->isErrors()) {
+                    $this->getView()->javascript('UI.markTabsWithErrors();');
+                }
             }
         }
-        Tp_Shortcut::getView()->javascript("UI.activateTabs()");
+        Tp_Shortcut::getView()->javascript("UI.activateTabs();");
         return parent::render($view);
     }
 }

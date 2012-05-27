@@ -8,11 +8,13 @@
 
 class Form_Poi extends Tp_Form
 {
-    private $_initPicture = null;
+    //private $_initPicture = null;
 
     private $_longitude = null;
 
     private $_latitude = null;
+
+    private $_svgCoordinates = null;
 
     private $_pictures = null;
 
@@ -41,13 +43,19 @@ class Form_Poi extends Tp_Form
             'label' => 'Longitude'
         ));
 
+        $this->addElement('text', 'svgCoordinates', array(
+            'value' => $this->_longitude,
+            'required' => true,
+            'label' => 'SVG coords.'
+        ));
+
         $country = new \Tp\Entity\Country();
         $this->addElement('select', 'country', array(
             'required' => true,
             'multiOptions' => $country->getCountryNameArray()
         ));
 
-        $this->addElement('textarea', 'description', array(
+        $this->addElement('CKEditor', 'description', array(
             'label' => 'Description'
         ));
 
@@ -67,7 +75,7 @@ class Form_Poi extends Tp_Form
         $this->addElement('submit', 'save');
     }
 
-    public function setInitPicture(\Tp\Entity\Picture $p = null)
+    /*public function setInitPicture(\Tp\Entity\Picture $p = null)
     {
         if($p !== null) {
             $gpsProvider = new Tp_Provider_Gps();
@@ -77,7 +85,7 @@ class Form_Poi extends Tp_Form
 
             $this->addPicture($p);
         }
-    }
+    }*/
 
     public function setPictures(\Doctrine\ORM\PersistentCollection $pictures = null)
     {
@@ -99,14 +107,25 @@ class Form_Poi extends Tp_Form
     private function addPicture(\Tp\Entity\Picture $picture) {
         $subForm = new Tp_Form_Subform();
 
-        $subForm->addElement('plainHtml', 'removePictureLink', array(
-            'value' => '<a id="removePictureLink" href="' . $this->getView()->url(array('action' => 'remove-picture', 'picture' => $picture->id)) . '">remove</a>',
+        $subForm->addElement('hidden', 'pId', array(
+            'value' => $picture->id
+        ));
+
+        $subForm->addElement('plainHtml', 'removeLink', array(
+            'value' => '<a class="removeLink" href="' . $this->getView()->url(array('action' => 'remove-picture', 'picture' => $picture->id)) . '">remove</a>',
             'label' => 'Remove Picture from POI?',
         ));
 
         $subForm->addElement('text', 'dateTime', array(
             'label' => 'Date & Time (of picture)',
+            'required' => true,
             'value' => $picture->datetime->format('Y-m-d H:m:s')
+        ));
+
+        $subForm->addElement('textarea', 'description', array(
+            'label' => 'Description',
+            'value' => $picture->description,
+            'required' => true
         ));
 
         $subForm->addElement('plainHtml', 'preview', array(

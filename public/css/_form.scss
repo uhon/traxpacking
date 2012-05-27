@@ -22,7 +22,12 @@
         }
         textarea, input, select, p {
             margin: 5px 5px;
-            width: 90%;
+            width: 85%;
+        }
+        label {
+            input {
+              width: 15%;
+            }
         }
         textarea {
             height: 150px;
@@ -42,16 +47,22 @@
         width: 100%;
     }
 
-    .tp_subform_tabbed {
+  .tp_subform_tabbed {
         padding: 0;
         ul.tabList {
             display:none;
-        }
-        .tabList {
-            .ui-icon-close {
-                margin: 0.4em 0.2em 0 0;
-                cursor: pointer;
-                float:left;
+            li {
+                span.ui-icon {
+                    display: none;
+                }
+            }
+            li.ui-tabs-selected {
+                span.ui-icon {
+                    display: inline;
+                    margin: 0.4em 0.2em 0 0;
+                    cursor: pointer;
+                    float:left;
+                }
             }
         }
     }

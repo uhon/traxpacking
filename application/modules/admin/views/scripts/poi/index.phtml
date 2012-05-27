@@ -1,2 +1,3 @@
 <?php
+    echo $this->linkiconEdit($this->url(array('action' => 'edit')), 'addPoi') . '<br/>';
     echo $this->table($this->pois, array('Name', 'Latitude', 'Longitude', 'Country', 'Description', 'Edit', 'Delete'));

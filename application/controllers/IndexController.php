@@ -13,10 +13,10 @@ class IndexController extends Tp_Controller_Action
 
     public function indexAction()
     {
-		$this->infoMessage("i'm info");
+		/*$this->infoMessage("i'm info");
 		$this->infoMessage("i'm second info");
         $this->errorMessage("i'm error");
-		$this->errorMessage("i'm second error");
+		$this->errorMessage("i'm second error");*/
     }
 
     public function sitemapAction()

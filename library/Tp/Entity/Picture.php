@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @property int $id
  * @property string $filename
+ * @property string $description
+ * @property PictureCategory $category
  * @property \Doctrine\Common\DateTime\DateTime $datetime
  * @property Poi $poi
  * @property \Doctrine\Common\DateTime\DateTime $createddate
@@ -39,6 +41,21 @@ class Picture
 	 * @ORM\Column(type="string", length=255, nullable=false)
 	 */
 	private $filename;
+
+    /**
+   	 * @var string $description
+   	 *
+   	 * @ORM\Column(type="string", nullable=true)
+   	 */
+   	private $description;
+
+
+    /**
+	 * @var PictureCategory $category
+	 *
+	 * @ORM\ManyToOne(targetEntity="PictureCategory")
+	 */
+	private $category;
 
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $datetime
@@ -123,7 +140,7 @@ class Picture
         return \Tp_Shortcut::getView()->url(
             array(
                 'module' => 'admin',
-                'controller' => 'poi',
+                'controller' => 'picture',
                 'action' => 'edit',
                 'picture' => $this->id
             ), null, true
