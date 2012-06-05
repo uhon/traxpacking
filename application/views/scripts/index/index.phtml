@@ -1,12 +1,21 @@
 <h1>Welcome to traxpacking</h1>
 <br>
-    <p>
-        Try out the following features:
-        <br/>
-        <a href="default/index/countries">Explore the World by Countries (SVG)</a>
-        <!-- <a href="default/index/explorer">Explore the World by Google Map (SVG)</a> -->
-    </p>
+<p>
+    <h2>Admin Module</h2>
+    Manage your Pois and Pictures in <a href="admin">Admin-Module</a>
+</p>
+<br>
+<div id="iframePreviewContainer">
+    <div class="preview">
+        <h2>All countries with Pois</h2>
+        <iframe src="/default/index/countries" style="width: 500px; height: 500px;" scrolling="no"  name="svg_map" ></iframe>
+    </div>
 
-    <p>
-        Or manage your data via <a href="admin">Admin-Module</a>
-    </p>
+
+    <div class="preview">
+        <h2>Single country with Pois</h2>
+        <iframe src="/default/index/country/c/Romania" style="width: 500px; height: 500px;" scrolling="no"  name="svg_map"></iframe>
+    </div>
+</div>
+
+

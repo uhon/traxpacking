@@ -146,6 +146,16 @@ table {
     }
 }
 
+#iframePreviewContainer {
+    width: 1100px;
+
+    .preview {
+        width: 500px;
+        margin:  25px 25px 0 0;
+        float: left;
+    }
+}
+
 div.worldMapLarge {
     svg {
   	    height:400px;
@@ -155,6 +165,7 @@ div.worldMapLarge {
 div.worldMapSmall {
     svg {
   	    height:120px;
+        width:300px;  
     }
 }
 

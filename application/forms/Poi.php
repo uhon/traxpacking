@@ -55,7 +55,7 @@ class Form_Poi extends Tp_Form
             'multiOptions' => $country->getCountryNameArray()
         ));
 
-        $this->addElement('CKEditor', 'description', array(
+        $this->addElement('textarea', 'description', array(
             'label' => 'Description'
         ));
 

@@ -1,0 +1,95 @@
+
+
+<!--FullscreenToggle-
+<div id="fullscreen_toggle"></div>
+-->
+<h1><?= $this->country->name ?></h1>
+
+<div id="poiContainer">
+    <ul>
+        <?php
+            foreach($this->pois as $poi)  {
+                echo '<li><a href="#tab_' . $poi->id . '">' . $poi->title . '</a></li>';
+            }
+        ?>
+    </ul>
+
+    <?php
+        foreach($this->pois as $poi)  {
+    ?>
+        <div id="tab_<?= $poi->id ?>">
+            <div id="svgMapContainer_<?= $poi->id ?>" class="worldMapSmall">
+            </div>
+            <h2><?= $poi->title ?></h2>
+            <p><?= $poi->description ?></p>
+        </div>
+    <?php
+            $this->javascript("
+                var tmpRpc = jQuery.Zend.jsonrpc({ url : '/ajax/rpc.php', async : true});
+                SVG.createSvgWorldMap(
+                    function() {
+                        C.log('fetching all countries with Pictures....');
+                        tmpRpc.setAsyncSuccess(function(response) {
+                            SVG.setupSvgWorldMap([{ name : '" . $this->country->name . "'}], 'svgMapContainer_" . $poi->id . "');
+                            SVG.drawPois(" . $this->jsonPoiArray . ", 'svgMapContainer_" . $poi->id . "');
+                        });
+                        tmpRpc.getCountryMap();
+                    }, 'svgMapContainer_" . $poi->id . "'
+                );
+            ");
+        }
+    ?>
+</div>
+
+<?php
+    $this->javascript('$("#poiContainer").tabs();');
+?>
+
+<div id="supersized-wrapper">
+
+    <div id="close-supersized"></div>
+
+    <!--Thumbnail Navigation-->
+    <div id="prevthumb"></div>
+    <div id="nextthumb"></div>
+
+    <!--Arrow Navigation-->
+    <a id="prevslide" class="load-item"></a>
+    <a id="nextslide" class="load-item"></a>
+
+    <div id="thumb-tray" class="load-item">
+        <div id="thumb-back"></div>
+        <div id="thumb-forward"></div>
+    </div>
+
+    <!--Time Bar-->
+    <div id="progress-back" class="load-item">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!--Control Bar-->
+    <div id="controls-wrapper" class="load-item">
+        <div id="controls">
+
+        <a id="play-button"><img id="pauseplay" src="/js/jquery/3rd_party/supersized/slideshow/img/pause.png"/></a>
+
+        <!--Slide counter-->
+        <div id="slidecounter">
+        <span class="slidenumber"></span> / <span class="totalslides"></span>
+        </div>
+
+        <!--Slide captions displayed here-->
+        <div id="slidecaption"></div>
+
+        <!--Thumb Tray button-->
+        <a id="tray-button"><img id="tray-arrow" src="/js/jquery/3rd_party/supersized/slideshow/img/button-tray-up.png"/></a>
+
+        <!--Navigation-->
+        <ul id="slide-list"></ul>
+
+        </div>
+    </div>'
+
+
+    </div>
+</div>

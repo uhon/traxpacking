@@ -22,6 +22,7 @@ class Admin_PoiController extends Tp_Controller_Action
                 $poi->title,
                 $poi->latitude,
                 $poi->longitude,
+                $poi->svgCoordinates,
                 $poi->country->name,
                 $poi->description,
                 $this->view->linkiconEdit($poi->getEditUrl()),

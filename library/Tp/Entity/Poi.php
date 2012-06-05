@@ -160,6 +160,17 @@ class Poi
         return $poiArray;
     }
 
+    public function getPoiCoordinatesAsJsonArray() {
+        $allPois = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Poi')->findAll();
+        $poiArray = array();
+        foreach($allPois as $poi)  {
+            $poiArray[$poi->id] = $poi->svgCoordinates;
+        }
+        $poiArray = \Zend_Json::encode($poiArray);
+        str_replace('"', "'", $poiArray);
+        return $poiArray;
+    }
+
 	/**
 	 * @return array
 	 */

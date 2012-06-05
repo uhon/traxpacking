@@ -421,11 +421,19 @@ table {
   #svgMapContainer svg {
     width: 100%; }
 
+#iframePreviewContainer {
+  width: 1100px; }
+  #iframePreviewContainer .preview {
+    width: 500px;
+    margin: 25px 25px 0 0;
+    float: left; }
+
 div.worldMapLarge svg {
   height: 400px; }
 
 div.worldMapSmall svg {
-  height: 120px; }
+  height: 120px;
+  width: 300px; }
 
 #fullscreen_toggle {
   position: absolute;

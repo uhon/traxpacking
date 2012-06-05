@@ -337,31 +337,34 @@ UI = { // start of INIT object scope.
 
 
 SVG = { // start of SVG object scope.
-    worldMap: null,
+    worldMaps: { },
 
-    createSvgWorldMap: function() {
-        SVG.worldMap = $('#svgMapContainer').svg();
-        SVG.worldMap = $('#svgMapContainer').svg('get');
+    createSvgWorldMap: function(functionCall, containerId) {
+
+        if(typeof(containerId) === "undefined") {
+            containerId = "svgMapContainer";
+        }
+        container = $('#' + containerId);
+
+        SVG.worldMaps[containerId] = container.svg();
+        SVG.worldMaps[containerId] = container.svg('get');
         $('#svgMapContainer').waitForIt();
-        SVG.worldMap.load("/img/world_map.svg", {addTo: true, changeSize: false, onLoad: SVG.callForCountriesWithPictures });
+        SVG.worldMaps[containerId].load("/img/world_map.svg", {addTo: true, changeSize: false, onLoad: functionCall });
     },
 
-    callForCountriesWithPictures: function() {
-        rpc.setAsyncSuccess(SVG.setupSvgWorldMap);
-        rpc.getCountriesWithPictures();
-        C.log('hello');
-    },
+    setupSvgWorldMap: function(countryArray, containerId) {
 
-    setupSvgWorldMap: function(countryArray) {
-        C.log('setupWorldMap with following array', countryArray);
         // SVG.worldMap.root().css('height', $(window).height());
         //C.log('------- -0 0 ' + $(window).width() + ' ' + $(window).height());
         //SVG.worldMap.configure({viewBox: '-400 -400 ' + $(window).width() + ' ' + $(window).height()}, true);
-        if($(window).width() > 300) {
-            $('#svgMapContainer').attr("class", "worldMapLarge");
-        } else {
-            $('#svgMapContainer').attr("class", "worldMapSmall");
+
+        if(typeof(containerId) === "undefined" || typeof(containerId.length) === "undefined") {
+            containerId = "svgMapContainer";
         }
+        var container = $('#' + containerId),
+            svgElement = SVG.worldMaps[containerId];
+
+        C.log('setupWorldMap with following array', countryArray, 'on Container', container);
 
 
         var minX = 99999,
@@ -374,40 +377,95 @@ SVG = { // start of SVG object scope.
             dimensions = null,
             growHeight,
             growWidth,
-            countryList = countryArray; /*{
-                0 : {name : 'Switzerland', pictures : '5'},
-                1 : {name : 'Austria', pictures : '9'},
-                2 : {name : 'Hungary', pictures : '5'},
-                3 : {name : 'Romania', pictures : '5'},
-
-                4 : {name : 'Bulgaria', pictures : '5'},
-                5 : {name : 'Turkey', pictures : '5'},
-                6 : {name : 'Georgia', pictures : '5'},
-                7 : {name : 'Azerbaijan', pictures : '5'},
-                8 : {name : 'Turkmenistan', pictures : '5'},
-                9 : {name : 'Uzbekistan', pictures : '5'},
-                10 : {name : 'Kyrgyzstan', pictures : '5'},
-                11 : {name : 'China', pictures : '5'},
-                12 : {name : 'Vietnam', pictures : '5'},
-                13 : {name : 'Laos', pictures : '5'},
-                14 : {name : 'Thailand', pictures : '5'},
-                15 : {name : 'Cambodia', pictures : '5'},
-                16 : {name : 'Myanmar (Burma)', pictures : '5'},
-                17 : {name : 'India', pictures : '9'}
-                /*18 : {name : 'Australia', pictures : '9'},
-                19: {name : 'Chile', pictures : '5'},
-            };*/
+            countryList = countryArray;
 
 
         //countryList = VODOO
         $.each(countryList, function(key, country) {
             C.log(country.name);
 
-            var element = $('path[title="' + country.name + '"]', SVG.worldMap.root());
+            var countryElement = $('path[title="' + country.name + '"]', svgElement.root());
 
-            element.attr("fill", '#ccc');
-            element.attr("class", 'active');
-            element.bind('click', function(e) {
+            countryElement.attr("fill", '#ccc');
+            countryElement.attr("class", 'active');
+
+
+            dimensions = countryElement.get(0).getBBox();
+            C.log(dimensions);
+            if(dimensions.x - borderSize < minX) {
+                minX = dimensions.x - borderSize;
+            }
+            if(dimensions.y - borderSize < minY) {
+                minY = dimensions.y - borderSize;
+            }
+            if(dimensions.x + dimensions.width + borderSize > maxX) {
+                maxX = dimensions.x + dimensions.width + borderSize;
+            }
+            if(dimensions.y + dimensions.height + borderSize > maxY) {
+                maxY = dimensions.y + dimensions.height + borderSize;
+            }
+            maxWidth = (maxX - minX);
+            maxHeight = Math.abs(maxY - minY);
+        });
+
+        if(maxWidth === 0 || maxHeight === 0) {
+            svgElement.configure({viewBox: "50 -800 740 240"}, true);
+            svgElement.configure({scale: 3});
+        } else {
+
+            if((maxWidth / maxHeight > 900/400)) {
+                growHeight = maxWidth / 900 * 400 - maxHeight;
+                maxHeight += growHeight;
+                minY -= growHeight / 2;
+            } else {
+                growWidth = maxHeight / 400 * 900 - maxWidth;
+                maxWidth += growWidth;
+                minX -= (growWidth / 2);
+            }
+
+            C.log("minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
+            svgElement.configure({viewBox: minX + " " + minY + " " + maxWidth + " " + maxHeight}, true);
+
+            svgElement.configure({scale: 3});
+
+            /*$('path.active', svgElement.root()).bind('mouseover', function(e) {
+                $(this).attr('fill', 'green');
+            });
+
+            $('path.active', svgElement.root()).bind('mouseout', function(e) {
+                $(this).attr('fill', '#ccc');
+            });*/
+        }
+        $('#fullscreen_toggle').append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
+        $('#svgMapContainer').waitForItStop();
+    },
+
+    drawPois: function(pois, containerId) {
+        if(typeof(containerId) === "undefined" || typeof(containerId.length) === "undefined") {
+            containerId = "svgMapContainer";
+        }
+        var lines = { },
+            prevCoords = null,
+            counter = 0,
+            svgElement = SVG.worldMaps[containerId];
+
+
+        $.each(pois, function(key, value) {
+            coords = value.split(',');
+            poiElement = $(svgElement.image(svgElement.root(), coords[0] -3, coords[1] -6, 6, 6, '/img/whyjustify_pin_black.png'));
+
+            poiElement.bind('mouseover', function(e) {
+                $(this).attr("href", '/img/whyjustify_pin_red.png');
+            });
+
+            poiElement.bind('mouseout', function(e) {
+                $(this).attr("href", '/img/whyjustify_pin_black.png');
+            });
+
+            poiElement.bind('click', function(e) {
+                var urlForPoi = "/index/poi/p/" + key;
+                C.log("title: " + urlForPoi);
+                $(window).attr("location", urlForPoi);
                 var dialogContent,
                     dialog,
                     button,
@@ -441,54 +499,19 @@ SVG = { // start of SVG object scope.
 
             });
 
-            dimensions = element.get(0).getBBox();
-            C.log(dimensions);
-            if(dimensions.x - borderSize < minX) {
-                minX = dimensions.x - borderSize;
+
+            if(prevCoords !== null) {
+                lines[counter] = [ prevCoords[0], prevCoords[1], coords[0], coords[1] ]
             }
-            if(dimensions.y - borderSize < minY) {
-                minY = dimensions.y - borderSize;
-            }
-            if(dimensions.x + dimensions.width + borderSize > maxX) {
-                maxX = dimensions.x + dimensions.width + borderSize;
-            }
-            if(dimensions.y + dimensions.height + borderSize > maxY) {
-                maxY = dimensions.y + dimensions.height + borderSize;
-            }
-            maxWidth = (maxX - minX);
-            maxHeight = Math.abs(maxY - minY);
+            prevCoords = coords;
+            counter++;
         });
 
-        if(maxWidth === 0 || maxHeight === 0) {
-            SVG.worldMap.configure({viewBox: "50 -800 740 240"}, true);
-            SVG.worldMap.configure({scale: 3});
-        } else {
+        $.each(lines, function(key, value) {
+            svgElement.line(svgElement.root(), value[0], value[1], value[2], value[3], { stroke: "#aaaaaa", strokeWidth : "0.3"});
+        });
 
-            if((maxWidth / maxHeight > 900/400)) {
-                growHeight = maxWidth / 900 * 400 - maxHeight;
-                maxHeight += growHeight;
-                minY -= growHeight / 2;
-            } else {
-                growWidth = maxHeight / 400 * 900 - maxWidth;
-                maxWidth += growWidth;
-                minX -= (growWidth / 2);
-            }
 
-            C.log("minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
-            SVG.worldMap.configure({viewBox: minX + " " + minY + " " + maxWidth + " " + maxHeight}, true);
-
-            SVG.worldMap.configure({scale: 3});
-
-            $('path.active', SVG.worldMap.root()).bind('mouseover', function(e) {
-                $(this).attr('fill', 'green');
-            });
-
-            $('path.active', SVG.worldMap.root()).bind('mouseout', function(e) {
-                $(this).attr('fill', '#ccc');
-            });
-        }
-        $('#fullscreen_toggle').append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
-        $('#svgMapContainer').waitForItStop();
     }
 }; // end of SVG object scope.
 

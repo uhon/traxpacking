@@ -28,12 +28,23 @@ class IndexController extends Tp_Controller_Action
 
     public function countriesAction()
     {
-
+        $poi = new Tp\Entity\Poi();
+        $this->view->jsonPoiArray = $poi->getPoiCoordinatesAsJsonArray();
     }
 
     public function blogAction()
     {
 
+    }
+
+    public function countryAction()
+    {
+        $this->view->country = array_pop($this->_em->getRepository('Tp\Entity\Country')
+                ->findBy(array('name' => $this->_getParam('c', 0))));
+        $this->view->pois = $this->view->country->pois;
+
+        $poi = new Tp\Entity\Poi();
+        $this->view->jsonPoiArray = $poi->getPoiCoordinatesAsJsonArray();
     }
 
 }
