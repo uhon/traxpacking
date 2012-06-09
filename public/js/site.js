@@ -478,7 +478,7 @@ SVG = { // start of SVG object scope.
                         imageWidth,
                         imageHeight,
                         '/img/whyjustify_pin_black.png',
-                        { class : "poiIcon", title : poiArray['title'] }
+                        { "class" : "poiIcon", title : poiArray['title'] }
                     )
                 );
 
