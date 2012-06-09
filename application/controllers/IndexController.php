@@ -29,7 +29,7 @@ class IndexController extends Tp_Controller_Action
     public function countriesAction()
     {
         $poi = new Tp\Entity\Poi();
-        $this->view->jsonPoiArray = $poi->getPoiCoordinatesAsJsonArray();
+        $this->view->jsonPoiArray = $poi->getPoisAsJsonArray();
     }
 
     public function blogAction()
@@ -44,7 +44,7 @@ class IndexController extends Tp_Controller_Action
         $this->view->pois = $this->view->country->pois;
 
         $poi = new Tp\Entity\Poi();
-        $this->view->jsonPoiArray = $poi->getPoiCoordinatesAsJsonArray();
+        $this->view->jsonPoiArray = $poi->getPoisAsJsonArray();
     }
 
 }

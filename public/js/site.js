@@ -74,6 +74,17 @@ INIT = {   // start of INIT object scope.
         C.log('Content Replaced rerunning all ContentBindings');
         FORM.bindEditLinks();
         FORM.bindDeleteForms();
+        INIT.tinyTips();
+    },
+
+    tinyTips: function() {
+        //$('svg .poiIcon, svg path.active').each(function() {
+        $('svg .poiIcon').each(function() {
+            var title = $(this).attr('title');
+            if (typeof (title) !== 'undefined' && jQuery.trim($(this).attr('title')) !== '') {
+                $(this).tinyTips('light', 'title', true);
+            }
+        });
     }
 }; // end of INIT object scope.
 
@@ -366,6 +377,8 @@ SVG = { // start of SVG object scope.
 
         C.log('setupWorldMap with following array', countryArray, 'on Container', container);
 
+        C.log('SVG Element at Setup Start', svgElement.root());
+
 
         var minX = 99999,
             minY = 99999,
@@ -391,7 +404,6 @@ SVG = { // start of SVG object scope.
 
 
             dimensions = countryElement.get(0).getBBox();
-            C.log(dimensions);
             if(dimensions.x - borderSize < minX) {
                 minX = dimensions.x - borderSize;
             }
@@ -423,8 +435,8 @@ SVG = { // start of SVG object scope.
                 minX -= (growWidth / 2);
             }
 
-            C.log("minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
-            svgElement.configure({viewBox: minX + " " + minY + " " + maxWidth + " " + maxHeight}, true);
+            C.log("Dimensions for SVG Element: minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
+            svgElement.configure({viewBox: minX + " " + minY + " " + (maxWidth +100) + " " + maxHeight}, true);
 
             svgElement.configure({scale: 3});
 
@@ -436,11 +448,14 @@ SVG = { // start of SVG object scope.
                 $(this).attr('fill', '#ccc');
             });*/
         }
+        C.log('SVG Element at Setup End', svgElement.root());
+        INIT.tinyTips();
         $('#fullscreen_toggle').append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
         $('#svgMapContainer').waitForItStop();
     },
 
     drawPois: function(pois, containerId) {
+
         if(typeof(containerId) === "undefined" || typeof(containerId.length) === "undefined") {
             containerId = "svgMapContainer";
         }
@@ -449,10 +464,23 @@ SVG = { // start of SVG object scope.
             counter = 0,
             svgElement = SVG.worldMaps[containerId];
 
-
-        $.each(pois, function(key, value) {
-            coords = value.split(',');
-            poiElement = $(svgElement.image(svgElement.root(), coords[0] -3, coords[1] -6, 6, 6, '/img/whyjustify_pin_black.png'));
+        C.log('draw Pois on ',  svgElement);
+        C.log( $(svgElement.root()));
+        $.each(pois, function(poiId, poiArray) {
+            var coords = poiArray['svgCoords'].split(','),
+                imageWidth = 50 / $(svgElement.root()).attr('scale') / 3,
+                imageHeight = 60 / $(svgElement.root()).attr('scale') / 3,
+                poiElement = $(
+                    svgElement.image(
+                        svgElement.root(),
+                        coords[0] - imageWidth / 2,
+                        coords[1] - imageHeight,
+                        imageWidth,
+                        imageHeight,
+                        '/img/whyjustify_pin_black.png',
+                        { class : "poiIcon", title : poiArray['title'] }
+                    )
+                );
 
             poiElement.bind('mouseover', function(e) {
                 $(this).attr("href", '/img/whyjustify_pin_red.png');
@@ -463,9 +491,7 @@ SVG = { // start of SVG object scope.
             });
 
             poiElement.bind('click', function(e) {
-                var urlForPoi = "/index/poi/p/" + key;
-                C.log("title: " + urlForPoi);
-                $(window).attr("location", urlForPoi);
+                $(window.top).attr("location", poiArray['url']);
                 var dialogContent,
                     dialog,
                     button,
@@ -473,17 +499,7 @@ SVG = { // start of SVG object scope.
 
                 dialogContent = $('<div><div style="text-align:center; margin-top: 20px;"></div></div>');
 
-                if(country.pictures > 0) {
-                    button = UI.createButton('slideshow (' + country.pictures + ' pictures)');
-                    button.bind('click', function() {
-                        $(".ui-dialog-content").dialog("destroy");
-                        UI.startSlideshow(country.name);
-                    });
-
-                    dialogContent.find('div').append(button);
-                }
-
-                dialogContent.dialog({
+                /*dialogContent.dialog({
                     modal: true,
                     title: $(this).attr('title'),
                     autoOpen: true,
@@ -495,7 +511,7 @@ SVG = { // start of SVG object scope.
                 });
                 C.log('country clicked' + $(this));
                 $(this).show();
-                $(this).attr("fill", '#ccc');
+                $(this).attr("fill", '#ccc');*/
 
             });
 

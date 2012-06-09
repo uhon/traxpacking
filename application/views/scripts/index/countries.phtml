@@ -2,9 +2,12 @@
     $this->javascript("SVG.createSvgWorldMap(
         function() {
             C.log('fetching all countries with Pictures....');
-            rpc.setAsyncSuccess(SVG.setupSvgWorldMap);
+            rpc.setAsyncSuccess(function(response) {
+                SVG.setupSvgWorldMap(response);
+                SVG.drawPois(" . $this->jsonPoiArray . ");
+            });
             rpc.getCountriesWithPictures();
-            SVG.drawPois(" . $this->jsonPoiArray . ");
+
         }
     );");
 ?>

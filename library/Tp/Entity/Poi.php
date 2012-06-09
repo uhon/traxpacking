@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property float $longitude
  * @property float $svgCoordinates
  * @property string $title
- * @property string $description
+ * @property string $url
  * @property Country $country
  * @property Picture $pictures
  * @property Route $routes
@@ -67,11 +67,11 @@ class Poi
 	private $title;
 
 	/**
-	 * @var string $description
+	 * @var string $url
 	 *
 	 * @ORM\Column(type="string")
 	 */
-	private $description;
+	private $url;
 
 
     /**
@@ -160,11 +160,19 @@ class Poi
         return $poiArray;
     }
 
-    public function getPoiCoordinatesAsJsonArray() {
+    public function getPoisAsJsonArray() {
         $allPois = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Poi')->findAll();
+
         $poiArray = array();
+
         foreach($allPois as $poi)  {
-            $poiArray[$poi->id] = $poi->svgCoordinates;
+            $poiArray[$poi->id] = array(
+                "svgCoords" => $poi->svgCoordinates,
+                "latitude" => $poi->latitude,
+                "longitude" => $poi->longitude,
+                "title" => $poi->title,
+                "url" => $poi->url
+            );
         }
         $poiArray = \Zend_Json::encode($poiArray);
         str_replace('"', "'", $poiArray);

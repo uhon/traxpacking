@@ -28,7 +28,7 @@ class Form_Poi extends Tp_Form
         $this->addElement('text', 'title', array(
             'required' => true,
             'label' => 'Title',
-            'description' => 'Also shown in Slideshow'
+            'description' => 'As shown in Slideshow'
         ));
 
         $this->addElement('text', 'latitude', array(
@@ -55,8 +55,8 @@ class Form_Poi extends Tp_Form
             'multiOptions' => $country->getCountryNameArray()
         ));
 
-        $this->addElement('textarea', 'description', array(
-            'label' => 'Description'
+        $this->addElement('text', 'url', array(
+            'label' => 'Links to (URL)'
         ));
 
         /*$category = new \Tp\Entity\PoiCategory();

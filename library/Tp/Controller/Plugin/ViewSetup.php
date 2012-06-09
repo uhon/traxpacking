@@ -17,7 +17,10 @@ class Tp_Controller_Plugin_ViewSetup extends Zend_Controller_Plugin_Abstract
         '/js/jquery/3rd_party/jquery.maxZIndex.js',
         '/js/jquery/3rd_party/jquery.svg.js',
         '/js/jquery/3rd_party/jquery.svgdom.js',
+        '/js/jquery/3rd_party/jquery.imgzoom.js',
+        '/js/jquery/3rd_party/jquery.thumbnailScroller.js',
         '/js/jquery/3rd_party/json2.js',
+        '/js/jquery/3rd_party/jquery.tinyTips.js',
         '/js/jquery/3rd_party/supersized/slideshow/js/jquery.easing.min.js',
         '/js/jquery/3rd_party/supersized/slideshow/js/supersized.3.2.7.js',
         '/js/jquery/3rd_party/supersized/slideshow/theme/supersized.shutter.js',
@@ -29,6 +32,8 @@ class Tp_Controller_Plugin_ViewSetup extends Zend_Controller_Plugin_Abstract
     private static $headStyles = array(
         '/css/main.css',
         '/css/jquery/trontastic/jquery-ui-1.8.20.custom.css',
+        '/css/jquery/imgzoom.css',
+        '/css/jquery/jquery.thumbnailScroller.css',
     );
 
     public static function getHeadScripts() {

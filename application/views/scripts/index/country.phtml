@@ -21,7 +21,7 @@
             <div id="svgMapContainer_<?= $poi->id ?>" class="worldMapSmall">
             </div>
             <h2><?= $poi->title ?></h2>
-            <p><?= $poi->description ?></p>
+            <p>Links to: <a href="<?= $poi->url ?>"><?= $poi->url ?></a></p>
         </div>
     <?php
             $this->javascript("
