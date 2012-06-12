@@ -10,7 +10,7 @@ class Tp_Controller_Plugin_ViewSetup extends Zend_Controller_Plugin_Abstract
 
     private static $headScripts = array(
         '/js/jquery/3rd_party/jquery-1.7.1.js',
-        '/js/jquery/3rd_party/jquery-ui-1.8.1.custom.js',
+        '/js/jquery/3rd_party/jquery-ui-1.8.21.custom.min.js',
         '/js/jquery/3rd_party/jquery.form.js',
         '/js/jquery/3rd_party/jquery.tablesorter.js',
         '/js/jquery/3rd_party/jquery.zend.jsonrpc.js',

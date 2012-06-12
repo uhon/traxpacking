@@ -69,7 +69,7 @@ class Poi
 	/**
 	 * @var string $url
 	 *
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $url;
 

@@ -32,9 +32,10 @@ class IndexController extends Tp_Controller_Action
         $this->view->jsonPoiArray = $poi->getPoisAsJsonArray();
     }
 
-    public function blogAction()
+    public function poiAction()
     {
-
+        $this->view->poi = new \Tp\Entity\Poi($this->_getParam('p'));
+        $this->view->poi = $this->_em->find('Tp\Entity\Poi', $this->_getParam('p', 0));
     }
 
     public function countryAction()

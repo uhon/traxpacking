@@ -426,11 +426,11 @@ table {
     float: left; }
 
 div.worldMapLarge svg {
-  width: 100%;
-  height: 300px; }
+  width: 680px;
+  height: 290px; }
 
 div.worldMapSmall svg {
-  height: 120px;
+  height: 128px;
   width: 300px; }
 
 .poiIcon {

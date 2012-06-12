@@ -349,25 +349,21 @@ UI = { // start of INIT object scope.
 
 SVG = { // start of SVG object scope.
     worldMaps: { },
-
+    worldMapsScaleFactor: { },
     createSvgWorldMap: function(functionCall, containerId) {
 
         if(typeof(containerId) === "undefined") {
             containerId = "svgMapContainer";
         }
-        container = $('#' + containerId);
+        var container = $('#' + containerId);
 
         SVG.worldMaps[containerId] = container.svg();
         SVG.worldMaps[containerId] = container.svg('get');
         $('#svgMapContainer').waitForIt();
-        SVG.worldMaps[containerId].load("/img/world_map.svg", {addTo: true, changeSize: false, onLoad: functionCall });
+        SVG.worldMaps[containerId].load("/img/world_map.svg", {addTo: true, changeSize: true, onLoad: functionCall });
     },
 
     setupSvgWorldMap: function(countryArray, containerId) {
-
-        // SVG.worldMap.root().css('height', $(window).height());
-        //C.log('------- -0 0 ' + $(window).width() + ' ' + $(window).height());
-        //SVG.worldMap.configure({viewBox: '-400 -400 ' + $(window).width() + ' ' + $(window).height()}, true);
 
         if(typeof(containerId) === "undefined" || typeof(containerId.length) === "undefined") {
             containerId = "svgMapContainer";
@@ -422,21 +418,26 @@ SVG = { // start of SVG object scope.
 
         if(maxWidth === 0 || maxHeight === 0) {
             svgElement.configure({viewBox: "50 -800 740 240"}, true);
+            SVG.worldMapsScaleFactor[containerId] = 1405 / 600;
             svgElement.configure({scale: 3});
         } else {
 
-            if((maxWidth / maxHeight > 900/400)) {
-                growHeight = maxWidth / 900 * 400 - maxHeight;
+            if((maxWidth / maxHeight > 1405/600)) {
+                growHeight = maxWidth / 1405 * 600 - maxHeight;
                 maxHeight += growHeight;
+                //SVG.worldMapsScaleFactor[containerId] = (maxHeight / 600) ;
                 minY -= growHeight / 2;
             } else {
-                growWidth = maxHeight / 400 * 900 - maxWidth;
+                growWidth = maxHeight / 600 * 1405 - maxWidth;
                 maxWidth += growWidth;
+                //SVG.worldMapsScaleFactor[containerId] = (maxWidth / 1400);
                 minX -= (growWidth / 2);
             }
 
+            SVG.worldMapsScaleFactor[containerId] = (1405 / $(svgElement.root()).width()) * (1405 * (maxWidth / 1405)) / 2500;
+
             C.log("Dimensions for SVG Element: minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
-            svgElement.configure({viewBox: minX + " " + minY + " " + (maxWidth +100) + " " + maxHeight}, true);
+            svgElement.configure({viewBox: minX + " " + minY + " " + (maxWidth) + " " + maxHeight}, true);
 
             svgElement.configure({scale: 3});
 
@@ -465,11 +466,10 @@ SVG = { // start of SVG object scope.
             svgElement = SVG.worldMaps[containerId];
 
         C.log('draw Pois on ',  svgElement);
-        C.log( $(svgElement.root()));
         $.each(pois, function(poiId, poiArray) {
             var coords = poiArray['svgCoords'].split(','),
-                imageWidth = 50 / $(svgElement.root()).attr('scale') / 3,
-                imageHeight = 60 / $(svgElement.root()).attr('scale') / 3,
+                imageWidth = 50 * SVG.worldMapsScaleFactor[containerId],
+                imageHeight = 60 * SVG.worldMapsScaleFactor[containerId],
                 poiElement = $(
                     svgElement.image(
                         svgElement.root(),
@@ -480,7 +480,8 @@ SVG = { // start of SVG object scope.
                         '/img/whyjustify_pin_black.png',
                         { "class" : "poiIcon", title : poiArray['title'] }
                     )
-                );
+                )
+            ;
 
             poiElement.bind('mouseover', function(e) {
                 $(this).attr("href", '/img/whyjustify_pin_red.png');
@@ -498,21 +499,6 @@ SVG = { // start of SVG object scope.
                     pictures;
 
                 dialogContent = $('<div><div style="text-align:center; margin-top: 20px;"></div></div>');
-
-                /*dialogContent.dialog({
-                    modal: true,
-                    title: $(this).attr('title'),
-                    autoOpen: true,
-                    closeOnEscape: true,
-                    show: "explode",
-                    hide: "explode",
-                    resizable: false,
-                    stack: false
-                });
-                C.log('country clicked' + $(this));
-                $(this).show();
-                $(this).attr("fill", '#ccc');*/
-
             });
 
 

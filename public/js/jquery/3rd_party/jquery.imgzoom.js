@@ -443,7 +443,7 @@ $.imgZoom = function (img, options) {
             duration: 500,
             wrapDuration: 300,
             //loadingImg: "../../img/imgzoom-loading.gif",
-            loadingImg: "../../img/waitForIt.gif",
+            loadingImg: "/img/waitForIt.gif",
             opacity: 1,
             overlayOpacity: 0.75,
             onInit: function () {}
