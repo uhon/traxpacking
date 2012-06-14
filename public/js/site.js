@@ -289,7 +289,7 @@ UI = { // start of INIT object scope.
             // Slideshow Images
             slides                  :      [
 
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00465.jpg', title : 'DSC00465', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00465.jpg', url : ''},
+                {image : 'http://uhon.ch/sent/img/pictures/DSC00465.jpg', title : 'DSC00465', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00465.jpg', url : ''}
             ]
         });
         $('#fullscreen_toggle').empty().append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
