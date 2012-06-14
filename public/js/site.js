@@ -536,6 +536,7 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             iframe.css({position:"static", top:"auto", left:"auto"});
             $('#playground').css('padding', WHYJUSTIFY.playgroundPadding);
             logo.css(WHYJUSTIFY.fullscreenRestore.logoOffset);
+
             $("body").removeAttr('style');
             $(".worldMapSmall, .worldMapSmall svg").removeAttr('style');
 
