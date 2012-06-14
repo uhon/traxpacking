@@ -494,17 +494,23 @@ SVG = { // start of SVG object scope.
 WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
     fullscreenRestore: null,
     toggleFullscreen: function() {
-        var iframe = $("iframe[name='" + window.name + "']", window.top.document);
+        var iframe = $("iframe[name='" + window.name + "']", window.top.document),
+            logo = $('#whyjustify_logo', window.top.document);
         if(WHYJUSTIFY.fullscreenRestore === null) {
             WHYJUSTIFY.fullscreenRestore = {
                 width: iframe.css('width'),
                 height: iframe.css('height'),
+                iframeMargin : iframe.css('margin'),
+                playgroundPadding : $('#playground').css('padding'),
+                logoOffset : { top:  logo.css('top'), right: logo.css('right') },
                 scrollPosition: $(window.parent).scrollTop(),
                 mapHeight: $(".worldMapSmall").height()
             };
 
             C.log("restore-css-string: ", WHYJUSTIFY.fullscreenRestore);
-            iframe.css({ border: 0, position:"fixed", top:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
+            iframe.css({ border: 0, position:"fixed", top:0, marginTop:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
+            $('#playground').css('padding', 0);
+            logo.css({top:"10px", right:"10px"});
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).hide();
             $("#main", window.top.document).css('padding-top: 0px');
             // set plain background
@@ -526,8 +532,10 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).show();
             iframe.css('width', WHYJUSTIFY.fullscreenRestore.width);
             iframe.css('height', WHYJUSTIFY.fullscreenRestore.height);
+            iframe.css('margin', WHYJUSTIFY.iframeMargin);
             iframe.css({position:"static", top:"auto", left:"auto"});
-
+            $('#playground').css('padding', WHYJUSTIFY.playgroundPadding);
+            logo.css(WHYJUSTIFY.fullscreenRestore.logoOffset);
             $("body").removeAttr('style');
             $(".worldMapSmall, .worldMapSmall svg").removeAttr('style');
 
