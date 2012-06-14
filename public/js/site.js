@@ -500,8 +500,8 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             WHYJUSTIFY.fullscreenRestore = {
                 width: iframe.css('width'),
                 height: iframe.css('height'),
-                iframeMargin : iframe.css('margin'),
-                playgroundPadding : $('#playground').css('padding'),
+                iframeMargin : iframe.css('margin-top'),
+                playgroundPadding : $('#playground').css('padding-top'),
                 logoOffset : { top:  logo.css('top'), right: logo.css('right') },
                 scrollPosition: $(window.parent).scrollTop(),
                 mapHeight: $(".worldMapSmall").height()
@@ -532,9 +532,9 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).show();
             iframe.css('width', WHYJUSTIFY.fullscreenRestore.width);
             iframe.css('height', WHYJUSTIFY.fullscreenRestore.height);
-            iframe.css('margin', WHYJUSTIFY.iframeMargin);
+            iframe.css('margin-top', WHYJUSTIFY.iframeMargin);
             iframe.css({position:"static", top:"auto", left:"auto"});
-            $('#playground').css('padding', WHYJUSTIFY.playgroundPadding);
+            $('#playground').css('padding-top', WHYJUSTIFY.playgroundPadding);
             logo.css(WHYJUSTIFY.fullscreenRestore.logoOffset);
 
             $("body").removeAttr('style');
