@@ -10,6 +10,9 @@ h5 { font-size: 12px; }
 
 div.clear { clear: both; }
 
+#playground {
+    text-align: center;
+}
 .waitIcon {
     position: absolute;
     text-align:center;
@@ -160,13 +163,14 @@ div.worldMapLarge {
 }
 
 div.worldMapSmall {
+    margin: 5px auto 15px auto;
     svg {
-  	    height:128px;
-        width:300px;
+  	    height:160px;
+        width:230px;
     }
 }
 
-.poiIcon {
+.activePoi {
     cursor: pointer;
 }
 

@@ -290,47 +290,6 @@ UI = { // start of INIT object scope.
             slides                  :      [
 
                 {image : 'http://uhon.ch/sent/img/pictures/DSC00465.jpg', title : 'DSC00465', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00465.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00480.jpg', title : 'DSC00480', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00480.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00502.jpg', title : 'DSC00502', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00502.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00395.jpg', title : 'DSC00395', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00395.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00440.jpg', title : 'DSC00440', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00440.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00466.jpg', title : 'DSC00466', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00466.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00482.jpg', title : 'DSC00482', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00482.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00505.jpg', title : 'DSC00505', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00505.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00396.jpg', title : 'DSC00396', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00396.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00443.jpg', title : 'DSC00443', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00443.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00468.jpg', title : 'DSC00468', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00468.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00484.jpg', title : 'DSC00484', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00484.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00518.jpg', title : 'DSC00518', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00518.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00400.jpg', title : 'DSC00400', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00400.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00445.jpg', title : 'DSC00445', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00445.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00470.jpg', title : 'DSC00470', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00470.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00486.jpg', title : 'DSC00486', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00486.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00524.jpg', title : 'DSC00524', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00524.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00402.jpg', title : 'DSC00402', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00402.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00447.jpg', title : 'DSC00447', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00447.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00473.jpg', title : 'DSC00473', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00473.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00490.jpg', title : 'DSC00490', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00490.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00528.jpg', title : 'DSC00528', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00528.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00405.jpg', title : 'DSC00405', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00405.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00448.jpg', title : 'DSC00448', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00448.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00475.jpg', title : 'DSC00475', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00475.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00491.jpg', title : 'DSC00491', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00491.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00529.jpg', title : 'DSC00529', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00529.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00420.jpg', title : 'DSC00420', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00420.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00451.jpg', title : 'DSC00451', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00451.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00477.jpg', title : 'DSC00477', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00477.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00492.jpg', title : 'DSC00492', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00492.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00530.jpg', title : 'DSC00530', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00530.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00421.jpg', title : 'DSC00421', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00421.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00455.jpg', title : 'DSC00455', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00455.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00478.jpg', title : 'DSC00478', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00478.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00496.jpg', title : 'DSC00496', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00496.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00532.jpg', title : 'DSC00532', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00532.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00426.jpg', title : 'DSC00426', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00426.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00460.jpg', title : 'DSC00460', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00460.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00479.jpg', title : 'DSC00479', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00479.jpg', url : ''},
-                {image : 'http://uhon.ch/sent/img/pictures/DSC00497.jpg', title : 'DSC00497', thumb : 'http://uhon.ch/sent/img/thumbs/DSC00497.jpg', url : ''}
             ]
         });
         $('#fullscreen_toggle').empty().append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
@@ -470,36 +429,48 @@ SVG = { // start of SVG object scope.
             var coords = poiArray['svgCoords'].split(','),
                 imageWidth = 50 * SVG.worldMapsScaleFactor[containerId],
                 imageHeight = 60 * SVG.worldMapsScaleFactor[containerId],
-                poiElement = $(
-                    svgElement.image(
-                        svgElement.root(),
-                        coords[0] - imageWidth / 2,
-                        coords[1] - imageHeight,
-                        imageWidth,
-                        imageHeight,
-                        '/img/whyjustify_pin_black.png',
-                        { "class" : "poiIcon", title : poiArray['title'] }
-                    )
-                )
+                poiElement,
+                imageIcon = "/img/whyjustify_pin_black.png",
+                isActive = false,
+                activeClass = ""
             ;
 
-            poiElement.bind('mouseover', function(e) {
-                $(this).attr("href", '/img/whyjustify_pin_red.png');
-            });
+            if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
+                imageIcon = "/img/whyjustify_pin_red.png";
+            }
 
-            poiElement.bind('mouseout', function(e) {
-                $(this).attr("href", '/img/whyjustify_pin_black.png');
-            });
+            if(poiArray["url"] !== null && poiArray["url"].length > 0) {
+                isActive = true;
+                activeClass = " activePoi";
+            }
 
-            poiElement.bind('click', function(e) {
-                $(window.top).attr("location", poiArray['url']);
-                var dialogContent,
-                    dialog,
-                    button,
-                    pictures;
+            poiElement = $(
+                svgElement.image(
+                    svgElement.root(),
+                    coords[0] - imageWidth / 2,
+                    coords[1] - imageHeight,
+                    imageWidth,
+                    imageHeight,
+                    imageIcon,
+                    { "class" : "poiIcon" + activeClass, title : poiArray['title'] }
+                )
+            );
 
-                dialogContent = $('<div><div style="text-align:center; margin-top: 20px;"></div></div>');
-            });
+            if(isActive) {
+                poiElement.bind('mouseover', function(e) {
+                    $(this).attr("href", '/img/whyjustify_pin_red.png');
+                });
+
+                poiElement.bind('mouseout', function(e) {
+                    $(this).attr("href", '/img/whyjustify_pin_black.png');
+                });
+
+                poiElement.bind('click', function(e) {
+                    if(poiArray['url'] !== null) {
+                        $(window.top).attr("location", poiArray['url']);
+                    }
+                });
+            }
 
 
             if(prevCoords !== null) {
@@ -520,18 +491,46 @@ SVG = { // start of SVG object scope.
 WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
     fullscreenRestore: null,
     toggleFullscreen: function() {
-        var iframe = $("iframe", window.top.document);
+        var iframe = $("iframe[name='" + window.name + "']", window.top.document);
         if(WHYJUSTIFY.fullscreenRestore === null) {
-            WHYJUSTIFY.fullscreenRestore = { width: iframe.css('width'), height: iframe.css('height') };
+            WHYJUSTIFY.fullscreenRestore = {
+                width: iframe.css('width'),
+                height: iframe.css('height'),
+                scrollPosition: $(window.parent).scrollTop(),
+                mapHeight: $(".worldMapSmall").height()
+            };
+
             C.log("restore-css-string: ", WHYJUSTIFY.fullscreenRestore);
             iframe.css({ border: 0, position:"fixed", top:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).hide();
             $("#main", window.top.document).css('padding-top: 0px');
+            // set plain background
+            $("body").css({
+                backgroundImage: "url(\"/img/background.jpg\")",
+                backgroundColor: "#474C52",
+                backgroundAttachment: "fixed",
+                backgroundPosition: "center center",
+                backgroundRepeat: "repeat"
+            });
+
+            // hide unwanted elements
+            $("#tpScroll").hide();
+            // increase
+            $(".worldMapSmall, .worldMapSmall svg").animate({ width : iframe.width(), height : iframe.height() }, 500);
+            $(window.parent).scrollTop(0);
         } else {
             $(".entry-actions", window.top.document).css('padding-top: 40px');
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).show();
-            iframe.css(WHYJUSTIFY.fullscreenRestore);
+            iframe.css('width', WHYJUSTIFY.fullscreenRestore.width);
+            iframe.css('height', WHYJUSTIFY.fullscreenRestore.height);
             iframe.css({position:"static", top:"auto", left:"auto"});
+
+            $("body").removeAttr('style');
+            $(".worldMapSmall, .worldMapSmall svg").removeAttr('style');
+
+            // show wanted elements
+            $("#tpScroll").show();
+            $(window.parent).scrollTop(WHYJUSTIFY.fullscreenRestore.scrollPosition);
             WHYJUSTIFY.fullscreenRestore = null;
         }
     }

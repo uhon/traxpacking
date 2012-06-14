@@ -171,8 +171,11 @@ class Poi
                 "latitude" => $poi->latitude,
                 "longitude" => $poi->longitude,
                 "title" => $poi->title,
-                "url" => $poi->url
+                "url" => $poi->url,
             );
+            if($poi === $this) {
+                $poiArray[$poi->id]["current"] = true;
+            }
         }
         $poiArray = \Zend_Json::encode($poiArray);
         str_replace('"', "'", $poiArray);

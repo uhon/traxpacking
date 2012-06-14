@@ -73,7 +73,7 @@ class Admin_PoiController extends Tp_Controller_Action
 
 
                 $poi->title = $form->getValue('title');
-                $poi->description = $form->getValue('description');
+                $poi->url = $form->getValue('url');
                 $poi->latitude = $form->getValue('latitude');
                 $poi->longitude = $form->getValue('longitude');
                 $poi->svgCoordinates = $form->getValue('svgCoordinates');

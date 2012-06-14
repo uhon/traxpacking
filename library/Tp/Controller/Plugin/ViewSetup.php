@@ -17,13 +17,14 @@ class Tp_Controller_Plugin_ViewSetup extends Zend_Controller_Plugin_Abstract
         '/js/jquery/3rd_party/jquery.maxZIndex.js',
         '/js/jquery/3rd_party/jquery.svg.js',
         '/js/jquery/3rd_party/jquery.svgdom.js',
-        '/js/jquery/3rd_party/jquery.imgzoom.js',
+        '/js/jquery/3rd_party/jquery.spinners.min.js',
         '/js/jquery/3rd_party/jquery.thumbnailScroller.js',
+        '/js/jquery/3rd_party/jquery.lightview_adapted.js',
         '/js/jquery/3rd_party/json2.js',
         '/js/jquery/3rd_party/jquery.tinyTips.js',
         '/js/jquery/3rd_party/supersized/slideshow/js/jquery.easing.min.js',
-        '/js/jquery/3rd_party/supersized/slideshow/js/supersized.3.2.7.js',
-        '/js/jquery/3rd_party/supersized/slideshow/theme/supersized.shutter.js',
+        //'/js/jquery/3rd_party/supersized/slideshow/js/supersized.3.2.7.js',
+        //'/js/jquery/3rd_party/supersized/slideshow/theme/supersized.shutter.js',
         '/js/jquery/jquery.waitForIt.js',
         '/js/site.js',
     );
@@ -34,6 +35,8 @@ class Tp_Controller_Plugin_ViewSetup extends Zend_Controller_Plugin_Abstract
         '/css/jquery/trontastic/jquery-ui-1.8.20.custom.css',
         '/css/jquery/imgzoom.css',
         '/css/jquery/jquery.thumbnailScroller.css',
+        '/css/jquery/lightview/lightview.css',
+        '/css/jquery/lightview/lightview.css',
     );
 
     public static function getHeadScripts() {

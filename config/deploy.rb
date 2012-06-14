@@ -79,6 +79,7 @@ namespace :deploy do
             migrate = Capistrano::CLI.ui.ask "Would you like to update the database (Y/n)? "
             if migrate.empty? || migrate != 'n'
                 run "cd #{current_release}/scripts && doctrine orm:schema-tool:update --force"
+                run "cd #{current_release}/scripts && doctrine orm:generate-proxies"
             end
         end
     end
@@ -93,6 +94,7 @@ namespace :deploy do
         run "ln -sf #{shared_path}/public/cache #{current_release}/public/cache"
         run "ln -sf #{shared_path}/public/compressed #{current_release}/public/compressed"
         run "ln -sf #{shared_path}/public/media #{current_release}/public/media"
+        run "ln -sf #{shared_path}/public/upload #{current_release}/public/upload"
         run "ln -sf #{shared_path}/library/Zend #{current_release}/library/Zend"
         run "ln -sf #{shared_path}/library/ZendX #{current_release}/library/ZendX"
 

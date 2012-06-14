@@ -34,8 +34,13 @@ class IndexController extends Tp_Controller_Action
 
     public function poiAction()
     {
-        $this->view->poi = new \Tp\Entity\Poi($this->_getParam('p'));
-        $this->view->poi = $this->_em->find('Tp\Entity\Poi', $this->_getParam('p', 0));
+        $this->view->url = base64_decode($this->_getParam('url'));
+        $result = $this->_em->getRepository('Tp\Entity\Poi')->findBy(array('url' => $this->view->url));
+        $this->view->poi = null;
+        if(!empty($result)) {
+            $this->view->poi = array_pop($result);
+        }
+
     }
 
     public function countryAction()

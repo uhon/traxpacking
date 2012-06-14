@@ -1,61 +1,76 @@
-<div id="tpScroll" class="jThumbnailScroller" style="height:300px;  ">
-    <div class="jTscrollerContainer">
-        <div class="jTscroller">
-            <?php
-                foreach($this->poi->pictures as $p) {
-                    $small = "/media/" . $p->filename . "_small.jpg";
-                    $large = "/media/" . $p->filename . "_medium.jpg";
-
-            ?>
-                    <a href="<?= $large ?>"><img src="<?= $small ?>" alt="" title="<?= $p->description ?>"/></a>
-            <?php
-                }
-            ?>
-
-        </div>
+<?php
+    if($this->poi == null) {
+        echo '<h2>Kein POI mit URL: ' . $this->url . '</h2>';
+    } else {
+?>
+    <div id="svgMapContainer_<?= $this->poi->id ?>" class="worldMapSmall">
     </div>
-    <a href="#" class="jTscrollerPrevButton"></a>
-    <a href="#" class="jTscrollerNextButton"></a>
-</div>
+    <div id="tpScroll" class="jThumbnailScroller" style="height:300px;  ">
+        <div class="jTscrollerContainer">
+            <div class="jTscroller">
+                <?php
+                    foreach($this->poi->pictures as $p) {
+                        $small = "/media/" . $p->filename . "_small.jpg";
+                        $large = "/media/" . $p->filename . "_medium.jpg";
+
+                ?>
+                        <a
+                           class="lightview"
+                           data-lightview-group="poiPictures"
+                           data-lightview-options="onHide: WHYJUSTIFY.toggleFullscreen, position:top, controls: { type: 'relative', slider: { items: 10 } }, skin: 'dark'"
+                           data-lightview-caption="<?= $p->description . " " . $p->description . $p->description ." " .  $p->description . " " . $p->description . $p->description . $p->description ?>   n"
+                           href="<?= $large ?>"
+                        >
+                              <img src="<?= $small ?>" alt="" />
+                        </a>
+                <?php
+                    }
+                ?>
+
+            </div>
+        </div>
+        <a href="#" class="jTscrollerPrevButton"></a>
+        <a href="#" class="jTscrollerNextButton"></a>
+    </div>
 
 <?php
-        $this->javascript('
-        $("#tpScroll").thumbnailScroller({
-            scrollerType:"clickButtons",
-            scrollerOrientation:"vertical",
-            scrollSpeed:2,
-            scrollEasing:"easeOutCirc",
-            scrollEasingAmount:800,
-            acceleration:4,
-            scrollSpeed:800,
-            noScrollCenterSpace:10,
-            autoScrolling:1,
-            autoScrollingSpeed:3000,
-            autoScrollingEasing:"easeInOutQuad",
-            autoScrollingDelay:500
-        });
+            $this->javascript('
+            $(window).load(function() {
+                $("#tpScroll").thumbnailScroller({
+                    scrollerType:"clickButtons",
+                    scrollerOrientation:"vertical",
+                    scrollSpeed:2,
+                    scrollEasing:"easeOutCirc",
+                    scrollEasingAmount:800,
+                    acceleration:4,
+                    scrollSpeed:800,
+                    noScrollCenterSpace:10,
+                    autoScrolling:1,
+                    autoScrollingSpeed:3000,
+                    autoScrollingEasing:"easeInOutQuad",
+                    autoScrollingDelay:500
+                });
 
-        var theWrap = \'\';
+                $("#tpScroll a.lightview").bind("click", function() {
+                    WHYJUSTIFY.toggleFullscreen();
+                });
 
-        $("#tS3 img").imgZoom({
-            rotate : 1,
-            wrap : $("#wrapMarkup").html()
-        });
-    ');
+
+
+            });
+        ', false);
+
+        $this->javascript("
+            var tmpRpc = jQuery.Zend.jsonrpc({ url : '/ajax/rpc.php', async : true});
+            SVG.createSvgWorldMap(
+                function() {
+                    tmpRpc.setAsyncSuccess(function(response) {
+                        SVG.setupSvgWorldMap([{ name : '" . $this->poi->country->name . "'}], 'svgMapContainer_" . $this->poi->id . "');
+                        SVG.drawPois(" . $this->poi->getPoisAsJsonArray() . ", 'svgMapContainer_" . $this->poi->id . "');
+                    });
+                    tmpRpc.getCountryMap();
+                }, 'svgMapContainer_" . $this->poi->id . "'
+            );
+        ");
+    }
 ?>
-
-<div id="wrapMarkup" style="display:none">
-    <div class="imgzoom-wrap imgzoom-width">
-        <div class="imgzoom-container imgzoom-width imgzoom-height">
-            <a href="#" class="imgzoom-prev"><span>Prev</span></a>
-            <a href="#" class="imgzoom-next"><span>Next</span></a>
-        </div>
-        <div class="imgzoom-counter">
-            <span class="imgzoom-current" />&nbsp;of&nbsp;
-            <span class="imgzoom-last" />
-        </div>
-        <div class="imgzoom-title" />
-        <div class="imgzoom-close">----------Close</div>
-    </div>
-</div>
-
