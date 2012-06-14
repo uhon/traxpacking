@@ -80,8 +80,8 @@ namespace :deploy do
             if migrate.empty? || migrate != 'n'
                 run "cd #{current_release}/scripts && doctrine orm:schema-tool:update --force"
             end
-            run "cd #{current_release}/scripts && doctrine orm:generate-proxies"
         end
+        run "cd #{current_release}/scripts && doctrine orm:generate-proxies"
     end
 
     # Create symlinks for asset files.

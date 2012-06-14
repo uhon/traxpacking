@@ -79,7 +79,7 @@ INIT = {   // start of INIT object scope.
 
     tinyTips: function() {
         //$('svg .poiIcon, svg path.active').each(function() {
-        $('svg .poiIcon').each(function() {
+        $('svg image').each(function() {
             var title = $(this).attr('title');
             if (typeof (title) !== 'undefined' && jQuery.trim($(this).attr('title')) !== '') {
                 $(this).tinyTips('light', 'title', true);
@@ -409,7 +409,7 @@ SVG = { // start of SVG object scope.
             });*/
         }
         C.log('SVG Element at Setup End', svgElement.root());
-        INIT.tinyTips();
+
         $('#fullscreen_toggle').append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
         $('#svgMapContainer').waitForItStop();
     },
@@ -486,7 +486,7 @@ SVG = { // start of SVG object scope.
             svgElement.line(svgElement.root(), value[0], value[1], value[2], value[3], { stroke: "#aaaaaa", strokeWidth : "0.3"});
         });
 
-
+        INIT.tinyTips();
     }
 }; // end of SVG object scope.
 

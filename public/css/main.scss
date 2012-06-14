@@ -12,6 +12,7 @@ div.clear { clear: both; }
 
 #playground {
     text-align: center;
+    padding-top: 60px;
 }
 .waitIcon {
     position: absolute;
@@ -157,6 +158,9 @@ table {
 
 div.worldMapLarge {
     svg {
+        moz-border-radius: 10px;
+        webkit-border-radius: 10px;
+        border-radius: 10px;
         width:680px;
   	    height:290px;
     }
@@ -165,6 +169,9 @@ div.worldMapLarge {
 div.worldMapSmall {
     margin: 5px auto 15px auto;
     svg {
+        moz-border-radius: 5px;
+        webkit-border-radius: 5px;
+        border-radius: 5px;
   	    height:160px;
         width:230px;
     }

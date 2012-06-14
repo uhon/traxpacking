@@ -54,10 +54,16 @@
             
             // Offsets so that the tooltip is centered over the element it is being applied to but
             // raise it up above the element so it isn't covering it.
-            var yOffset = tinyTip.height() + 2;
-            var xOffset = (tinyTip.width() / 2) - (element.width() / 2);
-            if(element.closest('svg').length > 0) {
-                var xOffset = (tinyTip.width() / 2) - (element.get(0).getBBox().width * element.closest('svg').attr('scale') / 2);
+            var yOffset = tinyTip.height() + 2,
+                xOffset = (tinyTip.width() / 2) - (element.width() / 2),
+                scaleFactor = SVG.worldMapsScaleFactor[element.closest('.hasSVG').attr('id')];
+            if(element.closest('.hasSVG').length > 0) {
+                C.log("tinytipwidth", tinyTip.width());
+                C.log("tinytipscale", scaleFactor);
+                C.log("tinytipbboxwidth", element.get(0).getBBox().width);
+                xOffset = tinyTip.width() / 2
+                                    - (element.get(0).getBBox().width * scaleFactor) / 2;
+                xOffset = tinyTip.width() / 2 - 13;
             }
 
             // Grab the coordinates for the element with the tooltip and make a new copy

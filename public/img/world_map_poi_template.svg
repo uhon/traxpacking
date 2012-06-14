@@ -1003,4 +1003,40 @@ Both this and the original map are subject to the GNU Free Documentation License
      sodipodi:rx="0.50236815"
      sodipodi:ry="0.35883442"
      d="m 269.98702,-725.89319 a 0.50236815,0.35883442 0 1 1 -1.00474,0 0.50236815,0.35883442 0 1 1 1.00474,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3230"
+     sodipodi:cx="285.05804"
+     sodipodi:cy="-724.74487"
+     sodipodi:rx="0.4306013"
+     sodipodi:ry="0.50236815"
+     d="m 285.48865,-724.74487 a 0.4306013,0.50236815 0 1 1 -0.86121,0 0.4306013,0.50236815 0 1 1 0.86121,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3228"
+     sodipodi:cx="283.12036"
+     sodipodi:cy="-724.24249"
+     sodipodi:rx="0.35883442"
+     sodipodi:ry="0.28706753"
+     d="m 283.4792,-724.24249 a 0.35883442,0.28706753 0 1 1 -0.71767,0 0.35883442,0.28706753 0 1 1 0.71767,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3234"
+     sodipodi:cx="288.78995"
+     sodipodi:cy="-728.54852"
+     sodipodi:rx="0.57413507"
+     sodipodi:ry="0.4306013"
+     d="m 289.36408,-728.54852 a 0.57413507,0.4306013 0 1 1 -1.14827,0 0.57413507,0.4306013 0 1 1 1.14827,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3236"
+     sodipodi:cx="293.74185"
+     sodipodi:cy="-728.54852"
+     sodipodi:rx="0.35883442"
+     sodipodi:ry="0.4306013"
+     d="m 294.10069,-728.54852 a 0.35883442,0.4306013 0 1 1 -0.71767,0 0.35883442,0.4306013 0 1 1 0.71767,0 z" />
 </svg>
