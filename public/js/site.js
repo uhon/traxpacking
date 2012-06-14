@@ -532,9 +532,9 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).show();
             iframe.css('width', WHYJUSTIFY.fullscreenRestore.width);
             iframe.css('height', WHYJUSTIFY.fullscreenRestore.height);
-            iframe.css('margin-top', WHYJUSTIFY.iframeMargin);
+            iframe.css('margin-top', WHYJUSTIFY.fullscreenRestore.iframeMargin);
             iframe.css({position:"static", top:"auto", left:"auto"});
-            $('#playground').css('padding-top', WHYJUSTIFY.playgroundPadding);
+            $('#playground').css('padding-top', WHYJUSTIFY.fullscreenRestore.playgroundPadding);
             logo.css(WHYJUSTIFY.fullscreenRestore.logoOffset);
 
             $("body").removeAttr('style');
