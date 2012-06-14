@@ -430,7 +430,7 @@ SVG = { // start of SVG object scope.
                 imageWidth = 50 * SVG.worldMapsScaleFactor[containerId],
                 imageHeight = 60 * SVG.worldMapsScaleFactor[containerId],
                 poiElement,
-                imageIcon = "/img/whyjustify_pin_black.png",
+                imageIcon = "/img/whyjustify_pin_grey.png",
                 isActive = false,
                 isCurrent = false,
                 activeClass = ""
@@ -444,6 +444,7 @@ SVG = { // start of SVG object scope.
             if(poiArray["url"] !== null && poiArray["url"].length > 0) {
                 isActive = true;
                 activeClass = " activePoi";
+                imageIcon = "/img/whyjustify_pin_black.png";
             }
 
             poiElement = $(
