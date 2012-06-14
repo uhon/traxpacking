@@ -79,8 +79,8 @@ namespace :deploy do
             migrate = Capistrano::CLI.ui.ask "Would you like to update the database (Y/n)? "
             if migrate.empty? || migrate != 'n'
                 run "cd #{current_release}/scripts && doctrine orm:schema-tool:update --force"
-                run "cd #{current_release}/scripts && doctrine orm:generate-proxies"
             end
+            run "cd #{current_release}/scripts && doctrine orm:generate-proxies"
         end
     end
 
