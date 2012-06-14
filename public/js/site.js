@@ -499,12 +499,15 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             WHYJUSTIFY.fullscreenRestore = {
                 width: iframe.css('width'),
                 height: iframe.css('height'),
+                iframeMargin : iframe.css('margin'),
+                playgroundPadding : $('#playground').css('padding'),
                 scrollPosition: $(window.parent).scrollTop(),
                 mapHeight: $(".worldMapSmall").height()
             };
 
             C.log("restore-css-string: ", WHYJUSTIFY.fullscreenRestore);
-            iframe.css({ border: 0, position:"fixed", top:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
+            iframe.css({ border: 0, position:"fixed", top:0, marginTop:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
+            $('#playground').css('padding', 0);
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).hide();
             $("#main", window.top.document).css('padding-top: 0px');
             // set plain background
@@ -526,7 +529,9 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).show();
             iframe.css('width', WHYJUSTIFY.fullscreenRestore.width);
             iframe.css('height', WHYJUSTIFY.fullscreenRestore.height);
+            iframe.css('margin', WHYJUSTIFY.iframeMargin);
             iframe.css({position:"static", top:"auto", left:"auto"});
+            $('#playground').css('padding', WHYJUSTIFY.playgroundPadding);
 
             $("body").removeAttr('style');
             $(".worldMapSmall, .worldMapSmall svg").removeAttr('style');
