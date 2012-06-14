@@ -432,10 +432,12 @@ SVG = { // start of SVG object scope.
                 poiElement,
                 imageIcon = "/img/whyjustify_pin_black.png",
                 isActive = false,
+                isCurrent = false,
                 activeClass = ""
             ;
 
             if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
+                isCurrent = true;
                 imageIcon = "/img/whyjustify_pin_red.png";
             }
 
@@ -456,12 +458,12 @@ SVG = { // start of SVG object scope.
                 )
             );
 
-            if(isActive) {
+            if(isActive && !isCurrent) {
                 poiElement.bind('mouseover', function(e) {
                     $(this).attr("href", '/img/whyjustify_pin_red.png');
                 });
 
-                poiElement.bind('mouseout', function(e) {
+                poiElement.bind('mouseout',  function(e) {
                     $(this).attr("href", '/img/whyjustify_pin_black.png');
                 });
 
