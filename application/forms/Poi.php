@@ -119,7 +119,7 @@ class Form_Poi extends Tp_Form
         $subForm->addElement('text', 'datetime', array(
             'label' => 'Date & Time (of picture)',
             'required' => true,
-            'value' => $picture->datetime->format('Y-m-d H:m:s')
+            'value' => $picture->datetime->format('Y-m-d H:i:s')
         ));
 
         $subForm->addElement('textarea', 'description', array(

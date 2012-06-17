@@ -14,7 +14,7 @@ class Form_Picture extends Tp_Form
 
         $this->addElement('text', 'datetime', array(
             'label' => 'Date & Time (of picture)',
-            'value' => $this->_picture->datetime->format('Y-m-d H:m:s')
+            'value' => $this->_picture->datetime->format('Y-m-d H:i:s')
         ));
 
         $poi = new \Tp\Entity\Poi();

@@ -33,7 +33,7 @@ class Admin_PictureController extends Tp_Controller_Action
             /* @var \Picture $p */
             $this->view->unassignedPictures[] = array(
                 'name' => $p->filename,
-                'datetime' => $p->datetime->format('Y-m-d H:m:s'),
+                'datetime' => $p->datetime->format('Y-m-d H:i:s'),
                 'editLink' => $this->view->linkiconEdit($p->getAssignUrl(), 'assign to poi'),
             );
         }
@@ -76,7 +76,7 @@ class Admin_PictureController extends Tp_Controller_Action
             } else {
                 if($picture) {
                     $data = $picture->toArray();
-                    $data["datetime"] = $data["datetime"]->format('Y-m-d H:m:s');
+                    $data["datetime"] = $data["datetime"]->format('Y-m-d H:i:s');
                     if($data["poi"] === null) {
                         unset($data["poi"]);
                     }
