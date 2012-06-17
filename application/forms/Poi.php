@@ -87,10 +87,10 @@ class Form_Poi extends Tp_Form
         }
     }*/
 
-    public function setPictures(\Doctrine\ORM\PersistentCollection $pictures = null)
+    public function setPictures(array $pictures = null)
     {
         if($pictures !== null) {
-            foreach($pictures->toArray() as $p) {
+            foreach($pictures as $p) {
                 $this->addPicture($p);
             }
         }
@@ -116,7 +116,7 @@ class Form_Poi extends Tp_Form
             'label' => 'Remove Picture from POI?',
         ));
 
-        $subForm->addElement('text', 'dateTime', array(
+        $subForm->addElement('text', 'datetime', array(
             'label' => 'Date & Time (of picture)',
             'required' => true,
             'value' => $picture->datetime->format('Y-m-d H:m:s')
@@ -129,7 +129,9 @@ class Form_Poi extends Tp_Form
         ));
 
         $subForm->addElement('plainHtml', 'preview', array(
-            'value' => '<img class="thumbPic" src="/media/' . $picture->filename . '_small.jpg" alt="" />',
+            'value' => '<a href="/media/' . $picture->filename . '_orig.jpg" target="_blank">
+                            <img class="thumbPic" src="/media/' . $picture->filename . '_small.jpg" alt="" />
+                        </a>',
             'label' => 'Preview'
         ));
 

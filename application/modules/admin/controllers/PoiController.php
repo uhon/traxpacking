@@ -38,7 +38,7 @@ class Admin_PoiController extends Tp_Controller_Action
         if($poi) {
             $add = false;
             if($poi->pictures) {
-                $pictures = $poi->pictures;
+                $pictures = $poi->getPicturesOrderedByDate();
             }
         } else {
             $poi = new Poi();

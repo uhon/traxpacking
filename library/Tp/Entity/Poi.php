@@ -91,6 +91,8 @@ class Poi
 
 
 
+
+
 	/**
 	 * @var \Doctrine\Common\DateTime\DateTime $createddate
 	 *
@@ -160,6 +162,20 @@ class Poi
         return $poiArray;
     }
 
+    public function getPoiIdOfLastAssignedPicture() {
+        $poiArray = array();
+        $collection =  \Zend_Registry::get('doctrine')->getEntityManager()
+                ->getRepository('Tp\Entity\Picture')
+                ->findBy(array(), array('modifieddate' => 'DESC'));
+
+        foreach($collection as $picture) {
+            if($picture->poi !== null) {
+                return $picture->poi->id;
+            }
+        }
+        return null;
+    }
+
     public function getPoisAsJsonArray() {
         $allPois = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Poi')->findAll();
 
@@ -173,13 +189,21 @@ class Poi
                 "title" => $poi->title,
                 "url" => $poi->url,
             );
-            if($poi === $this) {
+            if($poi->id === $this->id) {
                 $poiArray[$poi->id]["current"] = true;
             }
         }
         $poiArray = \Zend_Json::encode($poiArray);
         str_replace('"', "'", $poiArray);
         return $poiArray;
+    }
+
+
+    public function getPicturesOrderedByDate() {
+        $collection =  \Zend_Registry::get('doctrine')->getEntityManager()
+                ->getRepository('Tp\Entity\Picture')
+                ->findBy(array('poi' => $this->id), array('datetime' => 'ASC'));
+        return $collection;
     }
 
 	/**

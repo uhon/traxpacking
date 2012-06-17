@@ -28,7 +28,7 @@ class Admin_PictureController extends Tp_Controller_Action
             );
         }
         $this->view->unassignedPictures = array();
-        $unassigned = $this->_em->getRepository('Tp\Entity\Picture')->findBy(array('poi' => null));
+        $unassigned = $this->_em->getRepository('Tp\Entity\Picture')->findBy(array('poi' => null), array('datetime' => 'ASC'));
         foreach($unassigned as $p) {
             /* @var \Picture $p */
             $this->view->unassignedPictures[] = array(
@@ -62,7 +62,7 @@ class Admin_PictureController extends Tp_Controller_Action
                 if($form->isValid($this->_request->getPost())) {
                     $picture->description = $form->getValue('description');
                     $picture->poi = $this->_em->find('Tp\Entity\Poi', $form->getValue('poi'));
-                    $picture->dateTime = $form->getValue('dateTime');
+                    $picture->datetime = new \DateTime($form->getValue('datetime'));
 
                     $this->_em->persist($picture);
 
@@ -76,6 +76,10 @@ class Admin_PictureController extends Tp_Controller_Action
             } else {
                 if($picture) {
                     $data = $picture->toArray();
+                    $data["datetime"] = $data["datetime"]->format('Y-m-d H:m:s');
+                    if($data["poi"] === null) {
+                        unset($data["poi"]);
+                    }
                     $form->populate($data);
                 }
             }

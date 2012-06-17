@@ -103,6 +103,7 @@
 .lv_title_caption_slide { position: relative; float: left; top: 0; left: 0; padding: 15px 0 7px 0; }
 .lv_title { font-weight: bold; }
 .lv_title, .lv_caption {
+    font-size: 16px;
   float: left;
   clear: both;
 }

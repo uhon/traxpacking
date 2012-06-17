@@ -135,7 +135,6 @@ FORM = {  // start of FORM object scope.
     },
 
     popupForm:function (linkElement) {
-        C.log(linkElement);
         $('#popupForm').load(
             linkElement.attr('href'),
             function () {
@@ -203,14 +202,9 @@ UI = { // start of INIT object scope.
             $(".tabList span.ui-icon-close", tabContainer).click(function() {
                 var index = $(".tabList li", tabContainer).index( $( this ).closest('li') ),
                     deleteLink = $('div:nth-of-type(' + (index+1) + ') a.removeLink', tabContainer).attr('href');
-                C.log('tabContainer', tabContainer);
-                C.log('index', index);
-                C.log('nth div', $('div:nth-of-type(' + (index+1) + ')', tabContainer));
                     if(confirm('do yo really want to remove this Picture from POI?')) {
                         tabContainer.waitForIt();
                         $.get(deleteLink, function(data) {
-                            C.log($('#popupForm .flashMessages'));
-                            C.log($('.flashMessages', data));
                             $('#popupForm .flashMessages').remove();
                             $('#popupForm').prepend(data);
                             UI.showFlashMessages();
@@ -229,10 +223,8 @@ UI = { // start of INIT object scope.
     },
     markTabsWithErrors: function() {
         $.each($(".tp_subform_tabbed ul.errors").closest(".tp_subform_tabbed"), function() {
-            C.log($(this));
             index = $(this).attr('id').substr(4, $(this).attr('id').length-4);
             var correspondingTab = $("ul li:nth-of-type(" + (index) + ")", $(this).closest('.subform_container'));
-            C.log('correspondingTab', correspondingTab);
             $('a', correspondingTab).css('color', 'red');
         });
 
@@ -245,8 +237,6 @@ UI = { // start of INIT object scope.
         C.log('Starting Slideshow');
         UI.initalSlideshowState = $('#supersized-wrapper').html();
         //$("#playground").hide();
-        C.log($("iframe", window.top.document));
-        // TODO: Comment this out
 
         $('body', window.document).append('<div id="supersized-loader"></div><div id="supersized"></div>');
         $('#supersized-wrapper').show();
@@ -332,9 +322,6 @@ SVG = { // start of SVG object scope.
 
         C.log('setupWorldMap with following array', countryArray, 'on Container', container);
 
-        C.log('SVG Element at Setup Start', svgElement.root());
-
-
         var minX = 99999,
             minY = 99999,
             maxX = -99999,
@@ -349,6 +336,7 @@ SVG = { // start of SVG object scope.
 
 
         //countryList = VODOO
+        C.log("process countries");
         $.each(countryList, function(key, country) {
             C.log(country.name);
 
@@ -408,7 +396,6 @@ SVG = { // start of SVG object scope.
                 $(this).attr('fill', '#ccc');
             });*/
         }
-        C.log('SVG Element at Setup End', svgElement.root());
 
         $('#fullscreen_toggle').append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
         $('#svgMapContainer').waitForItStop();
@@ -439,9 +426,7 @@ SVG = { // start of SVG object scope.
             if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
                 isCurrent = true;
                 imageIcon = "/img/whyjustify_pin_red.png";
-            }
-
-            if(poiArray["url"] !== null && poiArray["url"].length > 0) {
+            } else if(poiArray["url"] !== null && poiArray["url"].length > 0) {
                 isActive = true;
                 activeClass = " activePoi";
                 imageIcon = "/img/whyjustify_pin_black.png";
@@ -494,6 +479,7 @@ SVG = { // start of SVG object scope.
 WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
     fullscreenRestore: null,
     toggleFullscreen: function() {
+        C.log("toggle Fullscreen");
         var iframe = $("iframe[name='" + window.name + "']", window.top.document),
             logo = $('#whyjustify_logo', window.top.document);
         if(WHYJUSTIFY.fullscreenRestore === null) {
@@ -507,7 +493,6 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
                 mapHeight: $(".worldMapSmall").height()
             };
 
-            C.log("restore-css-string: ", WHYJUSTIFY.fullscreenRestore);
             iframe.css({ border: 0, position:"fixed", top:0, marginTop:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
             $('#playground').css('padding', 0);
             logo.css({top:"10px", right:"10px"});
@@ -554,31 +539,9 @@ $(function () {
     rpc = jQuery.Zend.jsonrpc({ url : "/ajax/rpc.php", async : true});
 
 
-    /*C.log(rpc.random());
-    C.log(rpc.random());
-    C.log(rpc.random());
-    C.log(rpc.random());
-    C.log(rpc.hello());
-    C.log(rpc.hello());
-    C.log(rpc.hello());
-    C.log(rpc.hello());*/
-
     /*var testPremadeSmd = jQuery.Zend.jsonrpc({
         url: '/ajax/rpc.php',
         smd: {"transport":"POST","envelope":"JSON-RPC-2.0","contentType":"application\/json","SMDVersion":"2.0","target":"rpc.php","services":{"add":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"subtract":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"multiply":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"divide":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"float"},"hang":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"sleepTime","optional":false}],"returns":"boolean"}},"methods":{"add":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"subtract":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"multiply":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"integer"},"divide":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"x","optional":false},{"type":"integer","name":"y","optional":false}],"returns":"float"},"hang":{"envelope":"JSON-RPC-2.0","transport":"POST","parameters":[{"type":"integer","name":"sleepTime","optional":false}],"returns":"boolean"}}}
-    });
-
-    C.log(testPremadeSmd.random());
-    C.log(testPremadeSmd.random());
-    C.log(testPremadeSmd.random());
-    C.log(testPremadeSmd.random());
-    C.log(testPremadeSmd.hello());
-    C.log(testPremadeSmd.hello());
-    C.log(testPremadeSmd.hello());
-    C.log(testPremadeSmd.hello());*/
-
-
-
-
+    });*/
 });
 

@@ -12,7 +12,7 @@ class Form_Picture extends Tp_Form
 
     public function init() {
 
-        $this->addElement('text', 'dateTime', array(
+        $this->addElement('text', 'datetime', array(
             'label' => 'Date & Time (of picture)',
             'value' => $this->_picture->datetime->format('Y-m-d H:m:s')
         ));
@@ -20,7 +20,8 @@ class Form_Picture extends Tp_Form
         $poi = new \Tp\Entity\Poi();
         $this->addElement('select', 'poi', array(
             'required' => true,
-            'multiOptions' => $poi->getPoiTitleArray()
+            'multiOptions' => $poi->getPoiTitleArray(),
+            'value' => $poi->getPoiIdOfLastAssignedPicture()
         ));
 
         $this->addElement('Textarea', 'description', array(
@@ -29,7 +30,9 @@ class Form_Picture extends Tp_Form
         ));
 
         $this->addElement('plainHtml', 'preview', array(
-            'value' => '<img class="thumbPic" src="/media/' . $this->_picture->filename . '_small.jpg" alt="" />',
+            'value' => '<a href="/media/' . $this->_picture->filename . '_orig.jpg" target="_blank">
+                            <img class="thumbPic" src="/media/' . $this->_picture->filename . '_small.jpg" alt="" />
+                        </a>',
             'label' => 'Preview'
         ));
 

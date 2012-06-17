@@ -1,6 +1,6 @@
 <?php
     if($this->poi == null) {
-        echo '<h2>Kein POI mit URL: ' . $this->url . '</h2>';
+        echo '<h2>Kein POI mit URL:<br/>' . $this->url . '</h2>';
     } else {
 ?>
     <div id="svgMapContainer_<?= $this->poi->id ?>" class="worldMapSmall"></div>
@@ -12,7 +12,8 @@
                 <div class="jTscrollerContainer">
                     <div class="jTscroller">
                         <?php
-                            foreach($this->poi->pictures as $p) {
+                            //$this->poi->pictures
+                            foreach($this->poi->getPicturesOrderedByDate() as $p) {
                                 $small = "/media/" . $p->filename . "_small.jpg";
                                 $large = "/media/" . $p->filename . "_medium.jpg";
 
@@ -21,7 +22,7 @@
                                    class="lightview"
                                    data-lightview-group="poiPictures"
                                    data-lightview-options="onHide: WHYJUSTIFY.toggleFullscreen, position:top, controls: { type: 'relative', slider: { items: 10 } }, skin: 'dark'"
-                                   data-lightview-caption="<?= $p->description ?>"
+                                   data-lightview-caption="<?= nl2br($p->description) ?>"
                                    href="<?= $large ?>"
                                 >
                                       <img src="<?= $small ?>" alt="" />
