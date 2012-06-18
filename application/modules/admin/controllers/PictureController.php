@@ -20,10 +20,13 @@ class Admin_PictureController extends Tp_Controller_Action
                 throw new Exception('exif-Data for picture ' . basename($p) . ' could not be read! please solve the Problem manually (exiftool)!');
             }
 
+            $dateTimeOfPicture = new Zend_Date($exif['DateTimeOriginal'], "yyyy:MM:dd HH:mm:ss");
+            $dateTimeOfPicture = $dateTimeOfPicture->get('yyyy-MM-dd HH:mm:ss');
+
             $this->view->newPictures[] = array(
                 'name' => basename($p),
                 'size' => round(filesize($p) / 1048576, 2) . 'MB',
-                'datetime' => $exif['DateTimeOriginal'],
+                'datetime' => $dateTimeOfPicture,
                 'initializeLink' => '<a href="' . $this->view->url(array('action' => 'convert', 'pic' => basename($p))) . '">initialize</a>'
             );
         }

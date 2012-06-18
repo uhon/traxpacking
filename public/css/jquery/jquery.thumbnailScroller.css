@@ -28,13 +28,13 @@ scrollers styling
 .jThumbnailScroller#tS3 .jTscroller a{display:block; margin:0 6px 10px 6px; width:180px; overflow:hidden; opacity:0.7;}
 .jThumbnailScroller#tS3 .jTscroller a:hover{opacity:1;}
 .jThumbnailScroller#tS3 .jTscroller a:first-child{margin-top:50px;}
-.jThumbnailScroller#tS3 .jTscrollerNextButton{margin:10px 0 10px -20px; bottom:0; left:50%; -moz-transform:rotate(90deg); -webkit-transform:rotate(90deg); -o-transform:rotate(90deg); -ms-transform:rotate(90deg);}
-.jThumbnailScroller#tS3 .jTscrollerPrevButton{margin:10px 0 10px -20px; top:0; left:50%; -moz-transform:rotate(90deg); -webkit-transform:rotate(90deg); -o-transform:rotate(90deg); -ms-transform:rotate(90deg);}
+.jThumbnailScroller#tS3 .jTscrollerNextButton{margin:10px 0 10px -20px; bottom:0; left:50%;}
+.jThumbnailScroller#tS3 .jTscrollerPrevButton{margin:10px 0 10px -20px; top:0; left:50%;}
 
 .jThumbnailScroller#tpScroll { width:220px; height:300px; margin:0; background:#eee;}
 .jThumbnailScroller#tpScroll .jTscroller{height:auto; margin-bottom:40px;}
 .jThumbnailScroller#tpScroll .jTscroller a{display:block; margin:0 6px 10px 6px; width:198px; overflow:hidden; opacity:0.7;}
 .jThumbnailScroller#tpScroll .jTscroller a:hover{opacity:1;}
 .jThumbnailScroller#tpScroll .jTscroller a:first-child{margin-top:50px;}
-.jThumbnailScroller#tpScroll .jTscrollerNextButton{margin:10px 0 10px -20px; bottom:0; left:50%; -moz-transform:rotate(90deg); -webkit-transform:rotate(90deg); -o-transform:rotate(90deg); -ms-transform:rotate(90deg);}
-.jThumbnailScroller#tpScroll .jTscrollerPrevButton{margin:10px 0 10px -20px; top:0; left:50%; -moz-transform:rotate(90deg); -webkit-transform:rotate(90deg); -o-transform:rotate(90deg); -ms-transform:rotate(90deg);}
+.jThumbnailScroller#tpScroll .jTscrollerNextButton{margin:10px 0 10px -20px; bottom:0; left:50%;}
+.jThumbnailScroller#tpScroll .jTscrollerPrevButton{margin:10px 0 10px -20px; top:0; left:50%;}
