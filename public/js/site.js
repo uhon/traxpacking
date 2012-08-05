@@ -473,6 +473,7 @@ SVG = { // start of SVG object scope.
         });
 
         INIT.tinyTips();
+        //$('svg').svgPan('viewport');
     }
 }; // end of SVG object scope.
 
