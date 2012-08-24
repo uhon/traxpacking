@@ -119,7 +119,7 @@
     }
 }(function ($) {
     "use strict";
-    var init = function (root, svgRoot, enablePan, enableZoom, enableDrag, zoomScale) {
+    var init = function (root, svgRoot, enablePan, enableZoom, enableDrag, zoomScale, zoomCallback) {
         //console.log(root);
 
         var state = 'none',
@@ -237,6 +237,8 @@
                 }
 
                 stateTf = stateTf.multiply(k.inverse());
+
+                zoomCallback();
             },
 
             /**
@@ -360,12 +362,14 @@
        @param enableZoom Boolean enable or disable zooming (default enabled)
        @param enableDrag Boolean enable or disable dragging (default disabled)
        @param zoomScale Float zoom sensitivity, defaults to .2
+       @param zoomCallback function executed after zooming
     **/
-    $.fn.svgPan = function (viewportId, enablePan, enableZoom, enableDrag, zoomScale) {
+    $.fn.svgPan = function (viewportId, enablePan, enableZoom, enableDrag, zoomScale, zoomCallback) {
         enablePan = typeof enablePan !== 'undefined' ? enablePan : true;
         enableZoom = typeof enableZoom !== 'undefined' ? enableZoom : true;
         enableDrag = typeof enableDrag !== 'undefined' ? enableDrag : false;
         zoomScale = typeof zoomScale !== 'undefined' ? zoomScale : 0.2;
+        zoomCallback = typeof zoomCallback !== 'undefined' ? zoomCallback : function() {};
 
         return $.each(this, function (i, el) {
             var $el = $(el),
@@ -375,7 +379,7 @@
             if ($el.is('svg') && $el.data('SVGPan') !== true) {
                 viewport = $el.find('#' + viewportId)[0];
                 if (viewport) {
-                    init($el[0], viewport, enablePan, enableZoom, enableDrag, zoomScale);
+                    init($el[0], viewport, enablePan, enableZoom, enableDrag, zoomScale, zoomCallback);
                 } else {
                     throw "Could not find viewport with id #" + viewport;
                 }

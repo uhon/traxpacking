@@ -299,6 +299,7 @@ UI = { // start of INIT object scope.
 SVG = { // start of SVG object scope.
     worldMaps: { },
     worldMapsScaleFactor: { },
+    redrawPoiTimeout: null,
     createSvgWorldMap: function(functionCall, containerId) {
 
         if(typeof(containerId) === "undefined") {
@@ -318,7 +319,9 @@ SVG = { // start of SVG object scope.
             containerId = "svgMapContainer";
         }
         var container = $('#' + containerId),
-            svgElement = SVG.worldMaps[containerId];
+            svgElement = SVG.worldMaps[containerId],
+            containerHeight = $(svgElement.root()).parent().height(),
+            containerWidth = $(svgElement.root()).parent().width();
 
         C.log('setupWorldMap with following array', countryArray, 'on Container', container);
 
@@ -366,27 +369,28 @@ SVG = { // start of SVG object scope.
         if(maxWidth === 0 || maxHeight === 0) {
             svgElement.configure({viewBox: "50 -800 740 240"}, true);
             SVG.worldMapsScaleFactor[containerId] = 1405 / 600;
-            svgElement.configure({scale: 3});
         } else {
 
-            if((maxWidth / maxHeight > 1405/600)) {
-                growHeight = maxWidth / 1405 * 600 - maxHeight;
+            if((maxWidth / maxHeight > containerWidth/containerHeight)) {
+                growHeight = maxWidth / containerWidth * containerHeight - maxHeight;
                 maxHeight += growHeight;
-                //SVG.worldMapsScaleFactor[containerId] = (maxHeight / 600) ;
                 minY -= growHeight / 2;
             } else {
-                growWidth = maxHeight / 600 * 1405 - maxWidth;
+                growWidth = maxHeight / containerHeight * containerWidth - maxWidth;
                 maxWidth += growWidth;
-                //SVG.worldMapsScaleFactor[containerId] = (maxWidth / 1400);
                 minX -= (growWidth / 2);
             }
 
-            SVG.worldMapsScaleFactor[containerId] = (1405 / $(svgElement.root()).width()) * (1405 * (maxWidth / 1405)) / 2500;
+            //SVG.worldMapsScaleFactor[containerId] = (1405 / $(svgElement.root()).width()) * (1405 * (maxWidth / 1405)) / 2500;
 
-            C.log("Dimensions for SVG Element: minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
-            svgElement.configure({viewBox: minX + " " + minY + " " + (maxWidth) + " " + maxHeight}, true);
+            //C.log("Dimensions for SVG Element: minX:" + minX + ", minY:" + minY + ", width:" + maxWidth + ", height:" + maxHeight);
+            //svgElement.configure({viewBox: minX + " " + minY + " " + (maxWidth) + " " + maxHeight}, true);
+            var factor = 1405 / maxWidth * containerWidth / 1405;
+            SVG.worldMapsScaleFactor[containerId] = factor;
+            $('#viewport', $(svgElement.root())).attr('transform', 'matrix(' + factor + ','+ 0 + ','+ 0 + ','+ factor + ','+ minX * factor * -1 + ',' + factor * -1 * (minY) + ')');
+            C.log("Dimensions for SVG Element: scale-Factor:" + factor + ", minX:" + minX + ", minY:" + minY + " minX*factor:" + minX * factor * -1 + ", minY*factor:" + minY * factor * -1);
 
-            svgElement.configure({scale: 3});
+            //svgElement.configure({scale: 3});
 
             /*$('path.active', svgElement.root()).bind('mouseover', function(e) {
                 $(this).attr('fill', 'green');
@@ -409,19 +413,21 @@ SVG = { // start of SVG object scope.
         var lines = { },
             prevCoords = null,
             counter = 0,
-            svgElement = SVG.worldMaps[containerId];
+            svgElement = SVG.worldMaps[containerId],
+            currentFactor = $('#viewport', $(svgElement.root())).attr('transform').substring(7).split(",").shift();
 
         C.log('draw Pois on ',  svgElement);
         $.each(pois, function(poiId, poiArray) {
             var coords = poiArray['svgCoords'].split(','),
-                imageWidth = 50 * SVG.worldMapsScaleFactor[containerId],
-                imageHeight = 60 * SVG.worldMapsScaleFactor[containerId],
+                imageWidth = 50 / (currentFactor * 2),
+                imageHeight = 60 / (currentFactor * 2),
                 poiElement,
                 imageIcon = "/img/whyjustify_pin_grey.png",
                 isActive = false,
                 isCurrent = false,
                 activeClass = ""
             ;
+            C.log("current scale factor: ", currentFactor);
 
             if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
                 isCurrent = true;
@@ -429,12 +435,13 @@ SVG = { // start of SVG object scope.
             } else if(poiArray["url"] !== null && poiArray["url"].length > 0) {
                 isActive = true;
                 activeClass = " activePoi";
+                //imageIcon = "/img/whyjustify_pin_black.png";
                 imageIcon = "/img/whyjustify_pin_black.png";
             }
 
             poiElement = $(
                 svgElement.image(
-                    svgElement.root(),
+                    $('#viewport', $(svgElement.root())),
                     coords[0] - imageWidth / 2,
                     coords[1] - imageHeight,
                     imageWidth,
@@ -469,11 +476,19 @@ SVG = { // start of SVG object scope.
         });
 
         $.each(lines, function(key, value) {
-            svgElement.line(svgElement.root(), value[0], value[1], value[2], value[3], { stroke: "#aaaaaa", strokeWidth : "0.3"});
+            svgElement.line($('#viewport'), value[0], value[1], value[2], value[3], { class: "poiLine", stroke: "#aaaaaa", strokeWidth : 1.5 / currentFactor});
         });
 
         INIT.tinyTips();
-        //$('svg').svgPan('viewport');
+        $('svg').svgPan('viewport', true, true, false, 0.05, function() {
+            clearTimeout(SVG.redrawPoiTimeout);
+            SVG.redrawPoiTimeout = setTimeout(function() {
+                $('.poiIcon, .poiLine', $('svg')).remove();
+                C.log('removed old pois and lines, redraw!');
+                SVG.drawPois(pois, containerId);
+            }, 300);
+
+        });
     }
 }; // end of SVG object scope.
 
