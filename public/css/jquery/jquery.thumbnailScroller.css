@@ -7,8 +7,6 @@ scrollers styling
 .jThumbnailScroller .jTscrollerContainer{position:absolute;}
 .jThumbnailScroller .jTscroller{position:relative; height:100%; margin:0; left:0; top:0; display:inline-block; *display:inline;}
 .jThumbnailScroller .jTscrollerNextButton,.jThumbnailScroller .jTscrollerPrevButton{position:absolute; display:block; width:40px; height:40px; -moz-border-radius:20px; -webkit-border-radius:20px; border-radius:20px; opacity:0.7;}
-.jThumbnailScroller .jTscrollerNextButton{background:#000 url(../../img/nextArrow.png) center center;}
-.jThumbnailScroller .jTscrollerPrevButton{background:#000 url(../../img/prevArrow.png) center center;}
 .jThumbnailScroller .jTscrollerNextButton:hover,.jThumbnailScroller .jTscrollerPrevButton:hover{background-color:#d56916; opacity:1;}
 .jThumbnailScroller .jTscroller a{display:block; float:left; border:5px solid #ddd; margin:6px 10px 6px 0; background:#fff; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px;}
 .jThumbnailScroller .jTscroller a:hover{border-color:#fff;}
@@ -16,25 +14,17 @@ scrollers styling
 .jThumbnailScroller .jTscroller a img{border:none;}
 /* different styled scrollers */
 /* liquid width scroller */
-.jThumbnailScroller#tS1{width:95%;}
-.jThumbnailScroller#tS2{margin:30px auto;}
-.jThumbnailScroller#tS2 .jTscroller a{opacity:0.7;}
-.jThumbnailScroller#tS2 .jTscroller a:hover{opacity:1;}
-.jThumbnailScroller#tS2 .jTscrollerNextButton{margin:-20px 10px 0 10px; right:0; top:50%;}
-.jThumbnailScroller#tS2 .jTscrollerPrevButton{margin:-20px 10px 0 10px; left:0; top:50%;}
-/* a vertical scroller */
-.jThumbnailScroller#tS3{position:absolute; left:40px; top:322px; width:202px; height:400px; margin:0; background:#eee;}
-.jThumbnailScroller#tS3 .jTscroller{height:auto; margin-bottom:40px;}
-.jThumbnailScroller#tS3 .jTscroller a{display:block; margin:0 6px 10px 6px; width:180px; overflow:hidden; opacity:0.7;}
-.jThumbnailScroller#tS3 .jTscroller a:hover{opacity:1;}
-.jThumbnailScroller#tS3 .jTscroller a:first-child{margin-top:50px;}
-.jThumbnailScroller#tS3 .jTscrollerNextButton{margin:10px 0 10px -20px; bottom:0; left:50%;}
-.jThumbnailScroller#tS3 .jTscrollerPrevButton{margin:10px 0 10px -20px; top:0; left:50%;}
+.jThumbnailScroller#tpScrollHorizontal{width:98%; margin:0 auto;}
+.jThumbnailScroller#tpScrollHorizontal .jTscroller a{opacity:0.7;}
+.jThumbnailScroller#tpScrollHorizontal .jTscroller a:hover{opacity:1;}
+.jThumbnailScroller#tpScrollHorizontal .jTscrollerNextButton{margin:-20px 10px 0 10px; right:0; top:50%; background:#000 url(../../img/nextArrowHorizontal.png) center center;}
+.jThumbnailScroller#tpScrollHorizontal .jTscrollerPrevButton{margin:-20px 10px 0 10px; left:0; top:50%; background:#000 url(../../img/prevArrowHorizontal.png) center center;}
+.jThumbnailScroller#tpScrollHorizontal .jTscroller a img{ border:none; height:100px;}
 
 .jThumbnailScroller#tpScroll { width:220px; height:300px; margin:0; background:#eee;}
 .jThumbnailScroller#tpScroll .jTscroller{height:auto; margin-bottom:40px;}
 .jThumbnailScroller#tpScroll .jTscroller a{display:block; margin:0 6px 10px 6px; width:198px; overflow:hidden; opacity:0.7;}
 .jThumbnailScroller#tpScroll .jTscroller a:hover{opacity:1;}
 .jThumbnailScroller#tpScroll .jTscroller a:first-child{margin-top:50px;}
-.jThumbnailScroller#tpScroll .jTscrollerNextButton{margin:10px 0 10px -20px; bottom:0; left:50%;}
-.jThumbnailScroller#tpScroll .jTscrollerPrevButton{margin:10px 0 10px -20px; top:0; left:50%;}
+.jThumbnailScroller#tpScroll .jTscrollerNextButton{margin:10px 0 10px -20px; bottom:0; left:50%; background:#000 url(../../img/nextArrowVertical.png)}
+.jThumbnailScroller#tpScroll .jTscrollerPrevButton{margin:10px 0 10px -20px; top:0; left:50%; background:#000 url(../../img/prevArrowVertical.png)}

@@ -31,7 +31,7 @@
                         C.log('fetching all countries with Pictures....');
                         tmpRpc.setAsyncSuccess(function(response) {
                             SVG.setupSvgWorldMap([{ name : '" . $this->country->name . "'}], 'svgMapContainer_" . $poi->id . "');
-                            SVG.drawPois(" . $this->jsonPoiArray . ", 'svgMapContainer_" . $poi->id . "');
+                            SVG.drawPois(" . $this->jsonPoiArray . ", 'default', 'svgMapContainer_" . $poi->id . "');
                         });
                         tmpRpc.getCountryMap();
                     }, 'svgMapContainer_" . $poi->id . "'

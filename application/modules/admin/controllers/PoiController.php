@@ -71,12 +71,19 @@ class Admin_PoiController extends Tp_Controller_Action
                     }
                 }
 
+                if(($form->getValue('url') == "")) {
+                    $form->getElement('url')->setValue(null);
+                }
+                if(($form->getValue('svgPrevCoordinates') == "")) {
+                    $form->getElement('svgPrevCoordinates')->setValue(null);
+                }
 
                 $poi->title = $form->getValue('title');
                 $poi->url = $form->getValue('url');
                 $poi->latitude = $form->getValue('latitude');
                 $poi->longitude = $form->getValue('longitude');
                 $poi->svgCoordinates = $form->getValue('svgCoordinates');
+                $poi->svgPrevCoordinates = $form->getValue('svgPrevCoordinates');
                 //$poi->country = new Tp\Entity\Country($form->getValue('country'));
                 $poi->country = $this->_em->find('Tp\Entity\Country', $form->getValue('country'));
                 $poi->type = 1;
@@ -97,6 +104,10 @@ class Admin_PoiController extends Tp_Controller_Action
                 unset($data['pictures']);
                 $form->populate($data);
             }
+        }
+
+        if($form->getValue('url') === null || $form->getValue('url') === "") {
+            $form->getElement('url')->setDescription("/photo?poi=" . $poi->id);
         }
 
         $this->view->form = $form;

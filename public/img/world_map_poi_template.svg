@@ -41,7 +41,7 @@
      id="namedview446"
      showgrid="false"
      inkscape:zoom="6.9670018"
-     inkscape:cx="367.17849"
+     inkscape:cx="416.82001"
      inkscape:cy="1319.0149"
      inkscape:window-x="65"
      inkscape:window-y="24"
@@ -1138,4 +1138,49 @@ Both this and the original map are subject to the GNU Free Documentation License
      sodipodi:rx="0.21530065"
      sodipodi:ry="0.071766883"
      d="m 426.29529,-726.32373 a 0.21530065,0.07176688 0 1 1 -0.4306,0 0.21530065,0.07176688 0 1 1 0.4306,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3235"
+     sodipodi:cx="438.56741"
+     sodipodi:cy="-722.08954"
+     sodipodi:rx="0.35883442"
+     sodipodi:ry="0.14353377"
+     d="m 438.92625,-722.08954 a 0.35883442,0.14353377 0 1 1 -0.71767,0 0.35883442,0.14353377 0 1 1 0.71767,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3239"
+     sodipodi:cx="443.23227"
+     sodipodi:cy="-732.1369"
+     sodipodi:rx="0.28706753"
+     sodipodi:ry="0.28706753"
+     d="m 443.51934,-732.1369 a 0.28706753,0.28706753 0 1 1 -0.57414,0 0.28706753,0.28706753 0 1 1 0.57414,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3241"
+     sodipodi:cx="452.92081"
+     sodipodi:cy="-731.63452"
+     sodipodi:rx="0.35883442"
+     sodipodi:ry="0.21530065"
+     d="m 453.27964,-731.63452 a 0.35883442,0.21530065 0 1 1 -0.71767,0 0.35883442,0.21530065 0 1 1 0.71767,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3243"
+     sodipodi:cx="457.29858"
+     sodipodi:cy="-728.6203"
+     sodipodi:rx="0.28706753"
+     sodipodi:ry="0.21530065"
+     d="m 457.58565,-728.6203 a 0.28706753,0.21530065 0 1 1 -0.57413,0 0.28706753,0.21530065 0 1 1 0.57413,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3244"
+     sodipodi:cx="449.76306"
+     sodipodi:cy="-730.34271"
+     sodipodi:rx="0.35883442"
+     sodipodi:ry="0.21530065"
+     d="m 450.1219,-730.34271 a 0.35883442,0.21530065 0 1 1 -0.71767,0 0.35883442,0.21530065 0 1 1 0.71767,0 z" />
 </svg>

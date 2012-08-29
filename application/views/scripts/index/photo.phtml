@@ -1,14 +1,13 @@
 <?php
     if($this->poi == null) {
-        echo '<h2>Kein POI mit URL:<br/>' . $this->url . '</h2>';
+        echo '<h2>There are no photos yet!</h2>';
     } else {
 ?>
-    <div id="svgMapContainer_<?= $this->poi->id ?>" class="worldMapSmall"></div>
     <?php
         if($this->poi->pictures->count() > 0) {
     ?>
 
-            <div id="tpScroll" class="jThumbnailScroller" style="height:300px;  ">
+            <div id="tpScrollHorizontal" class="jThumbnailScroller">
                 <div class="jTscrollerContainer">
                     <div class="jTscroller">
                         <?php
@@ -40,9 +39,9 @@
 <?php
             $this->javascript('
             $(window).load(function() {
-                $("#tpScroll").thumbnailScroller({
+                $("#tpScrollHorizontal").thumbnailScroller({
                     scrollerType:"clickButtons",
-                    scrollerOrientation:"vertical",
+                    scrollerOrientation:"horizontal",
                     scrollSpeed:2,
                     scrollEasing:"easeOutCirc",
                     scrollEasingAmount:800,
@@ -61,17 +60,5 @@
             });', false);
 
         }
-        $this->javascript("
-            var tmpRpc = jQuery.Zend.jsonrpc({ url : '/ajax/rpc.php', async : true});
-            SVG.createSvgWorldMap(
-                function() {
-                    tmpRpc.setAsyncSuccess(function(response) {
-                        SVG.setupSvgWorldMap([{ name : '" . $this->poi->country->name . "'}], 'svgMapContainer_" . $this->poi->id . "');
-                        SVG.drawPois(" . $this->poi->getPoisAsJsonArray() . ", 'default', 'svgMapContainer_" . $this->poi->id . "');
-                    });
-                    tmpRpc.getCountryMap();
-                }, 'svgMapContainer_" . $this->poi->id . "'
-            );
-       ");
     }
 ?>

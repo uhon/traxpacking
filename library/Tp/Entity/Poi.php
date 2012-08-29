@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property float $latitude
  * @property float $longitude
  * @property float $svgCoordinates
+ * @property float $svgPrevCoordinates
  * @property string $title
  * @property string $url
  * @property Country $country
@@ -58,6 +59,13 @@ class Poi
    	 * @ORM\Column(type="string", nullable=false)
    	 */
    	private $svgCoordinates;
+
+    /**
+     * @var string $svgPrevCoordinates
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $svgPrevCoordinates;
 
 	/**
 	 * @var string $title
@@ -176,14 +184,19 @@ class Poi
         return null;
     }
 
-    public function getPoisAsJsonArray() {
+    public function getPoisAsJsonArray($makeLastWithUrlCurrent = false) {
         $allPois = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Poi')->findAll();
 
         $poiArray = array();
 
+        $lastPoiWithUrl = null;
+        $currentSet = false;
+
         foreach($allPois as $poi)  {
             $poiArray[$poi->id] = array(
+                "id" => $poi->id,
                 "svgCoords" => $poi->svgCoordinates,
+                "svgPrevCoords" => $poi->svgPrevCoordinates,
                 "latitude" => $poi->latitude,
                 "longitude" => $poi->longitude,
                 "title" => $poi->title,
@@ -191,8 +204,16 @@ class Poi
             );
             if($poi->id === $this->id) {
                 $poiArray[$poi->id]["current"] = true;
+                $currentSet = true;
+            }
+            if(!empty($poi->url)) {
+                $lastPoiWithUrl = $poi->id;
             }
         }
+        if($makeLastWithUrlCurrent && $currentSet == false && $lastPoiWithUrl !== null) {
+            $poiArray[$lastPoiWithUrl]["current"] = true;
+        }
+
         $poiArray = \Zend_Json::encode($poiArray);
         str_replace('"', "'", $poiArray);
         return $poiArray;
@@ -204,6 +225,23 @@ class Poi
                 ->getRepository('Tp\Entity\Picture')
                 ->findBy(array('poi' => $this->id), array('datetime' => 'ASC'));
         return $collection;
+    }
+
+    public function getLatestPoiWithPicturesAndUrl() {
+        $qb = \Zend_Registry::get('doctrine')->getEntityManager()->createQueryBuilder();
+        $picturesByPoi = $qb
+            ->select('pic, poi')
+            ->from('\Tp\Entity\Picture', 'pic')
+            ->innerJoin('pic.poi', 'poi')
+            ->add('where', $qb->expr()->orX(
+                $qb->expr()->isNotNull('poi.url')
+            ))
+            ->orderBy('poi.id', 'ASC')
+            ->groupBy('poi')
+            ->getQuery()->execute();
+
+        $lastOne = array_pop($picturesByPoi);
+        return $lastOne->poi;
     }
 
 	/**

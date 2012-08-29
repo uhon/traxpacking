@@ -64,6 +64,7 @@ class MapDataProvider
             return $countryArray;
     }
 
+
     public function hello() {
         return "Hello World";
     }

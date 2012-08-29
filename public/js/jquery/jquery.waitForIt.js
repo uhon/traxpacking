@@ -43,4 +43,10 @@
         $(".waitIconOverlay", $(this)).remove();
     };
 
+    $.fn.waitForItLoad = function (url, theFunction) {
+        $(this).waitForIt();
+        $(this).load(url, theFunction);
+        $(this).waitForItStop();
+    };
+
 })(jQuery);

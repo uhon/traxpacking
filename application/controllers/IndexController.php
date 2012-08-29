@@ -1,5 +1,5 @@
 <?php
-
+use Tp\Entity;
 class IndexController extends Tp_Controller_Action
 {
 
@@ -29,7 +29,12 @@ class IndexController extends Tp_Controller_Action
     public function countriesAction()
     {
         $poi = new Tp\Entity\Poi();
-        $this->view->jsonPoiArray = $poi->getPoisAsJsonArray();
+        $this->view->type = $this->_getParam("type", "default");
+        if($this->view->type === "photo") {
+            $this->view->jsonPoiArray = $poi->getPoisAsJsonArray(true);
+        } else {
+            $this->view->jsonPoiArray = $poi->getPoisAsJsonArray();
+        }
     }
 
     public function poiAction()
@@ -40,7 +45,18 @@ class IndexController extends Tp_Controller_Action
         if(!empty($result)) {
             $this->view->poi = array_pop($result);
         }
+    }
 
+    public function photoAction()
+    {
+        $poiId = $this->_getParam('poi', null);
+        if($poiId == null) {
+            $poi = new \Tp\Entity\Poi();
+            $poiId = $poi->getLatestPoiWithPicturesAndUrl()->id;
+        }
+
+        $this->view->poi = $this->_em->find('Tp\Entity\Poi', $poiId);
+        $this->_helper->layout->disableLayout();
     }
 
     public function countryAction()
@@ -49,8 +65,9 @@ class IndexController extends Tp_Controller_Action
                 ->findBy(array('name' => $this->_getParam('c', 0))));
         $this->view->pois = $this->view->country->pois;
 
-        $poi = new Tp\Entity\Poi();
-        $this->view->jsonPoiArray = $poi->getPoisAsJsonArray();
+        $poi = new \Tp\Entity\Poi();
+        $this->view->jsonPoiArray = $poi->getPoisAsJsonArray(true);
+
     }
 
 }

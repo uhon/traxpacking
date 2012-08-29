@@ -1,4 +1,4 @@
-var C, GEN, INIT, FORM, UI, SVG, WHYJUSTIFY;
+var C, GEN, INIT, FORM, UI, PHOTO, SVG, WHYJUSTIFY;
 
 C = {
     // console wrapper
@@ -295,11 +295,52 @@ UI = { // start of INIT object scope.
     }
 }; // end of UI object scope.
 
+PHOTO = { // start of PHOTO object scope
+    preparePhotoMap: function() {
+        // initial pictures displayed (either last or forced by POI)
+        var forcedPoi = new RegExp('[\\?&]' + 'poi' + '=([^&#]*)').exec($(window.parent).attr("location"));
+        $('#svgMapContainer').after('<div style="clear:both"></div><div id="photoStream"></div>');
+        if(forcedPoi !== null) {
+            SVG.forcedCurrentPoi = parseInt(forcedPoi.pop());
+            PHOTO.showPhotoByPoi(SVG.forcedCurrentPoi);
+        } else {
+            PHOTO.showPhotoByPoi();
+        }
+
+
+    },
+
+    showPhotoByPoi: function(poiId) {
+        if(typeof(poiId) === "undefined") {
+            poiId = "";
+        }
+        $('#photoStream').empty();
+        $('#photoStream').waitForItLoad('/default/index/photo/poi/' + poiId, function() {
+            $("#tpScrollHorizontal img").ready(function() {
+                $("#tpScrollHorizontal").thumbnailScroller({
+                    scrollerType:"clickButtons",
+                    scrollerOrientation:"horizontal",
+                    scrollSpeed:2,
+                    scrollEasing:"easeOutCirc",
+                    scrollEasingAmount:800,
+                    acceleration:4,
+                    scrollSpeed:800,
+                    noScrollCenterSpace:10
+                });
+            });
+
+            $("#tpScrollHorizontal a.lightview").bind("click", function() {
+                WHYJUSTIFY.toggleFullscreen();
+            });
+        });
+    }
+}; // end of PHOTO object scope
 
 SVG = { // start of SVG object scope.
     worldMaps: { },
     worldMapsScaleFactor: { },
     redrawPoiTimeout: null,
+    forcedCurrentPoi: null,
     createSvgWorldMap: function(functionCall, containerId) {
 
         if(typeof(containerId) === "undefined") {
@@ -405,8 +446,12 @@ SVG = { // start of SVG object scope.
         $('#svgMapContainer').waitForItStop();
     },
 
-    drawPois: function(pois, containerId) {
-
+    /*
+        @var pois Array of Pois
+        @var type 'default' or 'photo' // different behaviour while clicking on pois
+        @var containerId to draw Pois on (if multiple SVGs are in use)
+     */
+    drawPois: function(pois, type, containerId) {
         if(typeof(containerId) === "undefined" || typeof(containerId.length) === "undefined") {
             containerId = "svgMapContainer";
         }
@@ -416,27 +461,48 @@ SVG = { // start of SVG object scope.
             svgElement = SVG.worldMaps[containerId],
             currentFactor = $('#viewport', $(svgElement.root())).attr('transform').substring(7).split(",").shift();
 
-        C.log('draw Pois on ',  svgElement);
+        C.log('draw Pois on ',  svgElement, pois, type, containerId);
+
         $.each(pois, function(poiId, poiArray) {
+            // reset current Highlighted POI
+            if(SVG.forcedCurrentPoi !== null && typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
+                poiArray["current"] = false;
+            }
+
             var coords = poiArray['svgCoords'].split(','),
                 imageWidth = 50 / (currentFactor * 2),
                 imageHeight = 60 / (currentFactor * 2),
                 poiElement,
-                imageIcon = "/img/whyjustify_pin_grey.png",
+                pinType,
+                imageIcon,
                 isActive = false,
                 isCurrent = false,
                 activeClass = ""
             ;
-            C.log("current scale factor: ", currentFactor);
 
-            if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
+            if(poiArray['svgPrevCoords'] !== "" && poiArray['svgPrevCoords'] !== null) {
+                prevCoords = poiArray['svgPrevCoords'].split(',')
+            }
+
+            if((poiArray["url"] !== null && poiArray["url"].indexOf("/photo") != -1) || type === "photo") {
+                pinType = "camera";
+            } else {
+                pinType = "pin";
+            }
+
+            imageIcon = "/img/" + pinType + "_grey.png";
+
+
+            if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true
+                || SVG.forcedCurrentPoi === poiArray['id']
+            ) {
                 isCurrent = true;
-                imageIcon = "/img/whyjustify_pin_red.png";
+                imageIcon = "/img/" + pinType + "_red.png";
             } else if(poiArray["url"] !== null && poiArray["url"].length > 0) {
                 isActive = true;
                 activeClass = " activePoi";
                 //imageIcon = "/img/whyjustify_pin_black.png";
-                imageIcon = "/img/whyjustify_pin_black.png";
+                imageIcon = "/img/" + pinType + "_black.png";
             }
 
             poiElement = $(
@@ -453,18 +519,30 @@ SVG = { // start of SVG object scope.
 
             if(isActive && !isCurrent) {
                 poiElement.bind('mouseover', function(e) {
-                    $(this).attr("href", '/img/whyjustify_pin_red.png');
+                    $(this).attr("href", '/img/' + pinType + '_red.png');
                 });
 
                 poiElement.bind('mouseout',  function(e) {
-                    $(this).attr("href", '/img/whyjustify_pin_black.png');
+                    $(this).attr("href", '/img/' + pinType + '_black.png');
                 });
 
+
                 poiElement.bind('click', function(e) {
-                    if(poiArray['url'] !== null) {
-                        $(window.top).attr("location", poiArray['url']);
+                    if(type === "default") {
+                        if(poiArray['url'] !== null) {
+                            $(window.top).attr("location", poiArray['url']);
+                        }
+                    } else if(type === "photo") {
+                        PHOTO.showPhotoByPoi(poiArray['id']);
+                        $('.poiIcon, .poiLine', $('svg')).remove();
+                        C.log('removed old pois and lines, redraw!');
+                        SVG.forcedCurrentPoi = poiArray['id'];
+                        SVG.drawPois(pois, type, containerId);
                     }
                 });
+
+
+
             }
 
 
@@ -485,7 +563,7 @@ SVG = { // start of SVG object scope.
             SVG.redrawPoiTimeout = setTimeout(function() {
                 $('.poiIcon, .poiLine', $('svg')).remove();
                 C.log('removed old pois and lines, redraw!');
-                SVG.drawPois(pois, containerId);
+                SVG.drawPois(pois, type, containerId);
             }, 300);
 
         });
@@ -505,9 +583,14 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
                 iframeMargin : iframe.css('margin-top'),
                 playgroundPadding : $('#playground').css('padding-top'),
                 logoOffset : { top:  logo.css('top'), right: logo.css('right') },
-                scrollPosition: $(window.parent).scrollTop(),
-                mapHeight: $(".worldMapSmall").height()
+                scrollPosition: $(window.parent).scrollTop()
+                //mapHeight : 0
             };
+            /*if($(".worldMapSmall").length > 0) {
+                WHYJUSTIFY.fullscreenRestore.mapHeight = $(".worldMapSmall").height();
+            } else if($(".worldMapLarge").length > 0) {
+                WHYJUSTIFY.fullscreenRestore.mapHeight =  $(".worldMapLarge").height();
+            }*/
 
             iframe.css({ border: 0, position:"fixed", top:0, marginTop:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
             $('#playground').css('padding', 0);
@@ -526,7 +609,7 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             // hide unwanted elements
             $("#tpScroll").hide();
             // increase
-            $(".worldMapSmall, .worldMapSmall svg").animate({ width : iframe.width(), height : iframe.height() }, 500);
+            $(".worldMapSmall, .worldMapSmall svg, .worldMapLarge, .worldMapLarge svg").animate({ width : iframe.width(), height : iframe.height() }, 500);
             $(window.parent).scrollTop(0);
         } else {
             $(".entry-actions", window.top.document).css('padding-top: 40px');
@@ -539,7 +622,7 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             logo.css(WHYJUSTIFY.fullscreenRestore.logoOffset);
 
             $("body").removeAttr('style');
-            $(".worldMapSmall, .worldMapSmall svg").removeAttr('style');
+            $(".worldMapSmall, .worldMapSmall svg, .worldMapLarge, .worldMapLarge svg").removeAttr('style');
 
             // show wanted elements
             $("#tpScroll").show();

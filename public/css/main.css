@@ -449,6 +449,11 @@ div.worldMapSmall {
     height: 600px;
     width: 1405px; }
 
+#photoStream {
+  height: 300px;
+  position: relative;
+  top: 20px; }
+
 .activePoi {
   cursor: pointer; }
 

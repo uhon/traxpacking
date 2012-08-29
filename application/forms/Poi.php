@@ -16,6 +16,8 @@ class Form_Poi extends Tp_Form
 
     private $_svgCoordinates = null;
 
+    private $_svgPrevCoordinates = null;
+
     private $_pictures = null;
 
     private $_pictureSubforms = array();
@@ -44,9 +46,16 @@ class Form_Poi extends Tp_Form
         ));
 
         $this->addElement('text', 'svgCoordinates', array(
-            'value' => $this->_longitude,
+            'value' => $this->_svgCoordinates,
             'required' => true,
             'label' => 'SVG coords.'
+        ));
+
+        $this->addElement('text', 'svgPrevCoordinates', array(
+            'value' => $this->_longitude,
+            'required' => false,
+            'label' => 'SVG Prev coords.',
+            'description' => 'only if not last poi is previous poi'
         ));
 
         $country = new \Tp\Entity\Country();

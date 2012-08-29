@@ -1,13 +1,18 @@
 <?php
+    $ifPhoto = "";
+    if($this->type == "photo") {
+        $ifPhoto = "PHOTO.preparePhotoMap();";
+    }
+
     $this->javascript("SVG.createSvgWorldMap(
         function() {
             C.log('fetching all countries with Pictures....');
             rpc.setAsyncSuccess(function(response) {
                 SVG.setupSvgWorldMap(response);
-                SVG.drawPois(" . $this->jsonPoiArray . ");
+                " . $ifPhoto . "
+                SVG.drawPois(" . $this->jsonPoiArray . ", '" . $this->type . "');
             });
             rpc.getCountriesWithPictures();
-
         }
     );");
 ?>
