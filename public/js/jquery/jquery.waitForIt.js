@@ -43,10 +43,27 @@
         $(".waitIconOverlay", $(this)).remove();
     };
 
-    $.fn.waitForItLoad = function (url, theFunction) {
+    $.fn.waitForItLoadPictures = function (url, theFunction) {
         $(this).waitForIt();
-        $(this).load(url, theFunction);
-        $(this).waitForItStop();
+        var that = $(this);
+        C.log('waitForItLoadPictures');
+        $.get(url, function(data) {
+            var content = $(data);
+
+            $('#dynamicImages', that).remove();
+            that.append('<div id="dynamicImages" style="display:none"></div>');
+            $('#dynamicImages', that).append(content);
+
+            that.waitForImages(function(){
+                C.log('everything loaded, calling callback function');
+
+
+                that.waitForItStop();
+                $('#dynamicImages', that).show();
+                theFunction();
+            });
+        });
     };
+
 
 })(jQuery);

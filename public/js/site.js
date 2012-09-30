@@ -315,22 +315,21 @@ PHOTO = { // start of PHOTO object scope
             poiId = "";
         }
         $('#photoStream').empty();
-        $('#photoStream').waitForItLoad('/default/index/photo/poi/' + poiId, function() {
-            $("#tpScrollHorizontal img").ready(function() {
-                $("#tpScrollHorizontal").thumbnailScroller({
-                    scrollerType:"clickButtons",
-                    scrollerOrientation:"horizontal",
-                    scrollSpeed:2,
-                    scrollEasing:"easeOutCirc",
-                    scrollEasingAmount:800,
-                    acceleration:4,
-                    scrollSpeed:800,
-                    noScrollCenterSpace:10
-                });
+        $('#photoStream').waitForItLoadPictures('/default/index/photo/poi/' + poiId, function() {
+            $("#tpScrollHorizontal").thumbnailScroller({
+                scrollerType:"clickButtons",
+                scrollerOrientation:"horizontal",
+                scrollSpeed:2,
+                scrollEasing:"easeOutCirc",
+                scrollEasingAmount:800,
+                acceleration:4,
+                scrollSpeed:800,
+                noScrollCenterSpace:10
             });
 
             $("#tpScrollHorizontal a.lightview").bind("click", function() {
                 WHYJUSTIFY.toggleFullscreen();
+                $(window.top).scrollTo({top: 1000});
             });
         });
     }
@@ -534,6 +533,9 @@ SVG = { // start of SVG object scope.
                         }
                     } else if(type === "photo") {
                         PHOTO.showPhotoByPoi(poiArray['id']);
+                        //$(window.top).scrollTop($("#svg_map_frame", $(window.top)).offset().top + 400);
+                        $(window.top).scrollTop(500);
+                        //$(window.top).scrollTop(1000);
                         $('.poiIcon, .poiLine', $('svg')).remove();
                         C.log('removed old pois and lines, redraw!');
                         SVG.forcedCurrentPoi = poiArray['id'];
