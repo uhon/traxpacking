@@ -585,7 +585,7 @@ SVG = { // start of SVG object scope.
         });
 
         $.each(lines, function(key, value) {
-            svgElement.line($('#viewport'), value[0], value[1], value[2], value[3], { class: "poiLine", stroke: "#aaaaaa", strokeWidth : 1.5 / currentFactor});
+            svgElement.line($('#viewport'), value[0], value[1], value[2], value[3], { "class":"poiLine", stroke: "#aaaaaa", strokeWidth : 1.5 / currentFactor});
         });
 
         INIT.tinyTips();
