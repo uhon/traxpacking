@@ -8,8 +8,6 @@
 
 class Form_Poi extends Tp_Form
 {
-    //private $_initPicture = null;
-
     private $_longitude = null;
 
     private $_latitude = null;
@@ -27,6 +25,14 @@ class Form_Poi extends Tp_Form
     private $_id = null;
 
     public function init() {
+        $poi = new \Tp\Entity\PoiCategory();
+        $this->addElement('select', 'category', array(
+            'label' => 'Poi-Category',
+            'multiOptions' => $poi->getTitleArray(),
+            'value' => $this->_category
+        ));
+        $this->getView()->javascriptBind('FORM.togglePoiOrigin();', $this->getElement('category'), 'change');
+
         $this->addElement('text', 'title', array(
             'required' => true,
             'label' => 'Title',
@@ -51,13 +57,6 @@ class Form_Poi extends Tp_Form
             'label' => 'SVG coords.'
         ));
 
-        $this->addElement('text', 'svgPrevCoordinates', array(
-            'value' => $this->_longitude,
-            'required' => false,
-            'label' => 'SVG Prev coords.',
-            'description' => 'only if not last poi is previous poi'
-        ));
-
         $country = new \Tp\Entity\Country();
         $this->addElement('select', 'country', array(
             'required' => true,
@@ -67,6 +66,26 @@ class Form_Poi extends Tp_Form
         $this->addElement('text', 'url', array(
             'label' => 'Links to (URL)'
         ));
+
+        $this->addElement('checkbox', 'toggleOrigin', array(
+            'value' => false,
+            'required' => true,
+            'label' => 'Has different Origin.',
+        ));
+        $this->getView()->javascriptBind('FORM.togglePoiOrigin();', $this->getElement('toggleOrigin'), 'click');
+        $this->getView()->javascript('FORM.initPoiOriginToggle();');
+
+
+
+        $svgPrevCoordinates = $this->createElement('text', 'svgPrevCoordinates', array(
+            'value' => $this->_longitude,
+            'required' => false,
+            'label' => 'SVG Prev coords.',
+            'description' => 'only if not last poi is previous poi'
+        ));
+
+        $this->addDisplayGroup(array($svgPrevCoordinates), 'optional');
+
 
         /*$category = new \Tp\Entity\PoiCategory();
         $this->addElement('multiCheckbox', 'categories', array(
@@ -146,5 +165,14 @@ class Form_Poi extends Tp_Form
 
         $this->_pictureSubforms[((string)$this->_subformCounter+1)] = $subForm;
         $this->_subformCounter++;
+    }
+
+    public function isValid($data) {
+        if($data['toggleOrigin'] === "1" || $data['category'] === "5") {
+            foreach($this->getDisplayGroup('optional')->getElements() as $element) {
+                $element->setRequired(true);
+            }
+        }
+        return parent::isValid($data);
     }
 }

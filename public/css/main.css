@@ -427,6 +427,7 @@ table {
     float: left; }
 
 div.worldMapLarge {
+  cursor: move;
   width: 685px;
   height: 370px;
   overflow: hidden;
@@ -438,6 +439,7 @@ div.worldMapLarge {
     height: 600px; }
 
 div.worldMapSmall {
+  cursor: move;
   width: 230px;
   height: 160px;
   margin: 5px auto 15px auto;

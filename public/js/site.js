@@ -150,6 +150,35 @@ FORM = {  // start of FORM object scope.
                 $('#popupForm').dialog('open');
             }
         );
+    },
+
+    togglePoiOrigin: function() {
+        if($('#category').val() === "5") {
+            $("#svgPrevCoordinates").closest('tr').show();
+            $("#toggleOrigin").attr('checked', 'checked');
+        } else {
+            if($("#toggleOrigin").attr("checked") === "checked") {
+                $("#svgPrevCoordinates").closest('tr').show();
+                $("#toggleOrigin").attr('checked', 'checked');
+            } else {
+                $("#svgPrevCoordinates").closest('tr').hide();
+                $("#svgPrevCoordinates").val('');
+                $("#toggleOrigin").removeAttr('checked');
+            }
+        }
+    },
+
+    initPoiOriginToggle: function() {
+        if(
+            $("#svgPrevCoordinates").val() === ""
+            && $('#category').val() !== "5"
+            && $("#toggleOrigin").attr('checked') !== "checked"
+        ) {
+            $("#toggleOrigin").removeAttr('checked');
+            $("#svgPrevCoordinates").closest('tr').hide();
+        } else if($("#svgPrevCoordinates").val() !== "") {
+            $("#toggleOrigin").attr('checked', "checked");
+        }
     }
 };  // end of FORM object scope.
 

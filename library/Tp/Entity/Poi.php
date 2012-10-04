@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property float $longitude
  * @property float $svgCoordinates
  * @property float $svgPrevCoordinates
+ * @property PoiCategory $category
  * @property string $title
  * @property string $url
  * @property Country $country
@@ -66,6 +67,13 @@ class Poi
      * @ORM\Column(type="string", nullable=true)
      */
     private $svgPrevCoordinates;
+
+    /**
+	 * @var PoiCategory $category
+	 *
+	 * @ORM\ManyToOne(targetEntity="PoiCategory")
+	 */
+	private $category;
 
 	/**
 	 * @var string $title

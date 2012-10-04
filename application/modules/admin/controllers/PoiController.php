@@ -20,6 +20,7 @@ class Admin_PoiController extends Tp_Controller_Action
             /* @var \Tp\Entity\Poi $poi */
             $this->view->pois[] = array(
                 $poi->title,
+                $poi->category->title,
                 $poi->latitude,
                 $poi->longitude,
                 $poi->svgCoordinates,
@@ -78,15 +79,16 @@ class Admin_PoiController extends Tp_Controller_Action
                     $form->getElement('svgPrevCoordinates')->setValue(null);
                 }
 
+                $poi->category = $this->_em->find('Tp\Entity\PoiCategory', $form->getValue('category'));
                 $poi->title = $form->getValue('title');
                 $poi->url = $form->getValue('url');
                 $poi->latitude = $form->getValue('latitude');
                 $poi->longitude = $form->getValue('longitude');
                 $poi->svgCoordinates = $form->getValue('svgCoordinates');
                 $poi->svgPrevCoordinates = $form->getValue('svgPrevCoordinates');
+
                 //$poi->country = new Tp\Entity\Country($form->getValue('country'));
                 $poi->country = $this->_em->find('Tp\Entity\Country', $form->getValue('country'));
-                $poi->type = 1;
                 //$this->_em->persist($poi->country);
                 $this->_em->persist($poi);
 
@@ -101,6 +103,7 @@ class Admin_PoiController extends Tp_Controller_Action
             if($poi && !$add) {
                 $data = $poi->toArray();
                 $data['country'] = $data['country']->id;
+                $data['category'] = $data['category']->id;
                 unset($data['pictures']);
                 $form->populate($data);
             }

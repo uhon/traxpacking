@@ -44,6 +44,6 @@ class Tp_View_Helper_JavascriptBind extends Tp_View_Helper_Javascript_Generic
                           " . $javascript . "
                        });";
 
-        return parent::prepareScript($javascript, true, $jquerySelectorOrElement, $eventType);
+        return parent::prepareScript($bindScript, true, $jquerySelectorOrElement, $eventType);
     }
 }
