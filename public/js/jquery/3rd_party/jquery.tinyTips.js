@@ -63,7 +63,7 @@
                 C.log("tinytipbboxwidth", element.get(0).getBBox().width);
                 xOffset = tinyTip.width() / 2
                                     - (element.get(0).getBBox().width * scaleFactor) / 2;
-                xOffset = tinyTip.width() / 2 - 13;
+                //xOffset = tinyTip.width() / 2 - 13;
             }
 
             // Grab the coordinates for the element with the tooltip and make a new copy

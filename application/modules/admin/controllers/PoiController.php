@@ -12,8 +12,8 @@ class Admin_PoiController extends Tp_Controller_Action
 {
 
     public function indexAction() {
-        $repository = $this->_em->getRepository('Tp\Entity\Poi');
-        $pois = $repository->findAll();
+        $poi = new Poi();
+        $pois = $poi->getAllPoisByCreationDate();
 
         $this->view->pois = array();
         foreach($pois as $poi) {

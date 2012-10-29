@@ -40,9 +40,9 @@
      inkscape:window-height="776"
      id="namedview446"
      showgrid="false"
-     inkscape:zoom="6.9670018"
-     inkscape:cx="428.30271"
-     inkscape:cy="1307.5322"
+     inkscape:zoom="3.9974703"
+     inkscape:cx="543.12972"
+     inkscape:cy="1284.5668"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -1192,4 +1192,40 @@ Both this and the original map are subject to the GNU Free Documentation License
      sodipodi:rx="0.4306013"
      sodipodi:ry="0.28706753"
      d="m 448.11243,-719.21881 a 0.4306013,0.28706753 0 1 1 -0.86121,0 0.4306013,0.28706753 0 1 1 0.86121,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3240"
+     sodipodi:cx="367.51822"
+     sodipodi:cy="-718.50116"
+     sodipodi:rx="0.35883442"
+     sodipodi:ry="0.28706753"
+     d="m 367.87705,-718.50116 a 0.35883442,0.28706753 0 1 1 -0.71767,0 0.35883442,0.28706753 0 1 1 0.71767,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3245"
+     sodipodi:cx="561.73029"
+     sodipodi:cy="-697.44556"
+     sodipodi:rx="0.62539554"
+     sodipodi:ry="0.37523732"
+     d="m 562.35568,-697.44556 a 0.62539554,0.37523732 0 1 1 -1.25079,0 0.62539554,0.37523732 0 1 1 1.25079,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3247"
+     sodipodi:cx="571.36133"
+     sodipodi:cy="-697.8208"
+     sodipodi:rx="0.75047463"
+     sodipodi:ry="0.75047463"
+     d="m 572.1118,-697.8208 a 0.75047463,0.75047463 0 1 1 -1.50095,0 0.75047463,0.75047463 0 1 1 1.50095,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3249"
+     sodipodi:cx="572.11182"
+     sodipodi:cy="-648.53961"
+     sodipodi:rx="0.75047463"
+     sodipodi:ry="0.50031644"
+     d="m 572.86229,-648.53961 a 0.75047463,0.50031644 0 1 1 -1.50095,0 0.75047463,0.50031644 0 1 1 1.50095,0 z" />
 </svg>

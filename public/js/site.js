@@ -81,7 +81,7 @@ INIT = {   // start of INIT object scope.
         //$('svg .poiIcon, svg path.active').each(function() {
         $('svg image').each(function() {
             var title = $(this).attr('title');
-            if (typeof (title) !== 'undefined' && jQuery.trim($(this).attr('title')) !== '') {
+            if (typeof(title) !== 'undefined' && jQuery.trim($(this).attr('title')) !== '') {
                 $(this).tinyTips('light', 'title', true);
             }
         });
@@ -121,7 +121,19 @@ FORM = {  // start of FORM object scope.
             return true;
         });
     },
-
+    
+    // click all initialisation links in a table
+    initAjaxified:function (curIndex) {
+        var element = $($("table:first a").get(curIndex));
+        if(element.length != 0) {
+            console.log(element);
+            $.get(element.attr("href"), function() {
+                FORM.initAjaxified(curIndex+1);
+            });
+        }
+        return;
+    },
+    
     //set up form function
     initForm:function (formName, preSubmit, postSubmit) {
         var targetformName = '#' + formName;
@@ -489,9 +501,11 @@ SVG = { // start of SVG object scope.
             svgElement = SVG.worldMaps[containerId],
             currentFactor = $('#viewport', $(svgElement.root())).attr('transform').substring(7).split(",").shift();
 
-        C.log('draw Pois on ',  svgElement, pois, type, containerId);
+        C.log('draw Pois on ', svgElement, pois, type, containerId);
 
-        $.each(pois, function(poiId, poiArray) {
+        C.log('Pois-Array ', pois);
+
+        $.each(pois, function(i, poiArray) {
             // reset current Highlighted POI
             if(SVG.forcedCurrentPoi !== null && typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
                 poiArray["current"] = false;
@@ -500,6 +514,7 @@ SVG = { // start of SVG object scope.
             var coords = poiArray['svgCoords'].split(','),
                 imageWidth = 50 / (currentFactor * 2),
                 imageHeight = 60 / (currentFactor * 2),
+                pinPosition = new Array(2),
                 poiElement,
                 pinType,
                 imageIcon,
@@ -512,14 +527,20 @@ SVG = { // start of SVG object scope.
                 prevCoords = poiArray['svgPrevCoords'].split(',')
             }
 
+            if(prevCoords !== null) {
+                lines[counter] = [ prevCoords[0], prevCoords[1], coords[0], coords[1], poiArray["lineColor"] ]
+            }
+
+
+
             if((poiArray["url"] !== null && poiArray["url"].indexOf("/photo") != -1) || type === "photo") {
                 pinType = "camera";
             } else {
                 pinType = "pin";
             }
 
-            imageIcon = "/img/" + pinType + "_grey.png";
-
+            //imageIcon = "/img/" + pinType + "_grey.png";
+            imageIcon = null;
 
             if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true
                 || SVG.forcedCurrentPoi === poiArray['id']
@@ -533,66 +554,91 @@ SVG = { // start of SVG object scope.
                 imageIcon = "/img/" + pinType + "_black.png";
             }
 
-            poiElement = $(
+            // no clickable poi or the poi is in the middle of the line; so we draw some nice dots
+            if(imageIcon === null || poiArray["category"] === "bicycle") {
+                attribs = { "class" : "landmark" };
+                if(poiArray["category"] !== "bicycle") {
+                    attribs["title"] = poiArray['title'];
+                }
+
                 svgElement.image(
                     $('#viewport', $(svgElement.root())),
-                    coords[0] - imageWidth / 2,
-                    coords[1] - imageHeight,
-                    imageWidth,
-                    imageHeight,
-                    imageIcon,
-                    { "class" : "poiIcon" + activeClass, title : poiArray['title'] }
+                    coords[0] - 10 / (currentFactor * 2),
+                    coords[1] - 10 / (currentFactor * 2),
+                    20 / (currentFactor * 2),
+                    20 / (currentFactor * 2),
+                    "/img/grey_dot.png",
+                    attribs
                 )
-            );
+            }
 
-            if(isActive && !isCurrent) {
-                poiElement.bind('mouseover', function(e) {
-                    $(this).attr("href", '/img/' + pinType + '_red.png');
-                });
+            // there is a clickable poi to draw
+            if(imageIcon !== null) {
+                pinPosition = new Array();
+                pinPosition[0] = coords[0];
+                pinPosition[1] = coords[1];
+                if(poiArray["category"] === "bicycle") {
+                    pinPosition[0] = parseFloat(coords[0]) - (parseFloat(coords[0]) - parseFloat(prevCoords[0])) / 2;
+                    pinPosition[1] = parseFloat(coords[1]) - (parseFloat(coords[1]) - parseFloat(prevCoords[1])) / 2;
+                }
 
-                poiElement.bind('mouseout',  function(e) {
-                    $(this).attr("href", '/img/' + pinType + '_black.png');
-                });
+                poiElement = $(
+                    svgElement.image(
+                        $('#viewport', $(svgElement.root())),
+                        pinPosition[0] - imageWidth / 2,
+                        pinPosition[1] - imageHeight,
+                        imageWidth,
+                        imageHeight,
+                        imageIcon,
+                        { "class" : "poiIcon" + activeClass, title : poiArray['title'] }
+                    )
+                );
+
+                if(isActive && !isCurrent) {
+                    poiElement.bind('mouseover', function(e) {
+                        $(this).attr("href", '/img/' + pinType + '_red.png');
+                    });
+
+                    poiElement.bind('mouseout',  function(e) {
+                        $(this).attr("href", '/img/' + pinType + '_black.png');
+                    });
 
 
-                poiElement.bind('click', function(e) {
-                    if(type === "default") {
-                        if(poiArray['url'] !== null) {
-                            $(window.top).attr("location", poiArray['url']);
+                    poiElement.bind('click', function(e) {
+                        if(type === "default") {
+                            if(poiArray['url'] !== null) {
+                                $(window.top).attr("location", poiArray['url']);
+                            }
+                        } else if(type === "photo") {
+                            PHOTO.showPhotoByPoi(poiArray['id']);
+                            //$(window.top).scrollTop($("#svg_map_frame", $(window.top)).offset().top + 400);
+                            $(window.top).scrollTop(500);
+                            //$(window.top).scrollTop(1000);
+                            $('.poiIcon, .poiLine', $('svg')).remove();
+                            C.log('removed old pois and lines, redraw!');
+                            SVG.forcedCurrentPoi = poiArray['id'];
+                            SVG.drawPois(pois, type, containerId);
                         }
-                    } else if(type === "photo") {
-                        PHOTO.showPhotoByPoi(poiArray['id']);
-                        //$(window.top).scrollTop($("#svg_map_frame", $(window.top)).offset().top + 400);
-                        $(window.top).scrollTop(500);
-                        //$(window.top).scrollTop(1000);
-                        $('.poiIcon, .poiLine', $('svg')).remove();
-                        C.log('removed old pois and lines, redraw!');
-                        SVG.forcedCurrentPoi = poiArray['id'];
-                        SVG.drawPois(pois, type, containerId);
-                    }
-                });
+                    });
 
 
 
+                }
             }
 
-
-            if(prevCoords !== null) {
-                lines[counter] = [ prevCoords[0], prevCoords[1], coords[0], coords[1] ]
-            }
             prevCoords = coords;
             counter++;
         });
 
         $.each(lines, function(key, value) {
-            svgElement.line($('#viewport'), value[0], value[1], value[2], value[3], { "class":"poiLine", stroke: "#aaaaaa", strokeWidth : 1.5 / currentFactor});
+            svgElement.line($('#viewport'), value[0], value[1], value[2], value[3], { "class":"poiLine", stroke: "#" + value[4], strokeWidth : 1.5 / currentFactor});
         });
 
         INIT.tinyTips();
         $('svg').svgPan('viewport', true, true, false, 0.05, function() {
             clearTimeout(SVG.redrawPoiTimeout);
             SVG.redrawPoiTimeout = setTimeout(function() {
-                $('.poiIcon, .poiLine', $('svg')).remove();
+                $('.poiIcon, .poiLine, .landmark', $('svg')).remove();
                 C.log('removed old pois and lines, redraw!');
                 SVG.drawPois(pois, type, containerId);
             }, 300);

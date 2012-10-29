@@ -192,8 +192,15 @@ class Poi
         return null;
     }
 
+    public function getAllPoisByCreationDate() {
+        $collection =  \Zend_Registry::get('doctrine')->getEntityManager()
+            ->getRepository('Tp\Entity\Poi')
+            ->findBy(array(), array('createddate' => 'ASC'));
+        return $collection;
+    }
+
     public function getPoisAsJsonArray($makeLastWithUrlCurrent = false) {
-        $allPois = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Poi')->findAll();
+        $allPois = $this->getAllPoisByCreationDate();
 
         $poiArray = array();
 
@@ -201,12 +208,14 @@ class Poi
         $currentSet = false;
 
         foreach($allPois as $poi)  {
-            $poiArray[$poi->id] = array(
+            $poiArray[] = array(
                 "id" => $poi->id,
                 "svgCoords" => $poi->svgCoordinates,
                 "svgPrevCoords" => $poi->svgPrevCoordinates,
                 "latitude" => $poi->latitude,
                 "longitude" => $poi->longitude,
+                "category" => $poi->category->title,
+                "lineColor" => $poi->category->color,
                 "title" => $poi->title,
                 "url" => $poi->url,
             );
