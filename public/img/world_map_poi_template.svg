@@ -41,8 +41,8 @@
      id="namedview446"
      showgrid="false"
      inkscape:zoom="3.9974703"
-     inkscape:cx="543.12972"
-     inkscape:cy="1284.5668"
+     inkscape:cx="363.01581"
+     inkscape:cy="1344.6048"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -1228,4 +1228,13 @@ Both this and the original map are subject to the GNU Free Documentation License
      sodipodi:rx="0.75047463"
      sodipodi:ry="0.50031644"
      d="m 572.86229,-648.53961 a 0.75047463,0.50031644 0 1 1 -1.50095,0 0.75047463,0.50031644 0 1 1 1.50095,0 z" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#000000;fill-opacity:1"
+     id="path3248"
+     sodipodi:cx="312.82285"
+     sodipodi:cy="-722.96167"
+     sodipodi:rx="0.37523732"
+     sodipodi:ry="0.62539554"
+     d="m 313.19808,-722.96167 a 0.37523732,0.62539554 0 1 1 -0.75047,0 0.37523732,0.62539554 0 1 1 0.75047,0 z" />
 </svg>
