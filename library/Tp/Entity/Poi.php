@@ -207,8 +207,9 @@ class Poi
         $lastPoiWithUrl = null;
         $currentSet = false;
 
+        $counter = 0;
         foreach($allPois as $poi)  {
-            $poiArray[] = array(
+            $poiArray[$counter] = array(
                 "id" => $poi->id,
                 "svgCoords" => $poi->svgCoordinates,
                 "svgPrevCoords" => $poi->svgPrevCoordinates,
@@ -220,15 +221,16 @@ class Poi
                 "url" => $poi->url,
             );
             if($poi->id === $this->id) {
-                $poiArray[$poi->id]["current"] = true;
+                $poiArray[$counter]["current"] = true;
                 $currentSet = true;
             }
             if(!empty($poi->url)) {
-                $lastPoiWithUrl = $poi->id;
+                $lastPoiIndexWithUrl = $poi->id;
             }
+            $counter++;
         }
         if($makeLastWithUrlCurrent && $currentSet == false && $lastPoiWithUrl !== null) {
-            $poiArray[$lastPoiWithUrl]["current"] = true;
+            $poiArray[$lastPoiIndexWithUrl]["current"] = true;
         }
 
         $poiArray = \Zend_Json::encode($poiArray);

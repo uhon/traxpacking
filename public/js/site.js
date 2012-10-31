@@ -2,17 +2,17 @@ var C, GEN, INIT, FORM, UI, PHOTO, SVG, WHYJUSTIFY;
 
 C = {
     // console wrapper
-    debug:true, // global debug on|off
-    quietDismiss:true, // may want to just drop, or alert instead
-    log:function () {
+    debug: true, // global debug on|off
+    quietDismiss: true, // may want to just drop, or alert instead
+    log: function () {
         C = {
             // console wrapper
             debug: true, // global debug on|off
             quietDismiss: true, // may want to just drop, or alert instead
-            log: function() {
+            log: function () {
                 if (!C.debug) { return false; }
 
-                if (typeof (console) === 'object' && typeof console.log !== "undefined") {
+                if (typeof (console) === 'object' && console.log !== undefined) {
                     try {
                         var curdate = new Date();
                         var dateString = curdate.getHours() + curdate.getMinutes() + curdate.getSeconds();
@@ -50,14 +50,14 @@ GEN = {   // start of GEN object scope.
      * E.x.:  "GEN.getObjectBYString"
      *         turns to: window["GEN"]["getObjectBYString"]
      */
-    getObjectByString: function(objectString, execute) {
+    getObjectByString: function (objectString, execute) {
         var hirarchyArray = objectString.split("."),
         curMember = window;
 
-        $.each(hirarchyArray, function(key, value) {
+        $.each(hirarchyArray, function (key, value) {
             curMember = curMember[value];
         });
-        if (typeof (execute) !== "undefined" && execute === true) {
+        if (execute !== undefined && execute === true) {
             return curMember();
         } else {
             return curMember;
@@ -66,7 +66,7 @@ GEN = {   // start of GEN object scope.
 }; // end of GEN object scope.
 
 INIT = {   // start of INIT object scope.
-    onContentReady:function () {
+    onContentReady: function () {
         window.setTimeout(function () {
             UI.showFlashMessages();
         }, 400);
@@ -77,11 +77,11 @@ INIT = {   // start of INIT object scope.
         INIT.tinyTips();
     },
 
-    tinyTips: function() {
-        //$('svg .poiIcon, svg path.active').each(function() {
-        $('svg image').each(function() {
+    tinyTips: function () {
+        //$('svg .poiIcon, svg path.active').each(function () {
+        $('svg image').each(function () {
             var title = $(this).attr('title');
-            if (typeof(title) !== 'undefined' && jQuery.trim($(this).attr('title')) !== '') {
+            if (title !== undefined && jQuery.trim($(this).attr('title')) !== '') {
                 $(this).tinyTips('light', 'title', true);
             }
         });
@@ -89,10 +89,10 @@ INIT = {   // start of INIT object scope.
 }; // end of INIT object scope.
 
 FORM = {  // start of FORM object scope.
-    bindEditLinks: function() {
+    bindEditLinks: function () {
         // Bind Edit-Links
         var logObj = 'none';
-        if($('a.ajaxEdit').length > 0) {
+        if ($('a.ajaxEdit').length > 0) {
             logObj = $('a.ajaxEdit');
         }
         C.log('Bind edit-Links: ', logObj);
@@ -105,17 +105,17 @@ FORM = {  // start of FORM object scope.
         });
     },
 
-    bindDeleteForms: function() {
+    bindDeleteForms: function () {
         // Bind Edit-Links
         var logObj = 'none';
-        if($('form.deleteForm').length > 0) {
+        if ($('form.deleteForm').length > 0) {
             logObj = $('form.deleteForm');
         }
         C.log('Bind delete-Links: ', logObj);
         $('form.deleteForm').bind('submit', function () {
             $(".flashMessages").slideUp();
 
-            if($('.confirm', $(this)).length > 0) {
+            if ($('.confirm', $(this)).length > 0) {
                 return confirm($('.confirm', $(this)).html());
             }
             return true;
@@ -123,40 +123,39 @@ FORM = {  // start of FORM object scope.
     },
     
     // click all initialisation links in a table
-    initAjaxified:function (curIndex) {
+    initAjaxified: function (curIndex) {
         var element = $($("table:first a").get(curIndex));
-        if(element.length != 0) {
-            console.log(element);
-            $.get(element.attr("href"), function() {
+        if (element.length !== 0) {
+            $.get(element.attr("href"), function () {
                 FORM.initAjaxified(curIndex+1);
             });
         }
-        return;
+        return 0;
     },
     
     //set up form function
-    initForm:function (formName, preSubmit, postSubmit) {
+    initForm: function (formName, preSubmit, postSubmit) {
         var targetformName = '#' + formName;
 
         // bind form using 'ajaxForm'
         $(targetformName).ajaxForm({
-            data:{ formOrigin:window.location.pathname },
-            beforeSubmit:preSubmit, // pre-submit callback
-            success:postSubmit // post-submit callback
+            data: { formOrigin: window.location.pathname },
+            beforeSubmit: preSubmit, // pre-submit callback
+            success: postSubmit // post-submit callback
         });
     },
 
-    popupForm:function (linkElement) {
+    popupForm: function (linkElement) {
         $('#popupForm').load(
             linkElement.attr('href'),
             function () {
                 $('#popupForm').dialog({
-                    title:"FormDialog",
-                    width:700,
-                    show:{effect:'explode', duration:750 },
-                    hide:{effect:'explode', duration:750 },
-                    modal:true,
-                    autoOpen:false,
+                    title: "FormDialog",
+                    width: 700,
+                    show: {effect: 'explode', duration: 750 },
+                    hide: {effect: 'explode', duration: 750 },
+                    modal: true,
+                    autoOpen: false,
                     closeOnEscape: true
                 });
                 $('#popupForm').dialog('open');
@@ -164,12 +163,12 @@ FORM = {  // start of FORM object scope.
         );
     },
 
-    togglePoiOrigin: function() {
-        if($('#category').val() === "5") {
+    togglePoiOrigin: function () {
+        if ($('#category').val() === "5") {
             $("#svgPrevCoordinates").closest('tr').show();
             $("#toggleOrigin").attr('checked', 'checked');
         } else {
-            if($("#toggleOrigin").attr("checked") === "checked") {
+            if ($("#toggleOrigin").attr("checked") === "checked") {
                 $("#svgPrevCoordinates").closest('tr').show();
                 $("#toggleOrigin").attr('checked', 'checked');
             } else {
@@ -180,59 +179,59 @@ FORM = {  // start of FORM object scope.
         }
     },
 
-    initPoiOriginToggle: function() {
-        if(
+    initPoiOriginToggle: function () {
+        if (
             $("#svgPrevCoordinates").val() === ""
             && $('#category').val() !== "5"
             && $("#toggleOrigin").attr('checked') !== "checked"
         ) {
             $("#toggleOrigin").removeAttr('checked');
             $("#svgPrevCoordinates").closest('tr').hide();
-        } else if($("#svgPrevCoordinates").val() !== "") {
+        } else if ($("#svgPrevCoordinates").val() !== "") {
             $("#toggleOrigin").attr('checked', "checked");
         }
     }
 };  // end of FORM object scope.
 
 UI = { // start of INIT object scope.
-    showFlashMessages: function() {
+    showFlashMessages: function () {
         $(".flashMessages").each(function () {
             if ($('.msgItem', $(this)).length > 0) {
-                if($(this).is(':visible')) {
-                    $(this).fadeTo('fast', 0.1, function() {  $(this).fadeTo('fast', 1); });
+                if ($(this).is(':visible')) {
+                    $(this).fadeTo('fast', 0.1, function () {  $(this).fadeTo('fast', 1); });
                 } else {
                     $(this).slideDown();
                 }
             }
         });
     },
-    infoMessage: function(message, removeOthers) {
-        if(removeOthers) {
-            $(".infoMessages .msgItem").slideUp(function() { $(".infoMessages .msgItem").remove(); } );
+    infoMessage: function (message, removeOthers) {
+        if (removeOthers) {
+            $(".infoMessages .msgItem").slideUp(function () { $(".infoMessages .msgItem").remove(); });
         }
         //noinspection JSCheckFunctionSignatures
         $(".infoMessages .msgItem").append('<li class="msgItem">' + message + '</li>');
     },
-    createButton: function(buttonText, theFunction) {
+    createButton: function (buttonText, theFunction) {
         var button = $('<button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">' + buttonText + '</span></button>');
         button.bind('click', theFunction);
         return button;
     },
-    errorMessage: function(message, removeOthers) {
-        if(removeOthers) {
-            $(".errorMessages .msgItem").slideUp(function() { $(".infoMessages .msgItem").remove(); } );
+    errorMessage: function (message, removeOthers) {
+        if (removeOthers) {
+            $(".errorMessages .msgItem").slideUp(function () { $(".infoMessages .msgItem").remove(); });
         }
         //noinspection JSCheckFunctionSignatures
         $(".errorMessages .msgItem").append('<li class="msgItem">' + message + '</li>');
     },
-    activateTabs: function() {
+    activateTabs: function () {
         // Do it for Tabbed Subforms
         UI.activateTabsOnPoiForm();
     },
-    activateTabsOnPoiForm: function() {
-        if($('#poiForm').length > 0) {
+    activateTabsOnPoiForm: function () {
+        if ($('#poiForm').length > 0) {
             var tabContainer = $('#poiForm .tp_subform_tabbed:first');
-            $('.removeLink').each(function() {
+            $('.removeLink').each(function () {
                 var removeLink = $(this).attr('href');
                 $(this).closest('tr').hide();
             });
@@ -240,20 +239,20 @@ UI = { // start of INIT object scope.
             tabContainer.tabs({
             });
             // close icon: removing the tab on click
-            $(".tabList span.ui-icon-close", tabContainer).click(function() {
-                var index = $(".tabList li", tabContainer).index( $( this ).closest('li') ),
+            $(".tabList span.ui-icon-close", tabContainer).click(function () {
+                var index = $(".tabList li", tabContainer).index($(this).closest('li')),
                     deleteLink = $('div:nth-of-type(' + (index+1) + ') a.removeLink', tabContainer).attr('href');
-                    if(confirm('do yo really want to remove this Picture from POI?')) {
+                    if (confirm('do yo really want to remove this Picture from POI?')) {
                         tabContainer.waitForIt();
-                        $.get(deleteLink, function(data) {
+                        $.get(deleteLink, function (data) {
                             $('#popupForm .flashMessages').remove();
                             $('#popupForm').prepend(data);
                             UI.showFlashMessages();
                             tabContainer.waitForItStop();
                             // TODO: No success/error szenario catched
-                            tabContainer.tabs( "remove", index );
+                            tabContainer.tabs("remove", index);
                             var tabCounter = 1;
-                            $('.tabList li a', tabContainer).each(function() {
+                            $('.tabList li a', tabContainer).each(function () {
                                 $(this).text(tabCounter);
                                 tabCounter++;
                             });
@@ -262,9 +261,9 @@ UI = { // start of INIT object scope.
             });
         }
     },
-    markTabsWithErrors: function() {
-        $.each($(".tp_subform_tabbed ul.errors").closest(".tp_subform_tabbed"), function() {
-            index = $(this).attr('id').substr(4, $(this).attr('id').length-4);
+    markTabsWithErrors: function () {
+        $.each($(".tp_subform_tabbed ul.errors").closest(".tp_subform_tabbed"), function () {
+            var index = $(this).attr('id').substr(4, $(this).attr('id').length-4);
             var correspondingTab = $("ul li:nth-of-type(" + (index) + ")", $(this).closest('.subform_container'));
             $('a', correspondingTab).css('color', 'red');
         });
@@ -274,7 +273,7 @@ UI = { // start of INIT object scope.
 
     },
     initalSlideshowState: null,
-    startSlideshow: function() {
+    startSlideshow: function () {
         C.log('Starting Slideshow');
         UI.initalSlideshowState = $('#supersized-wrapper').html();
         //$("#playground").hide();
@@ -326,7 +325,7 @@ UI = { // start of INIT object scope.
         $('#fullscreen_toggle').empty().append(UI.createButton('Fullscreen', WHYJUSTIFY.toggleFullscreen));
         $('#close-supersized').empty().append(UI.createButton('X', UI.stopSlideshow));
     },
-    stopSlideshow: function() {
+    stopSlideshow: function () {
         $('#supersized-wrapper').hide();
         $('#svgMapContainer').show();
         $("#supersized-loader").remove();
@@ -337,12 +336,12 @@ UI = { // start of INIT object scope.
 }; // end of UI object scope.
 
 PHOTO = { // start of PHOTO object scope
-    preparePhotoMap: function() {
+    preparePhotoMap: function () {
         // initial pictures displayed (either last or forced by POI)
         var forcedPoi = new RegExp('[\\?&]' + 'poi' + '=([^&#]*)').exec($(window.parent).attr("location"));
         $('#svgMapContainer').after('<div style="clear:both"></div><div id="photoStream"></div>');
-        if(forcedPoi !== null) {
-            SVG.forcedCurrentPoi = parseInt(forcedPoi.pop());
+        if (forcedPoi !== null) {
+            SVG.forcedCurrentPoi = parseInt(forcedPoi.pop(), 10);
             PHOTO.showPhotoByPoi(SVG.forcedCurrentPoi);
         } else {
             PHOTO.showPhotoByPoi();
@@ -351,24 +350,23 @@ PHOTO = { // start of PHOTO object scope
 
     },
 
-    showPhotoByPoi: function(poiId) {
-        if(typeof(poiId) === "undefined") {
+    showPhotoByPoi: function (poiId) {
+        if (poiId === undefined) {
             poiId = "";
         }
         $('#photoStream').empty();
-        $('#photoStream').waitForItLoadPictures('/default/index/photo/poi/' + poiId, function() {
+        $('#photoStream').waitForItLoadPictures('/default/index/photo/poi/' + poiId, function () {
             $("#tpScrollHorizontal").thumbnailScroller({
-                scrollerType:"clickButtons",
-                scrollerOrientation:"horizontal",
-                scrollSpeed:2,
-                scrollEasing:"easeOutCirc",
-                scrollEasingAmount:800,
-                acceleration:4,
-                scrollSpeed:800,
-                noScrollCenterSpace:10
+                scrollerType: "clickButtons",
+                scrollerOrientation: "horizontal",
+                scrollEasing: "easeOutCirc",
+                scrollEasingAmount: 800,
+                acceleration: 4,
+                scrollSpeed: 800,
+                noScrollCenterSpace: 10
             });
 
-            $("#tpScrollHorizontal a.lightview").bind("click", function() {
+            $("#tpScrollHorizontal a.lightview").bind("click", function () {
                 WHYJUSTIFY.toggleFullscreen();
                 $(window.top).scrollTo({top: 1000});
             });
@@ -381,9 +379,9 @@ SVG = { // start of SVG object scope.
     worldMapsScaleFactor: { },
     redrawPoiTimeout: null,
     forcedCurrentPoi: null,
-    createSvgWorldMap: function(functionCall, containerId) {
+    createSvgWorldMap: function (functionCall, containerId) {
 
-        if(typeof(containerId) === "undefined") {
+        if (containerId === undefined) {
             containerId = "svgMapContainer";
         }
         var container = $('#' + containerId);
@@ -394,9 +392,9 @@ SVG = { // start of SVG object scope.
         SVG.worldMaps[containerId].load("/img/world_map.svg", {addTo: true, changeSize: true, onLoad: functionCall });
     },
 
-    setupSvgWorldMap: function(countryArray, containerId) {
+    setupSvgWorldMap: function (countryArray, containerId) {
 
-        if(typeof(containerId) === "undefined" || typeof(containerId.length) === "undefined") {
+        if (containerId === undefined || containerId.length === undefined) {
             containerId = "svgMapContainer";
         }
         var container = $('#' + containerId),
@@ -421,7 +419,7 @@ SVG = { // start of SVG object scope.
 
         //countryList = VODOO
         C.log("process countries");
-        $.each(countryList, function(key, country) {
+        $.each(countryList, function (key, country) {
             C.log(country.name);
 
             var countryElement = $('path[title="' + country.name + '"]', svgElement.root());
@@ -431,28 +429,28 @@ SVG = { // start of SVG object scope.
 
 
             dimensions = countryElement.get(0).getBBox();
-            if(dimensions.x - borderSize < minX) {
+            if (dimensions.x - borderSize < minX) {
                 minX = dimensions.x - borderSize;
             }
-            if(dimensions.y - borderSize < minY) {
+            if (dimensions.y - borderSize < minY) {
                 minY = dimensions.y - borderSize;
             }
-            if(dimensions.x + dimensions.width + borderSize > maxX) {
+            if (dimensions.x + dimensions.width + borderSize > maxX) {
                 maxX = dimensions.x + dimensions.width + borderSize;
             }
-            if(dimensions.y + dimensions.height + borderSize > maxY) {
+            if (dimensions.y + dimensions.height + borderSize > maxY) {
                 maxY = dimensions.y + dimensions.height + borderSize;
             }
             maxWidth = (maxX - minX);
             maxHeight = Math.abs(maxY - minY);
         });
 
-        if(maxWidth === 0 || maxHeight === 0) {
+        if (maxWidth === 0 || maxHeight === 0) {
             svgElement.configure({viewBox: "50 -800 740 240"}, true);
             SVG.worldMapsScaleFactor[containerId] = 1405 / 600;
         } else {
 
-            if((maxWidth / maxHeight > containerWidth/containerHeight)) {
+            if ((maxWidth / maxHeight > containerWidth/containerHeight)) {
                 growHeight = maxWidth / containerWidth * containerHeight - maxHeight;
                 maxHeight += growHeight;
                 minY -= growHeight / 2;
@@ -468,16 +466,16 @@ SVG = { // start of SVG object scope.
             //svgElement.configure({viewBox: minX + " " + minY + " " + (maxWidth) + " " + maxHeight}, true);
             var factor = 1405 / maxWidth * containerWidth / 1405;
             SVG.worldMapsScaleFactor[containerId] = factor;
-            $('#viewport', $(svgElement.root())).attr('transform', 'matrix(' + factor + ','+ 0 + ','+ 0 + ','+ factor + ','+ minX * factor * -1 + ',' + factor * -1 * (minY) + ')');
+            $('#viewport', $(svgElement.root())).attr('transform', 'matrix(' + factor + ',0,0,' + factor + ','+ minX * factor * -1 + ',' + factor * -1 * (minY) + ')');
             C.log("Dimensions for SVG Element: scale-Factor:" + factor + ", minX:" + minX + ", minY:" + minY + " minX*factor:" + minX * factor * -1 + ", minY*factor:" + minY * factor * -1);
 
             //svgElement.configure({scale: 3});
 
-            /*$('path.active', svgElement.root()).bind('mouseover', function(e) {
+            /*$('path.active', svgElement.root()).bind('mouseover', function (e) {
                 $(this).attr('fill', 'green');
             });
 
-            $('path.active', svgElement.root()).bind('mouseout', function(e) {
+            $('path.active', svgElement.root()).bind('mouseout', function (e) {
                 $(this).attr('fill', '#ccc');
             });*/
         }
@@ -491,8 +489,8 @@ SVG = { // start of SVG object scope.
         @var type 'default' or 'photo' // different behaviour while clicking on pois
         @var containerId to draw Pois on (if multiple SVGs are in use)
      */
-    drawPois: function(pois, type, containerId) {
-        if(typeof(containerId) === "undefined" || typeof(containerId.length) === "undefined") {
+    drawPois: function (pois, type, containerId) {
+        if (containerId === undefined || containerId.length === undefined) {
             containerId = "svgMapContainer";
         }
         var lines = { },
@@ -503,15 +501,14 @@ SVG = { // start of SVG object scope.
 
         C.log('draw Pois on ', svgElement, pois, type, containerId);
 
-        C.log('Pois-Array ', pois);
 
-        $.each(pois, function(i, poiArray) {
+        $.each(pois, function (i, poiArray) {
             // reset current Highlighted POI
-            if(SVG.forcedCurrentPoi !== null && typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true) {
-                poiArray["current"] = false;
+            if (SVG.forcedCurrentPoi !== null && poiArray.current !== undefined && poiArray.current === true) {
+                poiArray.current = false;
             }
 
-            var coords = poiArray['svgCoords'].split(','),
+            var coords = poiArray.svgCoords.split(','),
                 imageWidth = 50 / (currentFactor * 2),
                 imageHeight = 60 / (currentFactor * 2),
                 pinPosition = new Array(2),
@@ -523,17 +520,17 @@ SVG = { // start of SVG object scope.
                 activeClass = ""
             ;
 
-            if(poiArray['svgPrevCoords'] !== "" && poiArray['svgPrevCoords'] !== null) {
-                prevCoords = poiArray['svgPrevCoords'].split(',')
+            if (poiArray.svgPrevCoords !== "" && poiArray.svgPrevCoords !== null) {
+                prevCoords = poiArray.svgPrevCoords.split(',');
             }
 
-            if(prevCoords !== null) {
-                lines[counter] = [ prevCoords[0], prevCoords[1], coords[0], coords[1], poiArray["lineColor"] ]
+            if (prevCoords !== null) {
+                lines[counter] = [ prevCoords[0], prevCoords[1], coords[0], coords[1], poiArray.lineColor ];
             }
 
 
 
-            if((poiArray["url"] !== null && poiArray["url"].indexOf("/photo") != -1) || type === "photo") {
+            if ((poiArray.url !== null && poiArray.url.indexOf("/photo") !== -1) || type === "photo") {
                 pinType = "camera";
             } else {
                 pinType = "pin";
@@ -542,12 +539,13 @@ SVG = { // start of SVG object scope.
             //imageIcon = "/img/" + pinType + "_grey.png";
             imageIcon = null;
 
-            if(typeof(poiArray["current"]) !== "undefined" && poiArray["current"] === true
-                || SVG.forcedCurrentPoi === poiArray['id']
+            if (
+                (poiArray.current !== undefined && poiArray.current === true)
+                || SVG.forcedCurrentPoi === poiArray.id
             ) {
                 isCurrent = true;
                 imageIcon = "/img/" + pinType + "_red.png";
-            } else if(poiArray["url"] !== null && poiArray["url"].length > 0) {
+            } else if (poiArray.url !== null && poiArray.url.length > 0) {
                 isActive = true;
                 activeClass = " activePoi";
                 //imageIcon = "/img/whyjustify_pin_black.png";
@@ -555,10 +553,10 @@ SVG = { // start of SVG object scope.
             }
 
             // no clickable poi or the poi is in the middle of the line; so we draw some nice dots
-            if(imageIcon === null || poiArray["category"] === "bicycle") {
-                attribs = { "class" : "landmark" };
-                if(poiArray["category"] !== "bicycle") {
-                    attribs["title"] = poiArray['title'];
+            if (imageIcon === null || poiArray.category === "bicycle") {
+                var attribs = { "class" : "landmark" };
+                if (poiArray.category !== "bicycle") {
+                    attribs.title = poiArray.title;
                 }
 
                 svgElement.image(
@@ -569,15 +567,15 @@ SVG = { // start of SVG object scope.
                     20 / (currentFactor * 2),
                     "/img/grey_dot.png",
                     attribs
-                )
+                );
             }
 
             // there is a clickable poi to draw
-            if(imageIcon !== null) {
-                pinPosition = new Array();
+            if (imageIcon !== null) {
+                pinPosition = new Array(2);
                 pinPosition[0] = coords[0];
                 pinPosition[1] = coords[1];
-                if(poiArray["category"] === "bicycle") {
+                if (poiArray.category === "bicycle") {
                     pinPosition[0] = parseFloat(coords[0]) - (parseFloat(coords[0]) - parseFloat(prevCoords[0])) / 2;
                     pinPosition[1] = parseFloat(coords[1]) - (parseFloat(coords[1]) - parseFloat(prevCoords[1])) / 2;
                 }
@@ -590,33 +588,33 @@ SVG = { // start of SVG object scope.
                         imageWidth,
                         imageHeight,
                         imageIcon,
-                        { "class" : "poiIcon" + activeClass, title : poiArray['title'] }
+                        { "class" : "poiIcon" + activeClass, title : poiArray.title }
                     )
                 );
 
-                if(isActive && !isCurrent) {
-                    poiElement.bind('mouseover', function(e) {
+                if (isActive && !isCurrent) {
+                    poiElement.bind('mouseover', function (e) {
                         $(this).attr("href", '/img/' + pinType + '_red.png');
                     });
 
-                    poiElement.bind('mouseout',  function(e) {
+                    poiElement.bind('mouseout',  function (e) {
                         $(this).attr("href", '/img/' + pinType + '_black.png');
                     });
 
 
-                    poiElement.bind('click', function(e) {
-                        if(type === "default") {
-                            if(poiArray['url'] !== null) {
-                                $(window.top).attr("location", poiArray['url']);
+                    poiElement.bind('click', function (e) {
+                        if (type === "default") {
+                            if (poiArray.url !== null) {
+                                $(window.top).attr("location", poiArray.url);
                             }
-                        } else if(type === "photo") {
-                            PHOTO.showPhotoByPoi(poiArray['id']);
+                        } else if (type === "photo") {
+                            PHOTO.showPhotoByPoi(poiArray.id);
                             //$(window.top).scrollTop($("#svg_map_frame", $(window.top)).offset().top + 400);
                             $(window.top).scrollTop(500);
                             //$(window.top).scrollTop(1000);
                             $('.poiIcon, .poiLine', $('svg')).remove();
                             C.log('removed old pois and lines, redraw!');
-                            SVG.forcedCurrentPoi = poiArray['id'];
+                            SVG.forcedCurrentPoi = poiArray.id;
                             SVG.drawPois(pois, type, containerId);
                         }
                     });
@@ -630,14 +628,14 @@ SVG = { // start of SVG object scope.
             counter++;
         });
 
-        $.each(lines, function(key, value) {
-            svgElement.line($('#viewport'), value[0], value[1], value[2], value[3], { "class":"poiLine", stroke: "#" + value[4], strokeWidth : 1.5 / currentFactor});
+        $.each(lines, function (key, value) {
+            svgElement.line($('#viewport'), value[0], value[1], value[2], value[3], { "class": "poiLine", stroke: "#" + value[4], strokeWidth : 1.5 / currentFactor});
         });
 
         INIT.tinyTips();
-        $('svg').svgPan('viewport', true, true, false, 0.05, function() {
+        $('svg').svgPan('viewport', true, true, false, 0.05, function () {
             clearTimeout(SVG.redrawPoiTimeout);
-            SVG.redrawPoiTimeout = setTimeout(function() {
+            SVG.redrawPoiTimeout = setTimeout(function () {
                 $('.poiIcon, .poiLine, .landmark', $('svg')).remove();
                 C.log('removed old pois and lines, redraw!');
                 SVG.drawPois(pois, type, containerId);
@@ -649,29 +647,29 @@ SVG = { // start of SVG object scope.
 
 WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
     fullscreenRestore: null,
-    toggleFullscreen: function() {
+    toggleFullscreen: function () {
         C.log("toggle Fullscreen");
         var iframe = $("iframe[name='" + window.name + "']", window.top.document),
             logo = $('#whyjustify_logo', window.top.document);
-        if(WHYJUSTIFY.fullscreenRestore === null) {
+        if (WHYJUSTIFY.fullscreenRestore === null) {
             WHYJUSTIFY.fullscreenRestore = {
                 width: iframe.css('width'),
                 height: iframe.css('height'),
                 iframeMargin : iframe.css('margin-top'),
                 playgroundPadding : $('#playground').css('padding-top'),
-                logoOffset : { top:  logo.css('top'), right: logo.css('right') },
+                logoOffset : { top: logo.css('top'), right: logo.css('right') },
                 scrollPosition: $(window.parent).scrollTop()
                 //mapHeight : 0
             };
-            /*if($(".worldMapSmall").length > 0) {
+            /*if ($(".worldMapSmall").length > 0) {
                 WHYJUSTIFY.fullscreenRestore.mapHeight = $(".worldMapSmall").height();
-            } else if($(".worldMapLarge").length > 0) {
+            } else if ($(".worldMapLarge").length > 0) {
                 WHYJUSTIFY.fullscreenRestore.mapHeight =  $(".worldMapLarge").height();
             }*/
 
-            iframe.css({ border: 0, position:"fixed", top:0, marginTop:0, left:0, right:0, bottom:0, width:"100%", height:"100%" });
+            iframe.css({ border: 0, position: "fixed", top: 0, marginTop: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" });
             $('#playground').css('padding', 0);
-            logo.css({top:"10px", right:"10px"});
+            logo.css({top: "10px", right: "10px"});
             $("#comments, #header, #footer, .entry-actions, #primary", window.top.document).hide();
             $("#main", window.top.document).css('padding-top: 0px');
             // set plain background
@@ -694,7 +692,7 @@ WHYJUSTIFY = { // start of WHYJUSTIFY-specific object scope.
             iframe.css('width', WHYJUSTIFY.fullscreenRestore.width);
             iframe.css('height', WHYJUSTIFY.fullscreenRestore.height);
             iframe.css('margin-top', WHYJUSTIFY.fullscreenRestore.iframeMargin);
-            iframe.css({position:"static", top:"auto", left:"auto"});
+            iframe.css({position: "static", top: "auto", left: "auto"});
             $('#playground').css('padding-top', WHYJUSTIFY.fullscreenRestore.playgroundPadding);
             logo.css(WHYJUSTIFY.fullscreenRestore.logoOffset);
 
