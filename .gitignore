@@ -1,5 +1,3 @@
-library/Zend/
-library/ZendX/
 library/Tp/Entity/Proxy/*
 library/Tp/Phpthumb
 tests/log/

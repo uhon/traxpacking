@@ -43,8 +43,6 @@ Some brief overview of what it should do, once finished:
     git submodule update
 
     cd library
-    svn co http://framework.zend.com/svn/framework/standard/branches/release-1.11/library/Zend
-    svn co http://framework.zend.com/svn/framework/extras/branches/release-1.11/library/ZendX
 
     cd ../scripts
     php doctrine.php orm:schema-tool:create
