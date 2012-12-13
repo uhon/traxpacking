@@ -13,3 +13,9 @@
 [submodule "public/js/jquery/3rd_party/supersized"]
 	path = public/js/jquery/3rd_party/supersized
 	url = git://github.com/uhon/supersized.git
+[submodule "library/ZendX"]
+	path = library/ZendX
+	url = git://github.com/Prinhotels/ZendX.git
+[submodule "library/Zend"]
+	path = library/Zend
+	url = git://github.com/Prinhotels/Zend.git
