@@ -20,3 +20,27 @@
 
 <div id="svgMapContainer" class="worldMapLarge">
 </div>
+
+<div id="transportLegend">
+    <table>
+        <?php
+            $this->evenodd = true;
+            foreach($this->categories as $category) {
+                if($this->evenodd) {
+                    echo '<tr>';
+                }
+
+                echo '<td><div class="poiCategoryPoint" style="background-color:#' . $category->color . '">&nbsp;</div></td>';
+                echo '<td class="description">' . $category->title . '</td>';
+                if(!$this->evenodd) {
+                    echo '</tr>';
+
+                }
+                $this->evenodd = !$this->evenodd;
+            }
+            if(!$evenodd) {
+                echo '</tr>';
+            }
+        ?>
+    </table>
+</div>

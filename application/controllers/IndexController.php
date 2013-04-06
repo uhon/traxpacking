@@ -6,7 +6,7 @@ class IndexController extends Tp_Controller_Action
     public function init()
     {
 		$uri = $this->getRequest()->getPathInfo();
-		$activenav = $this->view->navigation()->findByUri($uri);
+		$activenav = $this->view->navigation();
 		$activenav->active = true;
 		
     }
@@ -35,6 +35,10 @@ class IndexController extends Tp_Controller_Action
         } else {
             $this->view->jsonPoiArray = $poi->getPoisAsJsonArray();
         }
+
+        $this->view->categories = $this->_em->getRepository('Tp\Entity\PoiCategory')->findAll();
+
+        $this->view->evenodd = true;
     }
 
     public function poiAction()

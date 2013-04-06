@@ -176,7 +176,7 @@ div.worldMapSmall {
     cursor:move;
     width:230px;
     height:160px;
-    margin: 5px auto 15px auto;
+    margin: 5px 0 15px 0;
     overflow:hidden;
     moz-border-radius: 5px;
     webkit-border-radius: 5px;
@@ -186,6 +186,12 @@ div.worldMapSmall {
   	    height:600px;
         width:1405px;
     }
+}
+
+#poiPicker {
+  display:none;
+  z-index: 0;
+  cursor:crosshair;
 }
 
 #photoStream {
@@ -216,6 +222,28 @@ div.worldMapSmall {
 
 #supersized-wrapper {
     display:none;
+}
+
+#transportLegend {
+  margin-top:4px;
+  td {
+      color: #D2D8DE;
+      font-size: 0.8em;
+      vertical-align: middle;
+      padding:0 2px 2px 3px;
+      text-align: left;
+  }
+  .poiCategoryPoint  {
+      width:90px;
+      height:2px;
+      -moz-border-radius:5px;
+      -webkit-border-radius:5px;
+      vertical-align: middle;
+
+  }
+  .description {
+      padding-right:30px;
+  }
 }
 
 .lightTip {

@@ -108,6 +108,8 @@
 
 /*global define, jQuery, window*/
 
+svgPanLastClick = null;
+
 $(function (factory) {
     "use strict";
     if (typeof define === 'function' && define.amd) {
@@ -310,6 +312,8 @@ $(function (factory) {
 
                     stateOrigin = getEventPoint(evt).matrixTransform(stateTf);
                 }
+
+                svgPanLastClick = stateOrigin;
             },
 
             /**

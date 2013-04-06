@@ -242,7 +242,7 @@ UI = { // start of INIT object scope.
             $(".tabList span.ui-icon-close", tabContainer).click(function () {
                 var index = $(".tabList li", tabContainer).index($(this).closest('li')),
                     deleteLink = $('div:nth-of-type(' + (index+1) + ') a.removeLink', tabContainer).attr('href');
-                    if (confirm('do yo really want to remove this Picture from POI?')) {
+                    if (confirm('do you really want to remove this Picture from POI?')) {
                         tabContainer.waitForIt();
                         $.get(deleteLink, function (data) {
                             $('#popupForm .flashMessages').remove();
@@ -251,6 +251,26 @@ UI = { // start of INIT object scope.
                             tabContainer.waitForItStop();
                             // TODO: No success/error szenario catched
                             tabContainer.tabs("remove", index);
+                            // all other indexes after the deleted have to be adjusted accordingly
+                            var indexCounter = index + 2;
+                            C.log('adjust indexes of following subform-elements');
+                            while(true) {
+                                var changelings = $('[name^="pictures[' + indexCounter + ']"]', $('.tp_subform_tabbed'));
+
+                                if(changelings.length > 0) {
+                                    changelings.each(function() {
+                                        var newIndex = indexCounter - 1;
+                                        $(this).attr('name', "pictures[" + newIndex + $(this).attr('name').substr($(this).attr('name').indexOf(']')));
+                                    });
+                                } else {
+                                    break;
+                                }
+                                indexCounter++;
+                            }
+
+
+
+                            //while((var element))
                             var tabCounter = 1;
                             $('.tabList li a', tabContainer).each(function () {
                                 $(this).text(tabCounter);
@@ -427,6 +447,17 @@ SVG = { // start of SVG object scope.
             countryElement.attr("fill", '#ccc');
             countryElement.attr("class", 'active');
 
+            // Countries change color while hovering
+            /*
+            countryElement.bind('mouseover', function (e) {
+                $(this).attr("fill", 'green');
+            });
+
+            countryElement.bind('mouseout',  function (e) {
+                countryElement.attr("fill", '#ccc');
+            });
+            */
+
 
             dimensions = countryElement.get(0).getBBox();
             if (dimensions.x - borderSize < minX) {
@@ -490,7 +521,7 @@ SVG = { // start of SVG object scope.
         @var containerId to draw Pois on (if multiple SVGs are in use)
      */
     drawPois: function (pois, type, containerId) {
-        if (containerId === undefined || containerId.length === undefined) {
+        if (containerId === undefined) {
             containerId = "svgMapContainer";
         }
         var lines = { },
@@ -639,6 +670,7 @@ SVG = { // start of SVG object scope.
                 $('.poiIcon, .poiLine, .landmark', $('svg')).remove();
                 C.log('removed old pois and lines, redraw!');
                 SVG.drawPois(pois, type, containerId);
+                console.log(svgPanLastClick);
             }, 300);
 
         });

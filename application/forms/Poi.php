@@ -51,6 +51,12 @@ class Form_Poi extends Tp_Form
             'label' => 'Longitude'
         ));
 
+        $this->addElement('plainHtml', 'choosePoint', array(
+            'value' => '<input type="button" id="pickPointButton" value="show World!" /><div id="poiPicker" class="worldMapLarge"></div>',
+            'label' => 'Set Location by Cursor'
+        ));
+
+
         $this->addElement('text', 'svgCoordinates', array(
             'value' => $this->_svgCoordinates,
             'required' => true,
@@ -175,4 +181,47 @@ class Form_Poi extends Tp_Form
         }
         return parent::isValid($data);
     }
+
+    public function render(Zend_View_Interface $view = null)
+    {
+        $poi = new Tp\Entity\Poi();
+
+
+        $this->getView()->javascript(
+
+        );
+
+        $this->getView()->javascriptBind(
+            "
+            $('#poiPicker').css({ display: 'block', position: 'fixed', backgroundColor:'blue', top: 0, left: 0 });
+            if($('g', $('#poiPicker')).length === 0) {
+                SVG.createSvgWorldMap(
+                    function() {
+                        C.log('fetching all countries with Pictures....');
+                        rpc.setAsyncSuccess(function(response) {
+                            SVG.setupSvgWorldMap(response, 'poiPicker');
+                            SVG.drawPois(" . $poi->getPoisAsJsonArray() . ", 'default', 'poiPicker');
+
+                            $('g', $('#poiPicker')).bind('dblclick',  function (e) {
+                                   $('#svgCoordinates').val(svgPanLastClick.x + ',' + svgPanLastClick.y);
+                                   $('#poiPicker').hide();
+                            });
+
+                        });
+                        rpc.getCountriesWithPictures();
+                    },
+                'poiPicker'
+                );
+            }
+            ",
+            "#pickPointButton",
+            Tp_View_Helper_JavascriptBind::CLICK);
+
+
+
+
+
+        return parent::render($view);
+    }
+
 }
