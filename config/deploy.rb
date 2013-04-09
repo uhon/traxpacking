@@ -11,7 +11,6 @@ require 'capistrano/ext/multistage'
 #ssh_options[:forward_agent] = true
 
 namespace :deploy do
-
     before :deploy do
         unless exists?(:deploy_to)
         raise "Please invoke me like `cap stage deploy` where stage is production/staging"
@@ -84,9 +83,9 @@ namespace :deploy do
         run "cd #{current_release}/scripts && doctrine orm:generate-proxies"
     end
 
-    # Create symlinks for asset files.
+    # Create create_symlinks for asset files.
     # Shared location for large asset files and content uploaded by users
-    desc "Creates symlinks for asset files (like /media,/public/upoad or the Zend-Library)."
+    desc "Creates create_symlinks for asset files (like /media,/public/upoad or the Zend-Library)."
     task :link_shared_data, :roles => :web do
         run "ln -sf #{shared_path}/public/.htaccess #{current_release}/public/.htaccess"
         run "ln -sf #{shared_path}/data/session #{current_release}/data/session"
@@ -118,13 +117,13 @@ namespace :logs do
     end
 end
 
-# Let's run this tasks immediately before the final symlink is made
-before("deploy:symlink", "deploy:initialize_app")
-before("deploy:symlink", "deploy:notify")
-before("deploy:symlink", "deploy:link_shared_data")
-before("deploy:symlink", "deploy:minify_js_and_css")
-before("deploy:symlink", "deploy:db_backup")
-before("deploy:symlink", "deploy:doctrine")
+# Let's run this tasks immediately before the final create_symlink is made
+after("deploy:update_code", "deploy:initialize_app")
+after("deploy:update_code", "deploy:notify")
+after("deploy:update_code", "deploy:link_shared_data")
+after("deploy:update_code", "deploy:minify_js_and_css")
+after("deploy:update_code", "deploy:db_backup")
+after("deploy:update_code", "deploy:doctrine")
 
 
 # Email function for deployment notifications.

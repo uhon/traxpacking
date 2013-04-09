@@ -670,7 +670,6 @@ SVG = { // start of SVG object scope.
                 $('.poiIcon, .poiLine, .landmark', $('svg')).remove();
                 C.log('removed old pois and lines, redraw!');
                 SVG.drawPois(pois, type, containerId);
-                console.log(svgPanLastClick);
             }, 300);
 
         });
