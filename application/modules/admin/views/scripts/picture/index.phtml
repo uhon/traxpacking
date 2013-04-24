@@ -1,5 +1,6 @@
 <?php
     if(!empty($this->newPictures)) {
+        echo '<a href="javascript:void(0)" onclick="FORM.initAjaxified(0);">initalize all</a>';
         echo '<h2>New Pictures:</h2>';
         echo $this->table($this->newPictures, array('Filename', 'Size', 'Date & Time', ''));
     }
