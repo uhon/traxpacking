@@ -407,7 +407,10 @@ table {
     border: 3px solid #ffebcd;
     border-radius: 5px; }
     #content table.valueTable td, #content table.valueTable th {
-      padding: 5px 10px; }
+      padding: 5px 10px;
+      vertical-align: middle; }
+    #content table.valueTable .tinyThumb {
+      width: 70px; }
 
 #footer {
   margin-top: 40px;

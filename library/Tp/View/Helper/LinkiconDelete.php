@@ -8,7 +8,7 @@
 
 class Tp_View_Helper_LinkiconDelete extends Zend_View_Helper_Abstract
 {
-    public function linkiconDelete($formActionUrl, $confirm = true, $confirm = true, $confirmMessage = "Are you sure?") {
+    public function linkiconDelete($formActionUrl, $confirm = true, $confirm = true, $confirmMessage = "Are you sure you want to delete this Item permanently?") {
         if($confirm) {
             $confirmMessage = '<div class="confirm">' . $confirmMessage . '</div>';
         } else {

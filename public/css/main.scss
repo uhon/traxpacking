@@ -127,7 +127,13 @@ table {
 
         td, th {
             padding: 5px 10px;
+            vertical-align: middle;
         }
+
+        .tinyThumb {
+            width: 70px;
+        }
+
     }
 }
 

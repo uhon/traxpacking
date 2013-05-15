@@ -129,12 +129,23 @@ class Picture
     		}
     	}
 
-    	/**
-    	 * @return array
-    	 */
-    	public function toArray() {
-    		return get_object_vars($this);
-    	}
+    /**
+     * @return array
+     */
+    public function toArray() {
+        return get_object_vars($this);
+    }
+
+    public function getDeleteUrl() {
+        return \Tp_Shortcut::getView()->url(
+            array(
+                'module' => 'admin',
+                'controller' => 'picture',
+                'action' => 'delete',
+                'picture' => $this->id
+            ), null, true
+        );
+    }
 
     public function getAssignUrl() {
         return \Tp_Shortcut::getView()->url(

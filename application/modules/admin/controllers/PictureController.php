@@ -37,7 +37,9 @@ class Admin_PictureController extends Tp_Controller_Action
             $this->view->unassignedPictures[] = array(
                 'name' => $p->filename,
                 'datetime' => $p->datetime->format('Y-m-d H:i:s'),
+                'preview' => '<img class="tinyThumb" src="/media/' . $p->filename . '_small.jpg" alt=""/>',
                 'editLink' => $this->view->linkiconEdit($p->getAssignUrl(), 'assign to poi'),
+                'delete' => $this->view->linkiconDelete($p->getDeleteUrl()),
             );
         }
     }
@@ -90,6 +92,23 @@ class Admin_PictureController extends Tp_Controller_Action
             $this->view->form = $form;
         }
     }
+
+    public function deleteAction() {
+            if($this->_request->isPost()) {
+                $post = $this->_request->getPost();
+                if(isset($post['doIt'])) {
+                    $pic = $this->_em->find('Tp\Entity\Picture', $this->_getParam('picture'));
+                    if($pic !== null) {
+                        $this->_em->remove($pic);
+                        $this->_em->flush();
+                        $this->infoMessage('Picture successfully deleted from database (file remains as orphan: ' . $pic->filename . ')');
+                        $this->_redirect("/admin/picture/index");
+                    }
+                }
+                $this->errorMessage('There was an error deleting that Picture');
+                $this->_redirect("/admin/picture/index");
+            }
+        }
 
     public function convertAction() {
         if(($pic = $this->_getParam('pic')) !== null) {

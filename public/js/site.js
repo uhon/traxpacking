@@ -106,7 +106,7 @@ FORM = {  // start of FORM object scope.
     },
 
     bindDeleteForms: function () {
-        // Bind Edit-Links
+        // Bind Delete-Links
         var logObj = 'none';
         if ($('form.deleteForm').length > 0) {
             logObj = $('form.deleteForm');

@@ -7,5 +7,5 @@
     echo "<br/>";
     if(!empty($this->unassignedPictures)) {
         echo '<h2>Unassigned Pictures:</h2>';
-        echo $this->table($this->unassignedPictures, array('Filename', 'Date & Time', ''));
+        echo $this->table($this->unassignedPictures, array('Filename', 'Date & Time', 'Preview', '', ''));
     }

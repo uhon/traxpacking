@@ -173,7 +173,7 @@ class Poi
         $repository = \Zend_Registry::get('doctrine')->getEntityManager()->getRepository('Tp\Entity\Poi');
         $pois = $repository->findBy(array(), array("id" => "DESC"));
         foreach($pois as $poi) {
-            $poiArray[$poi->id] = $poi->title;
+            $poiArray[$poi->id] = $poi->title . '(' . $poi->pictures->count() . ')';
         }
         return $poiArray;
     }

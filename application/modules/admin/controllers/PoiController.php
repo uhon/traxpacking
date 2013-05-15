@@ -21,8 +21,8 @@ class Admin_PoiController extends Tp_Controller_Action
             $this->view->pois[] = array(
                 $poi->title,
                 $poi->category->title,
-                $poi->latitude,
-                $poi->longitude,
+                $poi->pictures->count(),
+                $poi->latitude . ',' . $poi->longitude,
                 $poi->svgCoordinates,
                 $poi->country->name,
                 $poi->url,
