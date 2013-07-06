@@ -1,0 +1,58 @@
+<?php
+    $imgArray = array();
+    $msgArray = array();
+    foreach($this->poi->getPicturesOrderedByDate() as $p) {
+        $imgArray[] = "/media/" . $p->filename . "_medium.jpg";
+        $msgArray[] = "<h1>" . $this->poi->title . "</h1><p>" . $p->description . "</p>";
+    }
+    $this->javascript('
+        $("#playground").css("padding", 0);
+        $("body").addClass("photo-fullscreen", 0);
+        var msgArray = ' . Zend_Json::encode($msgArray) . ';
+        $(".photo-fullscreen #message").html("<div>" + msgArray[0] + "</div>");
+
+        $.mbBgndGallery.buildGallery({
+	        containment:"body", // or "#myGalleryElement"
+	        timer:4000,
+	        effTimer:2000,
+	        controls:"#gallery_controls",
+	        grayScale:false,
+            effect:"zoom",
+            onChange: function(opt) {
+                C.log(parseInt(opt.imageCounter, 10));
+                var index = parseInt(opt.imageCounter, 10),
+                    firstDiv = $(".photo-fullscreen #message div:first");
+                C.log(index);
+                firstDiv.slideUp(1700, function() { firstDiv.remove(); });
+                $(".photo-fullscreen #message").append(
+                    "<div>" + msgArray[index] + "</div>");
+            },
+            onFullscreen: function(opt) {
+                C.log("huston, we are fullscreen");            
+            },
+	        images:' . Zend_Json::encode($imgArray) . '
+        });
+
+
+    ');
+
+    if($this->poi == null) {
+        echo '<h2>There are no photos yet!</h2>';
+    } else  {
+?>
+        
+                <div id="gallery_controls">
+	                <div class="pause">pause</div>
+	                <div class="play">play</div>
+	                <div class="prev">prev</div>
+	                <div class="next">next</div>
+	                <div class="counter"></div>
+                    <div class="fullscreen">fullscreen</div>
+                </div>
+                <div id="message"><div>
+        
+        
+<?php
+    }
+
+?>

@@ -26,6 +26,7 @@ tests/log/
 /public/media/*
 /public/compressed/*
 /public/js/jquery/3rd_party/supersized
+/public/js/3rd_party/jquery.mb.bgndGallery
 
 /test/log
 /test/build

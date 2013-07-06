@@ -63,6 +63,18 @@ class IndexController extends Tp_Controller_Action
         $this->_helper->layout->disableLayout();
     }
 
+    public function photoFullscreenAction()
+    {
+        $poiId = $this->_getParam('poi', null);
+        if($poiId == null) {
+            $poi = new \Tp\Entity\Poi();
+            $poiId = $poi->getLatestPoiWithPicturesAndUrl()->id;
+        }
+
+        $this->view->poi = $this->_em->find('Tp\Entity\Poi', $poiId);
+        //$this->_helper->layout->disableLayout();
+    }
+
     public function countryAction()
     {
         $this->view->country = array_pop($this->_em->getRepository('Tp\Entity\Country')

@@ -514,3 +514,49 @@ div.worldMapSmall {
   opacity: 0.9;
   background: url(/img/tinyTip-notch.png) no-repeat scroll center top;
   height: 13px; }
+
+body.photo-fullscreen #message {
+  color: white;
+  position: absolute;
+  background-image: url(/img/transparent-message-background.png);
+  top: 60px;
+  left: 20px;
+  text-align: left;
+  z-index: 1002;
+  width: 350px;
+  padding: 20px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px; }
+  body.photo-fullscreen #message p {
+    font-weight: bold;
+    font-size: 16px; }
+body.photo-fullscreen #gallery_controls {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1001; }
+  body.photo-fullscreen #gallery_controls div {
+    display: inline-block;
+    padding: 5px;
+    margin: 1px;
+    color: #fff;
+    border: 1px solid #fff;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px; }
+  body.photo-fullscreen #gallery_controls div:hover:not(.counter) {
+    background: rgba(255, 255, 255, 0.9);
+    color: #000; }
+  body.photo-fullscreen #gallery_controls div:not(.counter) {
+    background: #be2910;
+    cursor: pointer; }
+  body.photo-fullscreen #gallery_controls .fullScreen_controls div:hover:not(.counter) {
+    background: rgba(255, 255, 255, 0.9);
+    color: #000; }
+  body.photo-fullscreen #gallery_controls .fullScreen_controls div:not(.counter) {
+    background: rgba(0, 0, 0, 0.82);
+    cursor: pointer; }
+  body.photo-fullscreen #gallery_controls div.sel {
+    background: rgba(255, 255, 255, 0.9); }

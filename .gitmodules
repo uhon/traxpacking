@@ -19,3 +19,6 @@
 [submodule "library/Zend"]
 	path = library/Zend
 	url = git://github.com/Prinhotels/Zend.git
+[submodule "public/js/3rd_party/jquery.mb.bgndGallery"]
+	path = public/js/3rd_party/jquery.mb.bgndGallery
+	url = git://github.com/uhon/jquery.mb.bgndGallery
