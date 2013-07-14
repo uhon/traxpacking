@@ -1,42 +1,91 @@
 <?php
     $imgArray = array();
     $msgArray = array();
-    foreach($this->poi->getPicturesOrderedByDate() as $p) {
+    foreach($this->pictures as $p) {
         $imgArray[] = "/media/" . $p->filename . "_medium.jpg";
-        $msgArray[] = "<h1>" . $this->poi->title . "</h1><p>" . $p->description . "</p>";
+        $msgArray[] = "<h1>" . $p->poi->title . "</h1><p>" . $p->description . "</p>";
     }
     $this->javascript('
         $("#playground").css("padding", 0);
         $("body").addClass("photo-fullscreen", 0);
-        var msgArray = ' . Zend_Json::encode($msgArray) . ';
-        $(".photo-fullscreen #message").html("<div>" + msgArray[0] + "</div>");
+        var msgArray = ' . Zend_Json::encode($msgArray) . ',
+        pMsg = $(".photo-fullscreen .photo-message");
+
+        pMsg.html("<div>" + msgArray[0] + "</div>");
 
         $.mbBgndGallery.buildGallery({
 	        containment:"body", // or "#myGalleryElement"
 	        timer:4000,
-	        effTimer:2000,
+	        effTimer:1000,
 	        controls:"#gallery_controls",
 	        grayScale:false,
-            effect:"zoom",
+            effect:"fade",
+            appendNewMessage: function(pMsg, newIndex) {
+                C.log("append Message with Index: ", newIndex, msgArray[newIndex]);
+                if($("div", pMsg).length === 0) {
+                    pMsg.append("<div>" + msgArray[newIndex] + "</div>");
+                    $("div", pMsg).fadeIn(900);
+                }
+            },
+
             onChange: function(opt) {
+                pMsg = $(".photo-fullscreen .photo-message");
                 C.log(parseInt(opt.imageCounter, 10));
                 var index = parseInt(opt.imageCounter, 10),
-                    firstDiv = $(".photo-fullscreen #message div:first");
-                C.log(index);
-                firstDiv.slideUp(1700, function() { firstDiv.remove(); });
-                $(".photo-fullscreen #message").append(
-                    "<div>" + msgArray[index] + "</div>");
+                    thisthis = this,
+                    obsoleteEntry = $("div", pMsg);
+                    C.log("obsolete entry", obsoleteEntry);
+                
+                
+                /*if(obsoleteEntry.length <= 0) {
+                    thisthis.appendNewMessage(pMsg, index);
+                }
+
+                if(obsoleteEntry.length > 1) {
+                    pMsg.empty();    
+                }*/
+
+                obsoleteEntry.fadeOut(900, function() {
+                    $(this).remove();
+                    thisthis.appendNewMessage(pMsg, index);
+                });
+  
+                
             },
             onFullscreen: function(opt) {
-                C.log("huston, we are fullscreen");            
+                C.log("huston, we are fullscreen");
+                pMsg = $(".photo-fullscreen .photo-message");
+                // loesche allen inhalt der moeglicherweise vorhanden
+                
+
+                pMsgFull = pMsg.addClass("photo-message-fullscreen");
+                pMsg.remove();
+                $(".mbBgndGallery").append(pMsgFull);
+                
+                pMsgFull.empty();
+                this.appendNewMessage(pMsg, opt.imageCounter);
+                
+            },
+            onExitFullscreen: function(opt) {
+                C.log(opt.imageCounter);
+C.log("huston, all engines are back to normal (no fullscreen)");
+                pMsg = $(".photo-fullscreen .photo-message");
+                pMsg.remove();
+                pMsg.empty();
+                pMsg.removeClass("photo-message-fullscreen");
+                $(".photo-fullscreen").append(pMsg);
+                this.appendNewMessage(pMsg, opt.imageCounter);
+                
             },
 	        images:' . Zend_Json::encode($imgArray) . '
         });
 
+        
+
 
     ');
 
-    if($this->poi == null) {
+    if($this->pictures == null || empty($this->pictures)) {
         echo '<h2>There are no photos yet!</h2>';
     } else  {
 ?>
@@ -49,7 +98,7 @@
 	                <div class="counter"></div>
                     <div class="fullscreen">fullscreen</div>
                 </div>
-                <div id="message"><div>
+                <div class="photo-message"><div>
         
         
 <?php

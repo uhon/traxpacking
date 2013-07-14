@@ -206,6 +206,22 @@ div.worldMapSmall {
     top: 5px;
 }
 
+.diashow_link {
+    float: right;
+    text-align:right;
+    clear:both;
+    padding: 0.3em 0;
+    a {
+        color: #C5CBD0;
+        text-decoration: none;
+        
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    
+}
+
 .activePoi {
     cursor: pointer;
 }
@@ -272,7 +288,8 @@ div.worldMapSmall {
 
 
     body.photo-fullscreen {
-        #message {
+        background-color: black;
+        .photo-message {
             color:white;
             position:absolute;
             background-image: url(/img/transparent-message-background.png);
@@ -285,10 +302,18 @@ div.worldMapSmall {
             -moz-border-radius:4px;
             -webkit-border-radius:4px;
             -o-border-radius:4px;
+            
+            div {
+                display:none;
+            }            
             p {
                 font-weight:bold;
                 font-size:16px;
             }
+        }
+        photo-message-fullscreen { 
+            position:"absolute";
+            zIndex:1000;
         }
 
         #gallery_controls {

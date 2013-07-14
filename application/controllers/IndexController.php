@@ -70,8 +70,21 @@ class IndexController extends Tp_Controller_Action
             $poi = new \Tp\Entity\Poi();
             $poiId = $poi->getLatestPoiWithPicturesAndUrl()->id;
         }
+        $this->view->random = false;
 
-        $this->view->poi = $this->_em->find('Tp\Entity\Poi', $poiId);
+        if($poiId == "random") {
+            $pictures = \Zend_Registry::get('doctrine')
+                ->getEntityManager()->getRepository('Tp\Entity\Picture')
+                ->findBy(array(), array('createddate' => 'ASC'));
+            $this->view->pictures = array();
+            for($i = 0; $i < 100; $i++) {
+                $this->view->pictures[] = $pictures[floor(rand(0, sizeof($pictures)))];
+                echo floor(rand(0, sizeof($pictures))) . ", ";
+            }
+            $this->view->random = true;
+        } else {
+            $this->view->pictures = $this->_em->find('Tp\Entity\Poi', $poiId)->pictures;
+        }
         //$this->_helper->layout->disableLayout();
     }
 
