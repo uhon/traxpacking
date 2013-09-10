@@ -2,7 +2,7 @@
     $imgArray = array();
     $msgArray = array();
     foreach($this->pictures as $p) {
-        $imgArray[] = "/media/" . $p->filename . "_medium.jpg";
+        $imgArray[] = "http://" . $_SERVER['SERVER_NAME'] . "/media/" . $p->filename . "_medium.jpg";
         $msgArray[] = "<h1>" . $p->poi->title . "</h1><p>" . $p->description . "</p>";
     }
     $this->javascript('
